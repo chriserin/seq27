@@ -9,7 +9,7 @@ gem 'pg'
 
 #FRONT END
 gem 'coffee-script'
-gem 'react-rails', '~> 1.0.0.pre', github: 'reactjs/react-rails'
+gem 'react-rails'
 gem 'haml'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
