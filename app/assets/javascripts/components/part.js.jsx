@@ -5,6 +5,6 @@ var Part = React.createClass({
       return <note key='{note.id}'/>;
     });
 
-    return <div id='grid' > {notes_html}</div> ;
+    return <notesGrid>{notes_html}</notesGrid>;
   }
 });

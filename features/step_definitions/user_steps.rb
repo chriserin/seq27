@@ -35,5 +35,5 @@ Then /^I am on the song page$/ do
 end
 
 Then /^I see a note$/ do
-  expect(page).to have_selector("#song #grid note")
+  expect(page).to have_selector("#song notesGrid note")
 end
