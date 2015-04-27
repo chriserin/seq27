@@ -7,6 +7,7 @@ describe "Midi", type: :feature do
     @midiDestination = CoreMIDI::VirtualDestination.new(1, nil)
     @midiDestination.connect("seq27-midi-output")
   end
+
   it 'should see Midi object' do
     visit '/js_spec'
     result = page.evaluate_script("Midi")
@@ -34,7 +35,7 @@ describe "Midi", type: :feature do
       packets = @midiDestination.gets
     end
 
-    page.evaluate_script("Midi.sendOnAt(80, 80, 1, 0)")
+    page.evaluate_script("Midi.sendOn(1, 80, 80)")
 
     midiDeviceThread.join
 

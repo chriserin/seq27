@@ -1,4 +1,5 @@
 window.Midi = class Midi
+  ON = 0x90
   @connect: ->
     midiPromise = navigator.requestMIDIAccess()
     midiPromise.then( (access) ->
@@ -7,6 +8,8 @@ window.Midi = class Midi
       console.log("midi failure")
     )
 
-  @sendOnAt: (pitch, velocity, channel, timeFromNow)->
-    ON = 0x90 ^ channel
-    @output.send [ON, pitch, velocity], timeFromNow
+  @sendOn: (channel, pitch, velocity, timeFromNow)->
+    @send(ON, channel, pitch, velocity, timeFromNow)
+
+  @send: (action, channel, pitch, velocity, timeFromNow=0)->
+    @output.send [action ^ channel, pitch, velocity], timeFromNow
