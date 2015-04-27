@@ -6,3 +6,7 @@ window.Midi = class Midi
     , ->
       console.log("midi failure")
     )
+
+  @sendOnAt: (pitch, velocity, channel, timeFromNow)->
+    ON = 0x90 ^ channel
+    @output.send [ON, pitch, velocity], timeFromNow
