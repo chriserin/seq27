@@ -1,4 +1,12 @@
 GIT
+  remote: git://github.com/chriserin/ffi-coremidi.git
+  revision: e5aec92c23a2eaec79cbe9b2ba93df90a9ecaa37
+  branch: virtual-destination
+  specs:
+    ffi-coremidi (1.0.0)
+      ffi
+
+GIT
   remote: git://github.com/reactjs/react-rails.git
   revision: 901c8f68445df849642394cdf9859d293dc13f04
   specs:
@@ -238,6 +246,7 @@ DEPENDENCIES
   cucumber-rails
   database_cleaner
   factory_girl
+  ffi-coremidi!
   haml
   jasmine-rails
   pg

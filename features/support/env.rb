@@ -7,21 +7,7 @@ FactoryGirl.find_definitions
 
 require 'capybara/poltergeist'
 Capybara.javascript_driver = :poltergeist
-DatabaseCleaner.strategy = :truncation
+DatabaseCleaner.strategy = :transaction
 Cucumber::Rails::Database.javascript_strategy = :transaction
 
-Capybara.register_driver :selenium do |app|
-  Capybara::Selenium::Driver.new(app, browser: :chrome, args: ["enable-web-midi"])
-end
-
 World(FactoryGirl::Syntax::Methods)
-
-Before('@midi') do |scenario|
-  Capybara.current_driver = :selenium
-  DatabaseCleaner.strategy = :truncation
-end
-
-After do |scenario|
-  Capybara.use_default_driver
-  DatabaseCleaner.strategy = :truncation
-end

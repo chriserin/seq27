@@ -22,10 +22,13 @@ group :development, :test do
 end
 
 group :test do
+  gem 'database_cleaner'
   gem 'rspec-rails'
   gem 'factory_girl'
   gem 'cucumber-rails', require: false
-  gem 'database_cleaner'
   gem 'poltergeist'
   gem 'selenium-webdriver'
+
+  #MIDI
+  gem "ffi-coremidi", github: "chriserin/ffi-coremidi", branch: "virtual-destination"
 end
