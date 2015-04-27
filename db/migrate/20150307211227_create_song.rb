@@ -2,7 +2,7 @@ class CreateSong < ActiveRecord::Migration
   def up
     execute <<-SQL
       create table songs (
-        id integer primary key,
+        id serial primary key,
         name text,
         user_id integer references users(id)
       );
