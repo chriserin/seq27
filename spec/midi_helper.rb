@@ -1,8 +1,9 @@
 require 'coremidi'
 require 'coremidi/virtual_destination'
 
-Capybara.register_driver :selenium do |app|
-  Capybara::Selenium::Driver.new(app, browser: :chrome, args: ["enable-web-midi"])
+Capybara.register_driver :capachrome do |app|
+  Capybara::Capachrome::Driver.new(app, browser: :chrome, args: ["enable-web-midi"])
 end
 
-Capybara.default_driver = :selenium
+Capybara.default_driver = :capachrome
+
