@@ -27,7 +27,8 @@ group :test do
   gem 'factory_girl'
   gem 'cucumber-rails', require: false
   gem 'poltergeist'
-  gem 'selenium-webdriver'
+  #gem 'capachrome', path: '~/oss/capachrome'
+  gem 'capachrome', github: "chriserin/capachrome"
 
   #MIDI
   gem "ffi-coremidi", github: "chriserin/ffi-coremidi", branch: "virtual-destination"
