@@ -9,3 +9,8 @@ rescue NameError
 end
 
 Cucumber::Rails::Database.javascript_strategy = :truncation
+
+FactoryGirl.definition_file_paths = %w(spec/factories)
+FactoryGirl.find_definitions
+
+World(FactoryGirl::Syntax::Methods)
