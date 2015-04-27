@@ -12,6 +12,8 @@ end
 Then /^midi exists$/ do
   result = page.evaluate_script("Midi")
   expect(result).to be
+  result = page.evaluate_script("navigator.requestMIDIAccess")
+  expect(result).to be
 end
 
 And "I am prying" do

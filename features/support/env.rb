@@ -10,6 +10,10 @@ Capybara.javascript_driver = :poltergeist
 DatabaseCleaner.strategy = :truncation
 Cucumber::Rails::Database.javascript_strategy = :transaction
 
+Capybara.register_driver :selenium do |app|
+  Capybara::Selenium::Driver.new(app, browser: :chrome, args: ["enable-web-midi"])
+end
+
 World(FactoryGirl::Syntax::Methods)
 
 Before('@midi') do |scenario|
