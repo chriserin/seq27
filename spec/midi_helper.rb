@@ -7,3 +7,12 @@ end
 
 Capybara.default_driver = :capachrome
 
+module ChromeLogDisplay
+  def display_logs
+    puts page.driver.getLog(:browser).reject {|x| x =~ /Download the React DevTools/}
+  end
+end
+
+RSpec.configure do |c|
+  c.include ChromeLogDisplay
+end
