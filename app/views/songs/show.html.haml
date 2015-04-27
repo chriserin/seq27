@@ -1,2 +1,6 @@
 %section#song
-  = react_component('Part', song_json)
+:javascript
+  window.VIEW_STATE = {cursor: {beats: 0, pitch: 0}};
+  window.SONG_STATE = #{song_json.to_json};
+  view = React.createElement(Part, null);
+  window.PART_VIEW = React.render(view, window.song);

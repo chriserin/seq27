@@ -1,10 +1,9 @@
 var Part = React.createClass({
-
   render: function() {
-    notes_html = this.props.song.notes.map(function(note) {
+    notes_html = window.SONG_STATE.song.notes.map(function(note) {
       return <note key='{note.id}'/>;
     });
 
-    return <notesGrid>{notes_html}</notesGrid>;
+    return <part><notesGrid>{notes_html}</notesGrid><cursorGrid><cursor data-beat={window.VIEW_STATE['cursor']['beats']} data-pitch={window.VIEW_STATE['cursor']['pitch']}/></cursorGrid></part>;
   }
 });
