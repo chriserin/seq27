@@ -20,7 +20,7 @@ describe "Midi", type: :feature do
     visit '/js_spec'
     result = page.evaluate_script("Midi.connect();")
     sleep(0.05)
-    result = page.evaluate_script("Midi.output.name")
+    result = page.evaluate_script("Midi.primaryOutput().name")
     expect(result).to eq "seq27-midi-output"
   end
 
