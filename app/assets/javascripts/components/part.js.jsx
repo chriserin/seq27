@@ -1,9 +1,10 @@
 var Part = React.createClass({
 
   render: function() {
-    return <div id='grid' >
-      <div className='note'/>
-    </div>
-    ;
+    notes_html = this.props.song.notes.map(function(note) {
+      return <div className='note' key="1"/>;
+    });
+
+    return <div id='grid' > {notes_html}</div> ;
   }
 });
