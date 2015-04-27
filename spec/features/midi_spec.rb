@@ -17,7 +17,6 @@ describe "Midi", type: :feature do
   end
 
   it 'should find midi output' do
-
     visit '/js_spec'
     result = page.evaluate_script("Midi.connect();")
     sleep(0.05)
@@ -37,7 +36,10 @@ describe "Midi", type: :feature do
 
     page.evaluate_script("Midi.sendOn(1, 80, 80)")
 
-    midiDeviceThread.join
+    require 'timeout'
+    Timeout.timeout(5) do
+      midiDeviceThread.join
+    end
 
     expect(packets).to be
     expect(packets.count).to eq 1
