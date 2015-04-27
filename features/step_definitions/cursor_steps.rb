@@ -1,5 +1,4 @@
 Then(/^I see a cursor$/) do
-  expect(page).to have_selector("#song notesGrid")
   expect(page).to have_selector("#song cursorGrid cursor")
   expect(page).to have_selector("cursor[data-beat='0'][data-pitch='0']")
 end
