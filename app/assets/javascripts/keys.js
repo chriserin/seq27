@@ -2,24 +2,22 @@ document.addEventListener("DOMContentLoaded", function () {
     if(window.song) {
       document.addEventListener('keydown',
         function(keyboardEvent) {
-          key = keyboardEvent.keyCode || keyboardEvent.which
+          key = keyboardEvent.keyCode || keyboardEvent.which;
 
           if(String.fromCharCode(key) == 'J') {
-            window.VIEW_STATE = {cursor: {beats: 0, pitch: 1}};
-            window.PART_VIEW.forceUpdate();
+            CursorMovement.moveDown(window.VIEW_STATE);
           }
           if(String.fromCharCode(key) == 'K') {
-            window.VIEW_STATE = {cursor: {beats: 0, pitch: 0}};
-            window.PART_VIEW.forceUpdate();
+            CursorMovement.moveUp(window.VIEW_STATE);
           }
           if(String.fromCharCode(key) == 'H') {
-            window.VIEW_STATE = {cursor: {beats: 0, pitch: 0}};
-            window.PART_VIEW.forceUpdate();
+            CursorMovement.moveLeft(window.VIEW_STATE);
           }
           if(String.fromCharCode(key) == 'L') {
-            window.VIEW_STATE = {cursor: {beats: 1, pitch: 0}};
-            window.PART_VIEW.forceUpdate();
+            CursorMovement.moveRight(window.VIEW_STATE);
           }
+
+          window.PART_VIEW.forceUpdate();
         }
       );
     }
