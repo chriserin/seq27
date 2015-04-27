@@ -1,0 +1,1 @@
+window.Midi = class Midi

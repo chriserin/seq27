@@ -68,6 +68,9 @@ GEM
       xpath (~> 2.0)
     cliver (0.3.2)
     coderay (1.1.0)
+    coffee-script (2.3.0)
+      coffee-script-source
+      execjs
     coffee-script-source (1.9.1)
     columnize (0.9.0)
     connection_pool (2.1.2)
@@ -99,6 +102,12 @@ GEM
       tilt
     hike (1.2.3)
     i18n (0.7.0)
+    jasmine-core (2.2.0)
+    jasmine-rails (0.10.7)
+      jasmine-core (>= 1.3, < 3.0)
+      phantomjs (< 2.0)
+      railties (>= 3.1.0)
+      sprockets-rails
     json (1.8.2)
     loofah (2.0.1)
       nokogiri (>= 1.5.9)
@@ -113,6 +122,7 @@ GEM
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
     pg (0.18.1)
+    phantomjs (1.9.8.0)
     poltergeist (1.6.0)
       capybara (~> 2.1)
       cliver (~> 0.3.1)
@@ -214,10 +224,12 @@ PLATFORMS
 
 DEPENDENCIES
   authem
+  coffee-script
   cucumber-rails
   database_cleaner
   factory_girl
   haml
+  jasmine-rails
   pg
   poltergeist
   pry-byebug
