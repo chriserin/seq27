@@ -2,4 +2,4 @@
   - songs.each do |song|
     %article.song
       %h1
-        Song #{song.id}
+        = link_to "Song #{song.id}", song_path(song), id: "song#{song.id}"

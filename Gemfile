@@ -8,6 +8,7 @@ gem 'authem'
 gem 'pg'
 
 #FRONT END
+gem 'react-rails', '~> 1.0.0.pre', github: 'reactjs/react-rails'
 gem 'haml'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
@@ -23,4 +24,5 @@ group :test do
   gem 'factory_girl'
   gem 'cucumber-rails', require: false
   gem 'database_cleaner'
+  gem 'poltergeist'
 end

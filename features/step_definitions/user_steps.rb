@@ -23,3 +23,17 @@ end
 Then /^I see songs$/ do
   expect(page).to have_selector "section#songs article.song"
 end
+
+When /^I click a song$/ do
+  song = Song.all.first
+  click_link "song#{song.id}"
+end
+
+Then /^I am on the song page$/ do
+  song = Song.all.first
+  expect(current_path).to eq "/songs/#{song.id}"
+end
+
+Then /^I see a note$/ do
+  expect(page).to have_selector("#song #grid div.note")
+end
