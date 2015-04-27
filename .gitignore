@@ -3,3 +3,4 @@
 /log/*
 !/log/.keep
 /tmp
+db/schema.rb
