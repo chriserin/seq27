@@ -4,3 +4,4 @@
 !/log/.keep
 /tmp
 db/schema.rb
+db/structure.sql
