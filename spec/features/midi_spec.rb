@@ -10,4 +10,15 @@ describe "Midi", type: :feature do
     result = page.evaluate_script("navigator.requestMIDIAccess")
     expect(result).to be
   end
+
+  it 'should find midi output' do
+    vd = CoreMIDI::VirtualDestination.new(1, nil)
+    vd.connect("seq27-midi-output")
+
+    visit '/js_spec'
+    result = page.evaluate_script("Midi.connect();")
+    sleep(0.05)
+    result = page.evaluate_script("Midi.output.name")
+    expect(result).to eq "seq27-midi-output"
+  end
 end
