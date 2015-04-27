@@ -1,4 +1,12 @@
 #!/usr/bin/env ruby
+
+command = ARGV[0]
+
+if command == "s" || command == "server"
+  puts "server disabled"
+  exit
+end
+
 begin
   load File.expand_path("../spring", __FILE__)
 rescue LoadError
