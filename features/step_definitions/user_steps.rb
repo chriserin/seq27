@@ -1,11 +1,17 @@
+Given(/^a user$/) do
+  create :user
+end
+
 Given(/^I am on the signin page$/) do
-  pending # express the regexp above with the code you wish you had
+  visit signin_path
 end
 
 When(/^I provide credentials$/) do
-  pending # express the regexp above with the code you wish you had
+  fill_in 'user_email', with: 'user@example.com'
+  fill_in 'user_password', with: 'password'
+  click_on 'Sign in'
 end
 
 Then(/^I see songs index page$/) do
-  pending # express the regexp above with the code you wish you had
+  expect(current_path).to eq "/"
 end

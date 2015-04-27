@@ -1,0 +1,10 @@
+%section#session
+  %h1 Sign In
+  = form_for :user, url: signin_path do |f|
+    %fieldset
+      %dl
+        %dt= f.label :email, 'Email address'
+        %dd= f.email_field :email, autocomplete: "off", autocorrect: "off", autocapitalize: "off"
+        %dt= f.label :password
+        %dd= f.password_field :password
+    %fieldset.actions= f.submit 'Sign in'
