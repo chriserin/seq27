@@ -1,25 +1,26 @@
 document.addEventListener("DOMContentLoaded", function () {
     if(window.song) {
-      document.addEventListener('keydown',
+      document.addEventListener('keypress',
         function(keyboardEvent) {
-          key = keyboardEvent.keyCode || keyboardEvent.which;
+          key = String.fromCharCode(keyboardEvent.charCode);
 
-          if(String.fromCharCode(key) == 'J') {
-            CursorMovement.moveDown(window.VIEW_STATE);
-          }
-          if(String.fromCharCode(key) == 'K') {
-            CursorMovement.moveUp(window.VIEW_STATE);
-          }
-          if(String.fromCharCode(key) == 'H') {
-            CursorMovement.moveLeft(window.VIEW_STATE);
-          }
-          if(String.fromCharCode(key) == 'L') {
-            CursorMovement.moveRight(window.VIEW_STATE);
-          }
+          commands = commandMapping();
 
-          window.PART_VIEW.forceUpdate();
+          if(commands[key]){
+            commands[key](window.VIEW_STATE);
+            window.PART_VIEW.forceUpdate();
+          }
         }
       );
     }
   }
 )
+
+function commandMapping() {
+  return {
+    "j": CursorMovement.moveDown,
+    "k": CursorMovement.moveUp,
+    "h": CursorMovement.moveLeft,
+    "l": CursorMovement.moveRight
+  }
+}

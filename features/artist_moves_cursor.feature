@@ -13,3 +13,5 @@ Feature: Artist moves cursor
     Then  I see the cursor has moved right
     When  I press 'h'
     Then  I see the cursor has moved left
+    When  I press 'J'
+    Then  I see that the cursor has not moved

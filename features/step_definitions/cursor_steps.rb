@@ -4,7 +4,7 @@ Then(/^I see a cursor$/) do
 end
 
 When(/^I press '(\w)'$/) do |char|
-  find("body").native.send_keys char
+  page.execute_script("EVENT_TRIGGERS.downKey('#{char}')")
 end
 
 Then /^I see the cursor has moved (down|up|right|left)$/ do |direction|
@@ -17,4 +17,8 @@ Then /^I see the cursor has moved (down|up|right|left)$/ do |direction|
 
   position = positions[direction.to_sym]
   expect(page).to have_selector("cursor[data-beat='#{position[:beat]}'][data-pitch='#{position[:pitch]}']")
+end
+
+Then /^I see that the cursor has not moved$/ do
+  expect(page).to have_selector("cursor[data-beat='0'][data-pitch='0']")
 end
