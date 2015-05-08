@@ -15,3 +15,12 @@ Feature: Artist moves cursor
     Then  I see the cursor has moved left
     When  I press 'J'
     Then  I see that the cursor has not moved
+
+  @javascript
+  Scenario: Artist creates note at cursor
+    Given a signed in artist with a song
+    When  I am on the song page
+    Then  I see a cursor
+    When  I press 'j'
+    And   I press 'c'
+    Then  I see a new note

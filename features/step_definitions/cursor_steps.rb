@@ -22,3 +22,8 @@ end
 Then /^I see that the cursor has not moved$/ do
   expect(page).to have_selector("cursor[data-beat='0'][data-pitch='0']")
 end
+
+Then(/^I see a new note$/) do
+  expect(page).to have_selector("note", count: 2)
+  expect(page).to have_selector("note[data-beat='0'][data-pitch='1']")
+end
