@@ -32,6 +32,13 @@ describe "Midi", type: :feature do
     packets = nil
     midiDeviceThread = Thread.new do
       packets = @midiDestination.gets
+      # The system exclusive messsages (11110000) come from software (ProLogic)
+      # that has discovered this midi connection via core-midi
+      # and are trying to communicate with it.
+      # Ignore these messages.
+      while packets.all? { |p| p[:data].first.to_s(2) == "11110000" }
+        packets = @midiDestination.gets
+      end
     end
 
     page.evaluate_script("Midi.sendOn(1, 80, 80)")
