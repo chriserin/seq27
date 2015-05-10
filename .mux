@@ -1,0 +1,6 @@
+#! /bin/sh
+# vim: ft=sh
+
+tmux new-window -a -d -n server -t seq27:0 \; \
+  select-layout -t seq27 main-vertical &>/dev/null \; \
+  send-keys -t seq27:0.0 'vim .' C-m \; \
