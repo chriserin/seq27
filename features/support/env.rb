@@ -16,7 +16,8 @@ end
 
 module ChromeLogDisplay
   def display_logs
-    page.driver.getLog(:browser).reject {|x| x =~ /Download the React DevTools/}.each do |message|
+    browser_messages = page.driver.getLog(:browser)
+    browser_messages.reject {|x| x =~ /Download the React DevTools/}.each do |message|
       puts message
     end
   end
