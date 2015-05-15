@@ -1,3 +1,6 @@
+require 'coremidi'
+require 'coremidi/virtual_destination'
+
 module Test
   class MidiDestination
     def initialize

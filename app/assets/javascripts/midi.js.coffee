@@ -1,4 +1,5 @@
 window.Midi = class Midi
+  OFF = 0x80
   ON = 0x90
   @connections: {}
   @connect: ->
@@ -16,6 +17,9 @@ window.Midi = class Midi
 
   @sendOn: (channel, pitch, velocity, timeFromNow)->
     @send(ON, channel, pitch, velocity, timeFromNow)
+
+  @sendOff: (channel, pitch, velocity, timeFromNow)->
+    @send(OFF, channel, pitch, velocity, timeFromNow)
 
   @send: (action, channel, pitch, velocity, timeFromNow=0)->
     @primaryOutput().send [action ^ channel, pitch, velocity], timeFromNow

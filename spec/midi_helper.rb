@@ -1,5 +1,3 @@
-require 'coremidi'
-require 'coremidi/virtual_destination'
 require 'midi_destination'
 
 Capybara.register_driver :capachrome do |app|
