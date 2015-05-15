@@ -29,7 +29,8 @@ function commandMapping() {
     "k": CursorMovement.moveUp,
     "h": CursorMovement.moveLeft,
     "l": CursorMovement.moveRight,
-    "c": [ Song.addNote ]
+    "c": [ Song.addNote ],
+    " ": [ Song.play ]
   }
 }
 

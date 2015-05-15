@@ -6,3 +6,12 @@ Given /^a signed in artist with a song$/ do
     And  I click a song
   }
 end
+
+
+When(/^There is a midi output available$/) do
+  pending
+end
+
+Then /^I hear the song \(via midi\)$/ do
+  pending
+end
