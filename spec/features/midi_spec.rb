@@ -23,7 +23,7 @@ describe "Midi", type: :feature do
     message_type = data[0] >> 4
     channel = data[0] - (message_type << 4)
 
-    expect(message_type).to eq (on = 9)
+    expect(message_type).to eq message_type
     expect(channel).to eq exp_channel
     expect(data[1]).to eq exp_pitch
     expect(data[2]).to eq exp_velocity
