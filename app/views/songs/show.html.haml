@@ -1,5 +1,6 @@
 %section#song
 :javascript
+  Midi.connect();
   window.VIEW_STATE = {cursor: {beats: 0, pitch: 0}};
   window.SONG_STATE = #{song_json.to_json};
   view = React.createElement(Part, null);
