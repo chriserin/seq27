@@ -4,20 +4,25 @@ require 'coremidi/virtual_destination'
 module Test
   class MidiDestination
     def initialize
-      @midiDestination = CoreMIDI::VirtualDestination.new(1, nil)
-      @midiDestination.connect("seq27-midi-output")
+      @midi_destination = CoreMIDI::VirtualDestination.new(1, nil)
+      $midi_start = Time.now
+      result = @midi_destination.connect("seq27-midi-output")
       @expected_packets = 0
       @recieved_packets = []
+    end
+
+    def self.instance
+      @singleton ||= new
     end
 
     def collect
       @midiDeviceThread = Thread.new do
         packet_count = 0
-        while(packets = @midiDestination.gets)
+        while(packets = @midi_destination.gets)
           next if are_packets_sysex?(packets)
 
-          packet_count += 1
-          @recieved_packets << packets
+          packet_count += packets.count
+          @recieved_packets.push *packets
           break if packet_count == @expected_packets
         end
       end
@@ -29,11 +34,17 @@ module Test
         @midiDeviceThread.join
       end
 
-      return @recieved_packets
+      result = @recieved_packets
+      @recieved_packets = []
+      return result
     end
 
     def expect(packet_count)
       @expected_packets = packet_count
+    end
+
+    def close
+      @midi_destination.close
     end
 
     private

@@ -4,7 +4,11 @@ require 'midi_helper'
 
 describe "Midi", type: :feature do
   before(:all) do
-    @midiDestination = Test::MidiDestination.new
+    @midi_destination = Test::MidiDestination.instance
+  end
+
+  after(:all) do
+    @midi_destination.close
   end
 
   def midi_connect
@@ -13,9 +17,9 @@ describe "Midi", type: :feature do
   end
 
   def get_packets(expected_packet_count)
-    @midiDestination.expect(expected_packet_count)
-    @midiDestination.collect()
-    packets = @midiDestination.finish()
+    @midi_destination.expect(expected_packet_count)
+    @midi_destination.collect()
+    packets = @midi_destination.finish()
   end
 
   def expect_midi_message(message, message_type, exp_channel, exp_pitch, exp_velocity)
@@ -51,8 +55,7 @@ describe "Midi", type: :feature do
 
     page.evaluate_script("Midi.sendOn(1, 80, 80)")
 
-    packets = get_packets(1)
-    messages = packets.first
+    messages = get_packets(1)
 
     expect(messages).to be
     expect(messages.count).to eq 1
@@ -66,9 +69,7 @@ describe "Midi", type: :feature do
 
     page.evaluate_script("Midi.sendOff(1, 80, 80)")
 
-    display_logs
-    packets = get_packets(1)
-    messages = packets.first
+    messages = get_packets(1)
 
     expect(messages).to be
     expect(messages.count).to eq 1
