@@ -6,7 +6,6 @@ end
 
 When /^I press the space bar$/ do
   page.execute_script("EVENT_TRIGGERS.downKey(' ')")
-  display_logs
 end
 
 When(/^I press '(\w)'$/) do |char|
