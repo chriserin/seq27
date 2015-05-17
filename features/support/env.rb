@@ -1,5 +1,6 @@
 require 'cucumber/rails'
 require File.expand_path('../../../spec/midi_destination', __FILE__)
+require File.expand_path('../../../spec/chrome_log_display', __FILE__)
 
 ActionController::Base.allow_rescue = false
 
@@ -17,15 +18,6 @@ end
 
 Capybara.register_driver :capachrome do |app|
   Capybara::Capachrome::Driver.new(app, browser: :chrome, args: ["enable-web-midi"])
-end
-
-module ChromeLogDisplay
-  def display_logs
-    browser_messages = page.driver.getLog(:browser)
-    browser_messages.reject {|x| x =~ /Download the React DevTools/}.each do |message|
-      puts message
-    end
-  end
 end
 
 World(ChromeLogDisplay)
