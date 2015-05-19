@@ -6,8 +6,10 @@ Song.addNote = function(songState) {
 }
 
 Song.play = function(songState) {
-  Midi.sendOn(1, 80, 80);
-  Midi.sendOff(1, 80, 80);
+  for(var note of songState.song.notes) {
+    Midi.sendOn(1, note.pitch, 80);
+    Midi.sendOff(1, note.pitch, 80);
+  }
 
   return songState;
 }
