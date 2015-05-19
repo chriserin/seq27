@@ -1,6 +1,7 @@
 require 'cucumber/rails'
 require File.expand_path('../../../spec/midi_destination', __FILE__)
 require File.expand_path('../../../spec/chrome_log_display', __FILE__)
+require File.expand_path('../../../spec/midi_expectations', __FILE__)
 
 ActionController::Base.allow_rescue = false
 
@@ -21,6 +22,7 @@ Capybara.register_driver :capachrome do |app|
 end
 
 World(ChromeLogDisplay)
+World(MidiExpectations)
 
 if false #quick and dirty switching between poltergeist and capachrome
   require 'capybara/poltergeist'

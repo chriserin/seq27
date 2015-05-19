@@ -17,4 +17,9 @@ Then /^I hear the song \(via midi\)$/ do
   @midi_destination.expect(2)
   packets = @midi_destination.finish()
   expect(packets.count).to eq 2
+  on_message = packets.first
+  off_message = packets.second
+
+  expect_midi_message(on_message, on = 9, 1, 80, 80)
+  expect_midi_message(off_message, off = 8, 1, 80, 80)
 end
