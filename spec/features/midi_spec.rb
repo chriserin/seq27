@@ -22,17 +22,6 @@ describe "Midi", type: :feature do
     packets = @midi_destination.finish()
   end
 
-  def expect_midi_message(message, message_type, exp_channel, exp_pitch, exp_velocity)
-    data = message[:data]
-    message_type = data[0] >> 4
-    channel = data[0] - (message_type << 4)
-
-    expect(message_type).to eq message_type
-    expect(channel).to eq exp_channel
-    expect(data[1]).to eq exp_pitch
-    expect(data[2]).to eq exp_velocity
-  end
-
   it 'should see Midi object' do
     visit '/js_spec'
     result = page.evaluate_script("Midi")
