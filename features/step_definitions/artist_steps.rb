@@ -22,6 +22,14 @@ When(/^I set the tempo very high in order to shrink the test$/) do
   page.execute_script("EVENT_TRIGGERS.downKey('\\r')")
 end
 
+When(/^I type the "(.*)" command$/) do |command|
+  command.chars.each do |char|
+    page.execute_script("EVENT_TRIGGERS.downKey('#{char}')")
+  end
+
+  page.execute_script("EVENT_TRIGGERS.downKey('\\r')")
+end
+
 Then /^I hear the song \(via midi\)$/ do
   @midi_destination.collect()
   @midi_destination.expect(2)

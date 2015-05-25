@@ -19,3 +19,17 @@ Song.play = function(songState) {
 
   return songState;
 }
+
+Song.newSong = function(songState) {
+  songState.song = {tempo: 60, notes: []};
+  return songState;
+}
+
+Song.setProperty = function(songState, commandWithArguments) {
+  keyValueArg = commandWithArguments.split(" ")[1];
+  keyValueArray = keyValueArg.split("=");
+  key = keyValueArray[0];
+  value = keyValueArray[1];
+  songState.song[key] = value;
+  return songState;
+}

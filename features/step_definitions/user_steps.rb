@@ -37,3 +37,7 @@ end
 Then /^I see a note$/ do
   expect(page).to have_selector("#song notesGrid note")
 end
+
+Then /^I do not see a note$/ do
+  expect(page).to_not have_selector("#song notesGrid note")
+end

@@ -1,5 +1,12 @@
 window.CommandMode = {}
 
+CommandMode.commandMapping = function() {
+  return {
+    "new": [Song.newSong, NOOP],
+    "set": [Song.setProperty, NOOP]
+  };
+}
+
 CommandMode.addToCommandBuffer = function(state, key) {
   if(state["commandBuffer"] === undefined)
     state["commandBuffer"] = [];
@@ -8,6 +15,13 @@ CommandMode.addToCommandBuffer = function(state, key) {
 }
 
 CommandMode.executeCommandBuffer = function(state) {
-  state.song["tempo"] = 6000;
+  commandBuffer = window.VIEW_STATE["commandBuffer"].join("")
+  command = commandBuffer.split(" ")[0]
+
+  cm = CommandMode.commandMapping()
+  commandFns = cm[command]
+
+  state = commandFns[0](SONG_STATE, commandBuffer)
+
   return state;
 }
