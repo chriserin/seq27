@@ -41,3 +41,12 @@ end
 Then /^I do not see a note$/ do
   expect(page).to_not have_selector("#song notesGrid note")
 end
+
+When(/^I raise an error$/) do
+  page.evaluate_script("throwError();");
+  page.evaluate_script("console.log('see this')");
+end
+
+Then(/^I see a message with file name and line number$/) do
+  expect(get_logs_from_browser.first).to include "testing:4 Uncaught throwing test error"
+end

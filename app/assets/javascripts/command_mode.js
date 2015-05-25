@@ -3,7 +3,8 @@ window.CommandMode = {}
 CommandMode.commandMapping = function() {
   return {
     "new": [Song.newSong, NOOP],
-    "set": [Song.setProperty, NOOP]
+    "set": [Song.setProperty, NOOP],
+    "throw": [Testing.throwError, NOOP]
   };
 }
 
