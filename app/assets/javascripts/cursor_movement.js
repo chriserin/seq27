@@ -11,11 +11,11 @@ CursorMovement.moveUp = function(state) {
 }
 
 CursorMovement.moveRight = function(state) {
-  state['cursor']['beats']++;
+  state['cursor']['start']++;
   return state;
 }
 
 CursorMovement.moveLeft = function(state) {
-  state['cursor']['beats']--;
+  state['cursor']['start']--;
   return state;
 }

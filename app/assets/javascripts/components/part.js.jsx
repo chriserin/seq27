@@ -1,9 +1,18 @@
 var Part = React.createClass({
   render: function() {
     notes_html = window.SONG_STATE.song.notes.map(function(note, i) {
-      return <note key={i} data-beat={note.beats} data-pitch={note.pitch}/>;
+      return <note key={i} data-start={note.start} data-pitch={note.pitch} data-length={note.length}/>;
     });
 
-    return <part><notesGrid>{notes_html}</notesGrid><cursorGrid><cursor data-beat={window.VIEW_STATE['cursor']['beats']} data-pitch={window.VIEW_STATE['cursor']['pitch']}/></cursorGrid></part>;
+    return <part>
+      <notesGrid>{notes_html}</notesGrid>
+      <cursorGrid>
+        <cursor
+          data-start={VIEW_STATE['cursor']['start']}
+          data-pitch={VIEW_STATE['cursor']['pitch']}
+          data-length={VIEW_STATE['cursor']['length']}
+        />
+      </cursorGrid>
+    </part>;
   }
 });

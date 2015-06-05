@@ -6,5 +6,9 @@ FactoryGirl.define do
     trait :with_songs do
        songs { build_list :song, 1}
     end
+
+    trait :with_a_song_with_two_notes do
+       songs { build_list :song, 1, :with_two_notes}
+    end
   end
 end

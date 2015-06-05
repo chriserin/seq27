@@ -1,19 +1,22 @@
 window.Song = {};
 
 Song.addNote = function(songState) {
-  songState["song"]["notes"].push({beats: 0, pitch: 1});
+  songState["song"]["notes"].push({pitch: 1, start: 0, length: 96});
   return songState;
 }
 
 Song.play = function(songState) {
   SCHEDULE_DELAY_TIME = 1000;
-  bpm = songState.song.tempo;
-  seconds_per_tick = 60 / (96.0 * bpm);
+  var bpm = songState.song.tempo;
+  var seconds_per_tick = 60 / (96.0 * bpm);
 
   for(var note of songState.song.notes) {
-    note_length_in_millis = note.ticks * (seconds_per_tick * 1000)
-    Midi.sendOn(1, note.pitch, 80, 0 + SCHEDULE_DELAY_TIME);
-    offTime = note_length_in_millis + SCHEDULE_DELAY_TIME;
+    note_length_in_millis = note.length * (seconds_per_tick * 1000)
+
+    var start = note.start * (seconds_per_tick * 1000)
+
+    Midi.sendOn(1, note.pitch, 80, start + SCHEDULE_DELAY_TIME);
+    offTime = note_length_in_millis + start + SCHEDULE_DELAY_TIME;
     Midi.sendOff(1, note.pitch, 80, offTime);
   }
 
