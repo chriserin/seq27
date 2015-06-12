@@ -48,7 +48,7 @@ function commandMapping() {
     "h": CursorMovement.moveLeft,
     "l": CursorMovement.moveRight,
     "c": [ Song.addNote, NOOP ],
-    " ": [ Song.play, NOOP ],
+    " ": [ Song.playStop, NOOP ],
     "default": [NOOP, NOOP]
   }
 
