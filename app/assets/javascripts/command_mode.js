@@ -4,6 +4,7 @@ CommandMode.commandMapping = function() {
   return {
     "new": [Song.newSong, NOOP],
     "set": [Song.setProperty, NOOP],
+    "get": [NOOP, Song.getProperty],
     "throw": [Testing.throwError, NOOP]
   };
 }
@@ -22,7 +23,13 @@ CommandMode.executeCommandBuffer = function(state) {
   cm = CommandMode.commandMapping()
   commandFns = cm[command]
 
-  state = commandFns[0](SONG_STATE, commandBuffer)
+  commandFns[0](SONG_STATE, commandBuffer)
+  commandFns[1](VIEW_STATE, commandBuffer)
 
+  clearCommandBuffer();
   return state;
+}
+
+var clearCommandBuffer = function(state) {
+  window.VIEW_STATE["commandBuffer"] = []
 }

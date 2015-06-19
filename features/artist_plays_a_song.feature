@@ -25,3 +25,17 @@ Feature: Artist plays a song
     And   there is a midi output available
     And   I press the space bar
     Then  I hear the a song interrupted by the space bar
+
+  @javascript
+  Scenario: Artist plays a song and the song loops
+    Given a signed in artist with a song
+    When  I am on the song page
+    And   there is a midi output available
+    And   I type the ":set loop=2" command
+    And   I type the ":get loop" command
+    Then  I see the value of the "loop" setting is 2
+    When  I type the ":set beats=4" command
+    And   I type the ":get beats" command
+    Then  I see the value of the "beats" setting is 4
+    When  I press the space bar
+    Then  I hear the a song looped twice

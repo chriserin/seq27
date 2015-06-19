@@ -13,6 +13,7 @@ var Part = React.createClass({
           data-length={VIEW_STATE['cursor']['length']}
         />
       </cursorGrid>
+      <commandLine>{VIEW_STATE['commandResult']}</commandLine>
     </part>;
   }
 });

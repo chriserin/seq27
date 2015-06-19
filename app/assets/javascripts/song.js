@@ -73,3 +73,9 @@ Song.setProperty = function(songState, commandWithArguments) {
   songState.song[key] = value;
   return songState;
 }
+
+Song.getProperty = function(viewState, commandWithArguments) {
+  propertyName = commandWithArguments.split(" ")[1];
+  VIEW_STATE['commandResult'] = `${propertyName}=${SONG_STATE.song[propertyName]}`
+  return viewState;
+}

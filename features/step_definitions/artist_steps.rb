@@ -40,6 +40,13 @@ When(/^I type the "(.*)" command$/) do |command|
   page.execute_script("EVENT_TRIGGERS.downKey('\\r')")
 end
 
+Then(/^I see the value of the "(.*?)" setting is (\d+)$/) do |setting_name, number|
+  display_logs
+  within 'commandLine' do
+    expect(page).to have_content "#{setting_name}=#{number}"
+  end
+end
+
 Then /^I hear the song \(via midi\)$/ do
   @midi_destination.collect()
   @midi_destination.expect(2)
