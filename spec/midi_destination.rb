@@ -1,6 +1,8 @@
 require 'coremidi'
 require 'coremidi/virtual_destination'
 
+class MidiTimeoutError < TimeoutError; end
+
 module Test
   class MidiDestination
     def initialize
@@ -30,8 +32,12 @@ module Test
 
     def finish
       require 'timeout'
-      Timeout.timeout(5) do
-        @midiDeviceThread.join
+      begin
+        Timeout.timeout(5) do
+          @midiDeviceThread.join
+        end
+      rescue TimeoutError => se
+        raise MidiTimeoutError.new("Received #{@recieved_packets.count} packets but expected #{@expected_packets}")
       end
 
       result = @recieved_packets
