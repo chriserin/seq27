@@ -26,7 +26,7 @@ Song.stop = function(songState) {
 }
 
 Song.play = function(songState) {
-  SCHEDULE_DELAY_TIME = 1000;
+  var started_at = performance.now() + 2;
   var bpm = songState.song.tempo;
   var seconds_per_tick = 60 / (96.0 * bpm);
 
@@ -35,11 +35,11 @@ Song.play = function(songState) {
   for(var note of songState.song.notes) {
     note_length_in_millis = note.length * (seconds_per_tick * 1000)
 
-    var start = note.start * (seconds_per_tick * 1000)
+    var start = note.start * (seconds_per_tick * 1000) + started_at;
     PLAY_STATE.activeNotes.push(note);
 
-    Midi.sendOn(1, note.pitch, velocity = 80, start + SCHEDULE_DELAY_TIME);
-    offTime = note_length_in_millis + start + SCHEDULE_DELAY_TIME;
+    Midi.sendOn(1, note.pitch, velocity = 80, start);
+    offTime = note_length_in_millis + start;
     Midi.sendOff(1, note.pitch, velocity = 80, offTime);
 
     removeNoteFn = function (note) {

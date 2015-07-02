@@ -66,7 +66,7 @@ end
 Then /^I hear the a song interrupted by the space bar$/ do
   @midi_destination.collect()
   @midi_destination.expect(2)
-  sleep 1 and steps("Then I press the space bar")
+  sleep 0.25 and steps("Then I press the space bar")
   packets = @midi_destination.finish()
   expect(packets.count).to eq 2
 
