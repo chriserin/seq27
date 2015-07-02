@@ -41,7 +41,6 @@ When(/^I type the "(.*)" command$/) do |command|
 end
 
 Then(/^I see the value of the "(.*?)" setting is (\d+)$/) do |setting_name, number|
-  display_logs
   within 'commandLine' do
     expect(page).to have_content "#{setting_name}=#{number}"
   end
@@ -63,7 +62,7 @@ Then /^I hear the song \(via midi\)$/ do
   expect_midi_message(off_message, off = 8, 1, 64, 80)
 end
 
-Then /^I hear the a song interrupted by the space bar$/ do
+Then /^I hear the song interrupted by the space bar$/ do
   @midi_destination.collect()
   @midi_destination.expect(2)
   sleep 0.25 and steps("Then I press the space bar")
@@ -78,6 +77,11 @@ Then /^I hear the a song interrupted by the space bar$/ do
   expect_midi_message(off_message, off = 8, 1, 64, 80)
 
   expect(0..500).to cover note_length.round
+
+  #collect the left over midi off message
+  @midi_destination.collect()
+  @midi_destination.expect(1)
+  @midi_destination.finish()
 end
 
 Then /^I hear the song with two notes$/ do
@@ -103,4 +107,20 @@ Then /^I hear the song with two notes$/ do
 
   expect_midi_message(on_message, on = 9, 1, 64, 80)
   expect_midi_message(off_message, off = 8, 1, 64, 80)
+end
+
+Then(/^I hear the song looped twice$/) do
+  @midi_destination.collect()
+  @midi_destination.expect(4)
+  packets = @midi_destination.finish()
+  packets.each do |packet|
+    puts packet
+  end
+  expect(packets.count).to eq 4
+
+  on_message = packets.first
+  looped_on_message = packets.third
+  distance_between_loops = looped_on_message[:timestamp] - on_message[:timestamp]
+
+  expect(distance_between_loops.round).to eq 40
 end

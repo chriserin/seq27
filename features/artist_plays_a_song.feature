@@ -24,7 +24,7 @@ Feature: Artist plays a song
     When  I am on the song page
     And   there is a midi output available
     And   I press the space bar
-    Then  I hear the a song interrupted by the space bar
+    Then  I hear the song interrupted by the space bar
 
   @javascript
   Scenario: Artist plays a song and the song loops
@@ -37,5 +37,6 @@ Feature: Artist plays a song
     When  I type the ":set beats=4" command
     And   I type the ":get beats" command
     Then  I see the value of the "beats" setting is 4
+    And   I set the tempo very high in order to shrink the test
     When  I press the space bar
-    Then  I hear the a song looped twice
+    Then  I hear the song looped twice
