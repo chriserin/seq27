@@ -1,3 +1,5 @@
+window.NOOP = function(){}
+
 document.addEventListener("DOMContentLoaded", function () {
     if(window.song) {
       document.addEventListener('keypress',
@@ -70,5 +72,3 @@ function commandMapping() {
 
   return new CommandSet(commands);
 }
-
-NOOP = function(){}
