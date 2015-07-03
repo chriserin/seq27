@@ -26,32 +26,31 @@ CommandSet = function(commands) {
   this.get = function(commandChar) {
     this[commandChar];
   }
+
   this.getFunctionsFor = function(key) {
     commandFns = this.commands[key];
+
     if(commandFns === undefined) {
-      commandFns = [].concat.apply([], [this.commands["default"]]);
-    } else {
-      commandFns = [].concat.apply([], [commandFns]);
+      default_commands = this.commands["default"];
+
+      if (default_commands === undefined) {
+        commandFns = CommandSequence.push(key);
+      } else {
+        commandFns = default_commands;
+      }
     }
+
+    commandFns = [].concat.apply([], [commandFns]);
 
     if(commandFns.length == 1) {
       commandFns.unshift(NOOP)
     }
-
     return commandFns;
   }
 }
 
 function commandMapping() {
   normalModeCommands = {
-    ":": Modes.commandMode,
-    "j": CursorMovement.moveDown,
-    "k": CursorMovement.moveUp,
-    "h": CursorMovement.moveLeft,
-    "l": CursorMovement.moveRight,
-    "c": [ Song.addNote, NOOP ],
-    " ": [ Song.playStop, NOOP ],
-    "default": [NOOP, NOOP]
   }
 
   commandModeCommands = {
@@ -67,6 +66,9 @@ function commandMapping() {
       break;
     case "command":
       commands = commandModeCommands;
+      break;
+    case "commandSequence":
+      commands = Move.commands;
       break;
   }
 

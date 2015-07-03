@@ -24,3 +24,12 @@ Feature: Artist moves cursor
     When  I press 'j'
     And   I press 'c'
     Then  I see a new note
+
+  @javascript
+  Scenario: Artist moves to middle C
+    Given a signed in artist with a song
+    When  I am on the song page
+    Then  I see a cursor
+    When  I press 'm'
+    And   I press 'c'
+    Then  I see the cursor is at middle c

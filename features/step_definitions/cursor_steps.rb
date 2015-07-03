@@ -31,3 +31,7 @@ Then(/^I see a new note$/) do
   expect(page).to have_selector("note", count: 2)
   expect(page).to have_selector("note[data-start='0'][data-pitch='1']")
 end
+
+Then(/^I see the cursor is at middle c$/) do
+  expect(page).to have_selector("cursor[data-start='0'][data-pitch='60']")
+end
