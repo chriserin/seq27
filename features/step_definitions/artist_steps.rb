@@ -113,9 +113,6 @@ Then(/^I hear the song looped twice$/) do
   @midi_destination.collect()
   @midi_destination.expect(4)
   packets = @midi_destination.finish()
-  packets.each do |packet|
-    puts packet
-  end
   expect(packets.count).to eq 4
 
   on_message = packets.first
