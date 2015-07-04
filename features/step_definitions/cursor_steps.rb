@@ -1,6 +1,5 @@
 Then(/^I see a cursor$/) do
-  expect(page).to have_selector("#song cursorGrid cursor")
-  expect(page).to have_selector("cursor[data-start='0'][data-pitch='0']")
+  expect(cursor).to have_a_position_of(0, 0)
 end
 
 When /^I press the space bar$/ do
