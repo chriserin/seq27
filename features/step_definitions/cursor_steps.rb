@@ -19,18 +19,18 @@ Then /^I see the cursor has moved (down|up|right|left)$/ do |direction|
   }
 
   position = positions[direction.to_sym]
-  expect(page).to have_selector("cursor[data-start='#{position[:start]}'][data-pitch='#{position[:pitch]}']")
+  expect(cursor).to have_a_position_of(position[:start], position[:pitch])
 end
 
 Then /^I see that the cursor has not moved$/ do
-  expect(page).to have_selector("cursor[data-start='0'][data-pitch='0']")
+  expect(cursor).to have_a_position_of(0, 0)
 end
 
 Then(/^I see a new note$/) do
   expect(page).to have_selector("note", count: 2)
-  expect(page).to have_selector("note[data-start='0'][data-pitch='1']")
+  expect(cursor).to have_a_position_of(0, 1)
 end
 
 Then(/^I see the cursor is at middle c$/) do
-  expect(page).to have_selector("cursor[data-start='0'][data-pitch='60']")
+  expect(cursor).to have_a_position_of(0, 60)
 end
