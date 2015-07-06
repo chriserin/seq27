@@ -2,7 +2,7 @@ window.Song = {};
 window.PLAY_STATE = {isPlaying: false, activeNotes: []};
 
 Song.addNote = function(songState) {
-  songState["song"]["notes"].push({pitch: 1, start: 0, length: 96});
+  songState["song"]["notes"].push({pitch: VIEW_STATE['cursor']['pitch'], start: 0, length: 96});
   return songState;
 }
 

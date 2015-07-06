@@ -1,12 +1,12 @@
 window.CursorMovement = {}
 
 CursorMovement.moveDown = function(state) {
-  state['cursor']['pitch']++;
+  state['cursor']['pitch']--;
   return state;
 }
 
 CursorMovement.moveUp = function(state) {
-  state['cursor']['pitch']--;
+  state['cursor']['pitch']++;
   return state;
 }
 

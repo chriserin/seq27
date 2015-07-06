@@ -1,5 +1,5 @@
-Then(/^I see a cursor$/) do
-  expect(cursor).to have_a_position_of(0, 0)
+Then(/^I see a cursor in the top left corner$/) do
+  expect(cursor).to have_a_position_of(0, 127)
 end
 
 When /^I press the space bar$/ do
@@ -12,10 +12,10 @@ end
 
 Then /^I see the cursor has moved (down|up|right|left)$/ do |direction|
   positions = {
-    down: {start: 0, pitch: 1},
-    up: {start: 0, pitch: 0},
-    right: {start: 1, pitch: 0},
-    left: {start: 0, pitch: 0}
+    down: {start: 0, pitch: 126},
+    up: {start: 0, pitch: 127},
+    right: {start: 1, pitch: 127},
+    left: {start: 0, pitch: 127}
   }
 
   position = positions[direction.to_sym]
@@ -28,7 +28,7 @@ end
 
 Then(/^I see a new note$/) do
   expect(page).to have_selector("note", count: 2)
-  expect(cursor).to have_a_position_of(0, 1)
+  expect(page).to have_selector("note[data-start='0'][data-pitch='126']")
 end
 
 Then(/^I see the cursor is at middle c$/) do
