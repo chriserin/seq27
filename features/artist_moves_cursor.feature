@@ -30,8 +30,7 @@ Feature: Artist moves cursor
     Given a signed in artist with a song
     When  I am on the song page
     Then  I see a cursor in the top left corner
-    When  I press 'm'
-    And   I press 'c'
+    When I type the "mc" sequence
     Then  I see the cursor is at middle c
 
   @javascript
@@ -39,6 +38,5 @@ Feature: Artist moves cursor
     Given a signed in artist with a song
     When  I am on the song page
     Then  I see a cursor in the top left corner
-    When  I press 'm'
-    And   I press 'd'
+    When I type the "md" sequence
     Then  I see the cursor is at middle d
