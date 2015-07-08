@@ -34,3 +34,7 @@ end
 Then(/^I see the cursor is at middle c$/) do
   expect(cursor).to have_a_position_of(0, 60)
 end
+
+Then(/^I see the cursor is at middle d$/) do
+  expect(cursor).to have_a_position_of(0, 62)
+end

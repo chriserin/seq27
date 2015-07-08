@@ -1,21 +1,26 @@
 window.CommandSequence = {"sequence": ''};
 
 CommandSequence.push = function(character) {
-  CommandSequence["sequence"] += character;
-  sequences = sequencedCommands();
-  commands = sequences[CommandSequence["sequence"]]
+  commandNodes = currentNode();
+  node = commandNodes[character];
 
-  if (commands === undefined) {
+  if (node === undefined) {
+    //node does not exist
+    CommandSequence["sequence"] = '';
+    return [NOOP, NOOP];
+  } else if ((node.length === undefined) && (typeof node !== 'function')) {
+    //node contains nodes
+    CommandSequence["sequence"] += character;
     return [NOOP, NOOP];
   } else {
+    //node is an end node
     CommandSequence["sequence"] = '';
-    return commands;
+    return node; //array of 2 functions or just 1 function
   }
 }
 
-function sequencedCommands() {
-  return {
-    "mc": [NOOP, Move.toMiddleC],
+function currentNode(character) {
+  topNode = {
     ":": Modes.commandMode,
     "j": CursorMovement.moveDown,
     "k": CursorMovement.moveUp,
@@ -24,11 +29,23 @@ function sequencedCommands() {
     "c": [ Song.addNote, NOOP ],
     " ": [ Song.playStop, NOOP ]
   };
+
+  topNode["m"] = {
+    "d": [NOOP, function(state) { Move.toMiddleNote(state, 62)}],
+    "c": [NOOP, function(state) { Move.toMiddleNote(state, 60)}]
+  };
+
+  //TODO: this doesn't work for a third level of nodes
+  if (CommandSequence["sequence"] === '') {
+    return topNode;
+  } else {
+    return topNode[CommandSequence["sequence"]];
+  }
 }
 
 window.Move = {}
 
-Move.toMiddleC = function(viewState) {
-  viewState['cursor']['pitch'] = 60;
+Move.toMiddleNote = function(viewState, note) {
+  viewState['cursor']['pitch'] = note;
   return viewState;
 }

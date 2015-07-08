@@ -45,6 +45,7 @@ CommandSet = function(commands) {
     if(commandFns.length == 1) {
       commandFns.unshift(NOOP)
     }
+
     return commandFns;
   }
 }
