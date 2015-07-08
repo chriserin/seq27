@@ -30,10 +30,17 @@ function currentNode(character) {
     " ": [ Song.playStop, NOOP ]
   };
 
-  topNode["m"] = {
-    "d": [NOOP, function(state) { Move.toMiddleNote(state, 62)}],
-    "c": [NOOP, function(state) { Move.toMiddleNote(state, 60)}]
-  };
+  middleOctaveMidiPitches = {
+    "b": 71,
+    "a": 69,
+    "g": 67,
+    "f": 65,
+    "e": 64,
+    "d": 62,
+    "c": 60
+  }
+
+  topNode["m"] = moveNodes();
 
   //TODO: this doesn't work for a third level of nodes
   if (CommandSequence["sequence"] === '') {
@@ -41,6 +48,20 @@ function currentNode(character) {
   } else {
     return topNode[CommandSequence["sequence"]];
   }
+}
+
+function moveNodes() {
+  function createMoveNoteFn(midiPitch) {
+    return function(state) { return Move.toMiddleNote(state, midiPitch); };
+  }
+
+  nodes = {};
+  for(var note in middleOctaveMidiPitches) {
+    var midiPitch = middleOctaveMidiPitches[note];
+    nodes[note] = [NOOP, createMoveNoteFn(midiPitch)];
+  }
+
+  return nodes;
 }
 
 window.Move = {}

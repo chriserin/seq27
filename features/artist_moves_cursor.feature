@@ -30,7 +30,7 @@ Feature: Artist moves cursor
     Given a signed in artist with a song
     When  I am on the song page
     Then  I see a cursor in the top left corner
-    When I type the "mc" sequence
+    When  I type the "mc" sequence
     Then  I see the cursor is at middle c
 
   @javascript
@@ -38,5 +38,25 @@ Feature: Artist moves cursor
     Given a signed in artist with a song
     When  I am on the song page
     Then  I see a cursor in the top left corner
-    When I type the "md" sequence
+    When  I type the "md" sequence
     Then  I see the cursor is at middle d
+
+  @javascript
+  Scenario: Artist moves to all notes one at a time
+    Given a signed in artist with a song
+    When  I am on the song page
+    Then  I see a cursor in the top left corner
+    When  I type a sequence then I see the cursor at the right pitch:
+      | sequence | midipitch |
+      | mb       | 71        |
+      | mak      | 70        |
+      | ma       | 69        |
+      | mgk      | 68        |
+      | mg       | 67        |
+      | mfk      | 66        |
+      | mf       | 65        |
+      | me       | 64        |
+      | mdk      | 63        |
+      | md       | 62        |
+      | mck      | 61        |
+      | mc       | 60        |

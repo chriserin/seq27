@@ -30,6 +30,14 @@ World(Module.new do
   end
 end)
 
+World(Module.new do
+  def type(command_sequence)
+    command_sequence.chars.each do |char|
+      page.execute_script("EVENT_TRIGGERS.downKey('#{char}')")
+    end
+  end
+end)
+
 if false #quick and dirty switching between poltergeist and capachrome
   require 'capybara/poltergeist'
   Capybara.javascript_driver = :poltergeist

@@ -38,3 +38,10 @@ end
 Then(/^I see the cursor is at middle d$/) do
   expect(cursor).to have_a_position_of(0, 62)
 end
+
+When(/^I type a sequence then I see the cursor at the right pitch:$/) do |table|
+  table.hashes.each do |row|
+    type(row[:sequence])
+    expect(cursor).to have_a_position_of(0, row[:midipitch])
+  end
+end
