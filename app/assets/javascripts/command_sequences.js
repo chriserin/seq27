@@ -1,12 +1,16 @@
-window.CommandSequence = {"sequence": ''};
+window.CommandSequence = {"sequence": '', "number": ''};
 
 CommandSequence.push = function(character) {
+  isNumber = captureNumber(character);
+  if (isNumber) {return [NOOP, NOOP];}
+
   commandNodes = currentNode();
   node = commandNodes[character];
 
   if (node === undefined) {
     //node does not exist
     CommandSequence["sequence"] = '';
+    CommandSequence["number"] = '';
     return [NOOP, NOOP];
   } else if (node.length === undefined) {
     //node contains nodes
@@ -14,8 +18,36 @@ CommandSequence.push = function(character) {
     return [NOOP, NOOP];
   } else {
     //node is an end node
+    commandFns = addNumberArgument(node); //array of 2 functions or just 1 function
     CommandSequence["sequence"] = '';
-    return node; //array of 2 functions or just 1 function
+    CommandSequence["number"] = '';
+    return commandFns;
+  }
+}
+
+function addNumberArgument(node) {
+  if(CommandSequence["number"] === '') {
+    return node;
+  }
+
+  number = parseInt(CommandSequence['number']);
+
+  if (node.length === undefined) {
+    numberedNode = function(state) {return node(state, number); }
+    return numberedNode;
+  } else {
+    return [function(state) {return node[0](state, number); }, function(state) {return node[1](state, number); }]
+  }
+}
+
+function captureNumber(possibleNumber) {
+  parsedNumber = parseInt(possibleNumber);
+
+  if(isNaN(parsedNumber)) {
+    return false;
+  } else {
+    CommandSequence["number"] += possibleNumber
+    return true;
   }
 }
 
@@ -52,7 +84,7 @@ function currentNode(character) {
 
 function moveNodes() {
   function createMoveNoteFn(midiPitch) {
-    return function(state) { return Move.toMiddleNote(state, midiPitch); };
+    return function(state, number) { return Move.toMiddleNote(state, midiPitch, number); };
   }
 
   nodes = {};
@@ -66,7 +98,9 @@ function moveNodes() {
 
 window.Move = {}
 
-Move.toMiddleNote = function(viewState, note) {
-  viewState['cursor']['pitch'] = note;
+Move.toMiddleNote = function(viewState, note, octave) {
+  octave = octave || 5;
+  convertedNote = note % 12 + octave * 12;
+  viewState['cursor']['pitch'] = convertedNote;
   return viewState;
 }

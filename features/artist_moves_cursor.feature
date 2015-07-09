@@ -48,6 +48,7 @@ Feature: Artist moves cursor
     Then  I see a cursor in the top left corner
     When  I type a sequence then I see the cursor at the right pitch:
       | sequence | midipitch |
+      | m6c      | 72        |
       | mb       | 71        |
       | mak      | 70        |
       | ma       | 69        |
