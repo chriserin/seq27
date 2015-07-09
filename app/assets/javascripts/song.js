@@ -2,7 +2,7 @@ window.Song = {};
 window.PLAY_STATE = {isPlaying: false, activeNotes: []};
 
 Song.addNote = function(songState) {
-  songState["song"]["notes"].push({pitch: VIEW_STATE['cursor']['pitch'], start: 0, length: 96});
+  songState["song"]["sections"][0]["notes"].push({pitch: VIEW_STATE['cursor']['pitch'], start: 0, length: 96});
   return songState;
 }
 
@@ -33,27 +33,29 @@ Song.play = function(songState) {
   PLAY_STATE.activeNotes = [];
 
   loopOffset = 0
-  for(var i = 0; i < songState.song.loop; i++) {
-    for(var note of songState.song.notes) {
-      noteLengthInMillis = note.length * (secondsPerTick * 1000);
+  for(var section = 0; section < songState.song.sections.length; section++) {
+    for(var loop = 0; loop < songState.song.loop; loop++) {
+      for(var note of songState.song.sections[section].notes) {
+        noteLengthInMillis = note.length * (secondsPerTick * 1000);
 
-      var start = note.start * (secondsPerTick * 1000) + pageStartedAt + loopOffset;
-      PLAY_STATE.activeNotes.push(note);
+        var start = note.start * (secondsPerTick * 1000) + pageStartedAt + loopOffset;
+        PLAY_STATE.activeNotes.push(note);
 
-      onTime = start;
-      offTime = noteLengthInMillis + start;
+        onTime = start;
+        offTime = noteLengthInMillis + start;
 
-      Midi.sendOn(1, note.pitch, velocity = 80, onTime);
-      Midi.sendOff(1, note.pitch, velocity = 80, offTime);
+        Midi.sendOn(1, note.pitch, velocity = 80, onTime);
+        Midi.sendOff(1, note.pitch, velocity = 80, offTime);
 
-      removeNoteFn = function (note) {
-        removeNote(note);
+        removeNoteFn = function (note) {
+          removeNote(note);
+        }
+
+        setTimeout(removeNoteFn, offTime);
       }
 
-      setTimeout(removeNoteFn, offTime);
+      loopOffset = loopOffset + (1000 * secondsPerTick) * (songState.song.beats * 96.0);
     }
-
-    loopOffset = loopOffset + (1000 * secondsPerTick) * (songState.song.beats * 96.0);
   }
 
   return songState;
@@ -68,7 +70,7 @@ var removeNote = function(note) {
 }
 
 Song.newSong = function(songState) {
-  songState.song = {tempo: 60, notes: []};
+  songState.song = {tempo: 60, sections: [{notes: []}]};
   return songState;
 }
 

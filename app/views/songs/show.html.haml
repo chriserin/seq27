@@ -3,5 +3,5 @@
   Midi.connect();
   window.VIEW_STATE = {mode: 'normal', cursor: {pitch: 127, start: 0, length: 96}};
   window.SONG_STATE = #{song_json.to_json};
-  view = React.createElement(Part, null);
+  view = React.createElement(Section, null);
   window.PART_VIEW = React.render(view, window.song);
