@@ -8,7 +8,7 @@ CommandSequence.push = function(character) {
     //node does not exist
     CommandSequence["sequence"] = '';
     return [NOOP, NOOP];
-  } else if ((node.length === undefined) && (typeof node !== 'function')) {
+  } else if (node.length === undefined) {
     //node contains nodes
     CommandSequence["sequence"] += character;
     return [NOOP, NOOP];
@@ -21,11 +21,11 @@ CommandSequence.push = function(character) {
 
 function currentNode(character) {
   topNode = {
-    ":": Modes.commandMode,
-    "j": CursorMovement.moveDown,
-    "k": CursorMovement.moveUp,
-    "h": CursorMovement.moveLeft,
-    "l": CursorMovement.moveRight,
+    ":": [NOOP, Modes.commandMode],
+    "j": [NOOP, CursorMovement.moveDown],
+    "k": [NOOP, CursorMovement.moveUp],
+    "h": [NOOP, CursorMovement.moveLeft],
+    "l": [NOOP, CursorMovement.moveRight],
     "c": [ Song.addNote, NOOP ],
     " ": [ Song.playStop, NOOP ]
   };

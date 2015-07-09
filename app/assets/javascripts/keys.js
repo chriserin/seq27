@@ -40,12 +40,6 @@ CommandSet = function(commands) {
       }
     }
 
-    commandFns = [].concat.apply([], [commandFns]);
-
-    if(commandFns.length == 1) {
-      commandFns.unshift(NOOP)
-    }
-
     return commandFns;
   }
 }
@@ -67,9 +61,6 @@ function commandMapping() {
       break;
     case "command":
       commands = commandModeCommands;
-      break;
-    case "commandSequence":
-      commands = Move.commands;
       break;
   }
 
