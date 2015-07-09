@@ -6,14 +6,13 @@ document.addEventListener("DOMContentLoaded", function () {
         function(keyboardEvent) {
           key = String.fromCharCode(keyboardEvent.charCode);
 
-          commands = commandMapping();
-          fnArray = commands.getFunctionsFor(key);
+          fnArray = getFunctionsFor(key);
 
           songFn = fnArray[0];
           viewFn = fnArray[1];
 
-          songFn(window.SONG_STATE, key);
-          viewFn(window.VIEW_STATE, key);
+          songFn(window.SONG_STATE);
+          viewFn(window.VIEW_STATE);
           window.PART_VIEW.forceUpdate();
         }
       );
@@ -21,48 +20,17 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 )
 
-CommandSet = function(commands) {
-  this.commands = commands;
-  this.get = function(commandChar) {
-    this[commandChar];
-  }
+function getFunctionsFor(key) {
+  commandFns = [];
 
-  this.getFunctionsFor = function(key) {
-    commandFns = this.commands[key];
-
-    if(commandFns === undefined) {
-      default_commands = this.commands["default"];
-
-      if (default_commands === undefined) {
-        commandFns = CommandSequence.push(key);
-      } else {
-        commandFns = default_commands;
-      }
-    }
-
-    return commandFns;
-  }
-}
-
-function commandMapping() {
-  normalModeCommands = {
-  }
-
-  commandModeCommands = {
-    "\r": [CommandMode.executeCommandBuffer, Modes.normalMode],
-    "default": [NOOP, CommandMode.addToCommandBuffer]
-  }
-
-  commands = {}
-
-  switch (window.VIEW_STATE.mode) {
+  switch (VIEW_STATE.mode) {
     case "normal":
-      commands = normalModeCommands;
+      commandFns = CommandSequence.push(key);
       break;
     case "command":
-      commands = commandModeCommands;
+      commandFns = CommandMode.push(key);
       break;
   }
 
-  return new CommandSet(commands);
+  return commandFns;
 }

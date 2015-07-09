@@ -1,5 +1,19 @@
 window.CommandMode = {}
 
+CommandMode.push = function(key) {
+  if (key === "\r") {
+    return [
+      CommandMode.executeCommandBuffer,
+      Modes.normalMode
+    ];
+  }
+
+  return [
+    NOOP,
+    function(state) { CommandMode.addToCommandBuffer(state, key); }
+  ];
+}
+
 CommandMode.commandMapping = function() {
   return {
     "new": [Song.newSong, NOOP],
