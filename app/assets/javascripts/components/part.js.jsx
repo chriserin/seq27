@@ -1,6 +1,6 @@
 var Part = React.createClass({
   render: function() {
-    notes_html = window.SONG_STATE.song.sections[this.props.section].notes.map(function(note, i) {
+    notes_html = this.props.data.notes.map(function(note, i) {
       return <note key={i} data-start={note.start} data-pitch={note.pitch} data-length={note.length}/>;
     });
 
@@ -20,6 +20,10 @@ var Part = React.createClass({
 
 var Section = React.createClass({
   render: function() {
-    return <section><Part section={0}/></section>
+    parts_html = window.SONG_STATE.song.sections[0].parts.map(function(part, i) {
+      return <Part key={i} data={part}/>;
+    });
+
+    return <section>{parts_html}</section>;
   }
 });
