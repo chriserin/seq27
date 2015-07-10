@@ -172,3 +172,32 @@ Feature: Artist moves cursor
       | m1d      | 14        |
       | m1ck     | 13        |
       | m1c      | 12        |
+
+  @javascript
+  Scenario: Artist moves to all notes in middle octave
+    Given a signed in artist with a song
+    When  I am on the song page
+    Then  I see a cursor in the top left corner
+    When  I type a sequence then I see the cursor at the right pitch:
+      | sequence | midipitch |
+      | mb       | 71        |
+      | to       | 83        |
+      | To       | 71        |
+      | ta       | 81        |
+      | Tc       | 72        |
+      | ta       | 81        |
+      | Tb       | 71        |
+      | Ta       | 69        |
+      | Td       | 62        |
+      | Tc       | 60        |
+      | Tf       | 53        |
+      | Tg       | 43        |
+      | Te       | 40        |
+      | tb       | 47        |
+      | ta       | 57        |
+      | td       | 62        |
+      | tc       | 72        |
+      | tf       | 77        |
+      | tg       | 79        |
+      | te       | 88        |
+

@@ -73,6 +73,8 @@ function currentNode(character) {
   }
 
   topNode["m"] = moveNodes();
+  topNode["t"] = toUpNodes();
+  topNode["T"] = toDownNodes();
 
   //TODO: this doesn't work for a third level of nodes
   if (CommandSequence["sequence"] === '') {
@@ -96,11 +98,72 @@ function moveNodes() {
   return nodes;
 }
 
+function toUpNodes() {
+  function createToNoteFn(midiPitch) {
+    return function(state, number) { return Move.upToNote(state, midiPitch); };
+  }
+
+  nodes = {};
+  for(var note in middleOctaveMidiPitches) {
+    var midiPitch = middleOctaveMidiPitches[note];
+    nodes[note] = [NOOP, createToNoteFn(midiPitch)];
+  }
+  nodes["o"] = [NOOP, Move.upOctave];
+
+  return nodes;
+}
+
+function toDownNodes() {
+  function createToNoteFn(midiPitch) {
+    return function(state, number) { return Move.downToNote(state, midiPitch); };
+  }
+
+  nodes = {};
+  for(var note in middleOctaveMidiPitches) {
+    var midiPitch = middleOctaveMidiPitches[note];
+    nodes[note] = [NOOP, createToNoteFn(midiPitch)];
+  }
+  nodes["o"] = [NOOP, Move.downOctave];
+
+  return nodes;
+}
+
 window.Move = {}
 
 Move.toMiddleNote = function(viewState, note, octave) {
   octave = octave || 5;
   convertedNote = note % 12 + octave * 12;
   viewState['cursor']['pitch'] = convertedNote;
+  return viewState;
+}
+
+Move.upOctave = function(viewState) {
+  viewState['cursor']['pitch'] += 12;
+  return viewState;
+}
+
+Move.downOctave = function(viewState) {
+  viewState['cursor']['pitch'] -= 12;
+  return viewState;
+}
+
+Move.upToNote = function(viewState, note) {
+  noteDiff = note % 12;
+  currentNoteDiff = viewState['cursor']['pitch'] % 12;
+  if (noteDiff > currentNoteDiff)
+    viewState['cursor']['pitch'] += noteDiff - currentNoteDiff;
+  else
+    viewState['cursor']['pitch'] += (noteDiff - currentNoteDiff) + 12;
+
+  return viewState;
+}
+
+Move.downToNote = function(viewState, note) {
+  noteDiff = note % 12;
+  currentNoteDiff = viewState['cursor']['pitch'] % 12;
+  if (noteDiff > currentNoteDiff)
+    viewState['cursor']['pitch'] += (noteDiff - currentNoteDiff) - 12;
+  else
+    viewState['cursor']['pitch'] += (noteDiff - currentNoteDiff);
   return viewState;
 }
