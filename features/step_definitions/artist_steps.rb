@@ -17,6 +17,16 @@ Given /^a signed in artist with a song with two notes$/ do
   }
 end
 
+Given(/^a signed in artist with a song with two sections$/) do
+  create :user, :with_a_song_with_two_sections
+
+  steps %Q{
+    When I am on the signin page
+    And  I provide credentials
+    And  I click a song
+  }
+end
+
 Given(/^there is a midi output available$/) do
   # result = page.evaluate_script("Midi.connect();")
   sleep(0.05) #connect is async, takes a small amount of time!
@@ -109,7 +119,7 @@ Then /^I hear the song with two notes$/ do
   expect_midi_message(off_message, off = 8, 1, 64, 80)
 end
 
-Then(/^I hear the song looped twice$/) do
+Then(/^I hear the song looped twice|I hear the song with both sections$/) do
   @midi_destination.collect()
   @midi_destination.expect(4)
   packets = @midi_destination.finish()

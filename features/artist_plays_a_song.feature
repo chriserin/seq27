@@ -40,3 +40,12 @@ Feature: Artist plays a song
     And   I set the tempo very high in order to shrink the test
     When  I press the space bar
     Then  I hear the song looped twice
+
+  @javascript
+  Scenario: Artist plays a song with two sections
+    Given a signed in artist with a song with two sections
+    When  I am on the song page
+    And   there is a midi output available
+    And   I set the tempo very high in order to shrink the test
+    And   I press the space bar
+    Then  I hear the song with both sections
