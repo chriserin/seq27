@@ -32,7 +32,17 @@ Song.play = function(songState) {
 
   PLAY_STATE.activeNotes = [];
 
-  loopOffset = 0
+  var eventsMap = new Array();
+
+  createOnFn = function(channel, pitch, velocity, onTime) {
+    return function() { Midi.sendOn(1, note.pitch, velocity = 80, onTime); };
+  }
+
+  createOffFn = function(channel, pitch, velocity, offTime) {
+    return function() { Midi.sendOff(1, note.pitch, velocity = 80, offTime); };
+  }
+
+  var loopOffset = 0;
   for(var section = 0; section < songState.song.sections.length; section++) {
     for(var loop = 0; loop < songState.song.loop; loop++) {
       for(var part = 0; part < songState.song.sections[section].parts.length; part++) {
@@ -42,13 +52,13 @@ Song.play = function(songState) {
           var start = note.start * (secondsPerTick * 1000) + pageStartedAt + loopOffset;
           PLAY_STATE.activeNotes.push(note);
 
-          onTime = start;
-          offTime = noteLengthInMillis + start;
+          var onTime = start;
+          var offTime = noteLengthInMillis + start;
 
-          Midi.sendOn(1, note.pitch, velocity = 80, onTime);
-          Midi.sendOff(1, note.pitch, velocity = 80, offTime);
+          eventsMap.push([onTime, createOnFn(1, note.pitch, velocity = 80, onTime) ]);
+          eventsMap.push([offTime, createOffFn(1, note.pitch, velocity = 80, offTime) ]);
 
-          removeNoteFn = function (note) {
+          var removeNoteFn = function (note) {
             removeNote(note);
           }
 
@@ -58,6 +68,10 @@ Song.play = function(songState) {
         loopOffset = loopOffset + (1000 * secondsPerTick) * (songState.song.beats * 96.0);
       }
     }
+  }
+
+  for(data of eventsMap) {
+    data[1]();
   }
 
   return songState;
