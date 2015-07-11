@@ -87,11 +87,6 @@ Then /^I hear the song interrupted by the space bar$/ do
   expect_midi_message(off_message, off = 8, 1, 64, 80)
 
   expect(0..500).to cover note_length.round
-
-  #collect the left over midi off message
-  @midi_destination.collect()
-  @midi_destination.expect(1)
-  @midi_destination.finish()
 end
 
 Then /^I hear the song with two notes$/ do

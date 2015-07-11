@@ -12,7 +12,6 @@ Song.playStop = function(songState) {
     return Song.play(songState);
   } else {
     Song.stop(songState);
-    PLAY_STATE = null;
     return songState;
   }
 }
@@ -22,6 +21,9 @@ Song.stop = function(songState) {
     Midi.sendOff(1, note.pitch, velocity = 80, 0);
     removeNote(note);
   }
+
+  PLAY_STATE = {isPlaying: false, activeNotes: []};
+
   return songState;
 }
 
@@ -70,9 +72,31 @@ Song.play = function(songState) {
     }
   }
 
-  for(data of eventsMap) {
-    data[1]();
+  function scheduleNotes(startOffset) {
+    var eventLimit = (pageStartedAt + startOffset + 5);
+
+    while(eventsMap.length > 0) {
+      var data = eventsMap.shift();
+      var eventTime = data[0];
+
+      if (eventTime < eventLimit) {
+        data[1]();
+      } else {
+        eventsMap.unshift(data);
+        break;
+      }
+    }
+
+    if (eventsMap.length > 0) {
+      if (window.PLAY_STATE.isPlaying) {
+        var timeoutId = setTimeout(function() { scheduleNotes(startOffset + 50); }, 50 );
+      }
+    } else {
+      PLAY_STATE = {isPlaying: false, activeNotes: []};
+    }
   }
+
+  scheduleNotes(50);
 
   return songState;
 }
