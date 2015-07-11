@@ -72,6 +72,7 @@ Song.play = function(songState) {
     }
   }
 
+  var JUST_IN_TIME_INCREMENT = 3;
   function scheduleNotes(startOffset) {
     var eventLimit = (pageStartedAt + startOffset + 5);
 
@@ -89,14 +90,14 @@ Song.play = function(songState) {
 
     if (eventsMap.length > 0) {
       if (window.PLAY_STATE.isPlaying) {
-        var timeoutId = setTimeout(function() { scheduleNotes(startOffset + 50); }, 50 );
+        var timeoutId = setTimeout(function() { scheduleNotes(startOffset + JUST_IN_TIME_INCREMENT); }, JUST_IN_TIME_INCREMENT );
       }
     } else {
       PLAY_STATE = {isPlaying: false, activeNotes: []};
     }
   }
 
-  scheduleNotes(50);
+  scheduleNotes(JUST_IN_TIME_INCREMENT);
 
   return songState;
 }
