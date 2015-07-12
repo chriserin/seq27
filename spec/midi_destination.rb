@@ -21,8 +21,7 @@ module Test
       @midiDeviceThread = Thread.new do
         packet_count = 0
         while(packets = @midi_destination.gets)
-          next if are_packets_sysex?(packets)
-
+          packets = filter_out_sysex(packets)
           packet_count += packets.count
           @recieved_packets.push *packets
           break if packet_count == @expected_packets
@@ -54,12 +53,13 @@ module Test
     end
 
     private
-    def are_packets_sysex?(packets)
-      # The system exclusive messsages (11110000) come from software (ProLogic)
-      # that has discovered this midi connection via core-midi
+    #Sysex messages can come with
+    def filter_out_sysex(packets)
+      # The system exclusive messsages (11110000) come from softwares (GarageBand, Logic Pro)
+      # that have discovered this midi connection via core-midi
       # and are trying to communicate with it.
-      # Ignore these messages.
-      return packets.all? { |p| p[:data].first.to_s(2) == "11110000" }
+      # Reject these messages.
+      return packets.reject { |p| p[:data].first.to_s(2) == "11110000" }
     end
   end
 end
