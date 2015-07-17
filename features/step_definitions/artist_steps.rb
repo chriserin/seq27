@@ -58,7 +58,6 @@ end
 
 Then(/^I see that section "(\d*)" is active$/) do |active_section_id|
   section = find("songSection")
-  display_logs
   expect(section['data-section-id']).to eq active_section_id
 end
 
@@ -137,8 +136,9 @@ Then(/^I hear the song looped twice|I hear the song with both sections$/) do
   packets = @midi_destination.finish()
   expect(packets.count).to eq 4
 
-  on_message = packets.first
-  looped_on_message = packets.third
+  on_packets = packets.select {|p| p[:data][0] == 145}
+  on_message = on_packets.first
+  looped_on_message = on_packets.second
   distance_between_loops = looped_on_message[:timestamp] - on_message[:timestamp]
 
   expect(distance_between_loops.round).to eq 40
@@ -147,7 +147,6 @@ end
 Then(/^I hear the each section of the song \(and the second section looped\)$/) do
   @midi_destination.collect()
   @midi_destination.expect(6)
-  display_logs
   packets = @midi_destination.finish()
   expect(packets.count).to eq 6
 

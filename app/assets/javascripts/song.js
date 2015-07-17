@@ -44,7 +44,6 @@ Song.play = function(songState) {
     return function() { Midi.sendOff(1, pitch, velocity = 80, offTime); };
   }
 
-
   var loopOffset = 0;
   for(var section = 0; section < songState.song.sections.length; section++) {
     for(var loop = 0; loop < songState.song.sections[section].loop; loop++) {
@@ -71,11 +70,9 @@ Song.play = function(songState) {
       }
       loopOffset = loopOffset + (1000.0 * secondsPerTick) * (songState.song.beats * 96.0);
     }
-    loopOffset = 0;
   }
 
-
-  var JUST_IN_TIME_INCREMENT = 3;
+  var JUST_IN_TIME_INCREMENT = 10;
   function scheduleNotes(startOffset) {
     var eventLimit = (pageStartedAt + startOffset + 5);
 
@@ -132,8 +129,16 @@ Song.setProperty = function(songState, commandWithArguments) {
 }
 
 Song.getProperty = function(viewState, commandWithArguments) {
-  propertyName = commandWithArguments.split(" ")[1];
-  VIEW_STATE['commandResult'] = `${propertyName}=${SONG_STATE.song[propertyName]}`
+  var propertyName = commandWithArguments.split(" ")[1];
+
+
+  if (propertyName === "loop") {
+    var propertyValue =  SONG_STATE.song.sections[VIEW_STATE.active_section - 1][propertyName];
+  } else {
+    var propertyValue = SONG_STATE.song[propertyName];
+  }
+
+  VIEW_STATE['commandResult'] = `${propertyName}=${propertyValue}`
   return viewState;
 }
 

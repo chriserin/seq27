@@ -32,7 +32,6 @@ Then(/^I see a new note$/) do
 end
 
 Then(/^I see a new note with pitch "(\d*)"$/) do |pitch|
-  display_logs
   expect(page).to have_selector("note[data-pitch='#{pitch}']")
 end
 
