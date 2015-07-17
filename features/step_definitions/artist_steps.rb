@@ -56,6 +56,23 @@ Then(/^I see the value of the "(.*?)" setting is (\d+)$/) do |setting_name, numb
   end
 end
 
+Then(/^I see that section "(\d*)" is active$/) do |active_section_id|
+  section = find("songSection")
+  display_logs
+  expect(section['data-section-id']).to eq active_section_id
+end
+
+When(/^I move to middle C and I create a note$/) do
+  type("mc")
+  type("c")
+end
+
+When(/^I move to middle A and I create a note$/) do
+  type("ma")
+  type("c")
+end
+
+
 Then /^I hear the song \(via midi\)$/ do
   @midi_destination.collect()
   @midi_destination.expect(2)
@@ -125,4 +142,18 @@ Then(/^I hear the song looped twice|I hear the song with both sections$/) do
   distance_between_loops = looped_on_message[:timestamp] - on_message[:timestamp]
 
   expect(distance_between_loops.round).to eq 40
+end
+
+Then(/^I hear the each section of the song \(and the second section looped\)$/) do
+  @midi_destination.collect()
+  @midi_destination.expect(6)
+  display_logs
+  packets = @midi_destination.finish()
+  expect(packets.count).to eq 6
+
+  on_packets = packets.select {|p| p[:data][0] == 145}
+
+  expect_midi_message(on_packets[0], on = 9, 1, 69, 80)
+  expect_midi_message(on_packets[1], on = 9, 1, 60, 80)
+  expect_midi_message(on_packets[2], on = 9, 1, 60, 80)
 end

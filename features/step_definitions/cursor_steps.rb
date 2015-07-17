@@ -31,6 +31,11 @@ Then(/^I see a new note$/) do
   expect(page).to have_selector("note[data-start='0'][data-pitch='126']")
 end
 
+Then(/^I see a new note with pitch "(\d*)"$/) do |pitch|
+  display_logs
+  expect(page).to have_selector("note[data-pitch='#{pitch}']")
+end
+
 Then(/^I see the cursor is at middle c$/) do
   expect(cursor).to have_a_position_of(0, 60)
 end

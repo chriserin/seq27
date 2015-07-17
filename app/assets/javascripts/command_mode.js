@@ -19,6 +19,7 @@ CommandMode.commandMapping = function() {
     "new": [Song.newSong, NOOP],
     "set": [Song.setProperty, NOOP],
     "get": [NOOP, Song.getProperty],
+    "section": [Song.setSection, Song.setActiveSection],
     "throw": [Testing.throwError, NOOP]
   };
 }

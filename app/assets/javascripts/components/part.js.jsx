@@ -20,10 +20,10 @@ var Part = React.createClass({
 
 var Section = React.createClass({
   render: function() {
-    parts_html = window.SONG_STATE.song.sections[0].parts.map(function(part, i) {
+    parts_html = window.SONG_STATE.song.sections[window.VIEW_STATE.active_section - 1].parts.map(function(part, i) {
       return <Part key={i} data={part}/>;
     });
 
-    return <section>{parts_html}</section>;
+    return <songSection data-section-id={window.VIEW_STATE.active_section}>{parts_html}</songSection>;
   }
 });

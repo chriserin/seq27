@@ -2,7 +2,7 @@ window.Song = {};
 window.PLAY_STATE = {isPlaying: false, activeNotes: []};
 
 Song.addNote = function(songState) {
-  songState["song"]["sections"][0]["parts"][0]["notes"].push({pitch: VIEW_STATE['cursor']['pitch'], start: 0, length: 96});
+  songState["song"]["sections"][VIEW_STATE.active_section - 1]["parts"][0]["notes"].push({pitch: VIEW_STATE['cursor']['pitch'], start: 0, length: 96});
   return songState;
 }
 
@@ -37,16 +37,17 @@ Song.play = function(songState) {
   var eventsMap = new Array();
 
   createOnFn = function(channel, pitch, velocity, onTime) {
-    return function() { Midi.sendOn(1, note.pitch, velocity = 80, onTime); };
+    return function() { Midi.sendOn(1, pitch, velocity = 80, onTime); };
   }
 
   createOffFn = function(channel, pitch, velocity, offTime) {
-    return function() { Midi.sendOff(1, note.pitch, velocity = 80, offTime); };
+    return function() { Midi.sendOff(1, pitch, velocity = 80, offTime); };
   }
+
 
   var loopOffset = 0;
   for(var section = 0; section < songState.song.sections.length; section++) {
-    for(var loop = 0; loop < songState.song.loop; loop++) {
+    for(var loop = 0; loop < songState.song.sections[section].loop; loop++) {
       for(var part = 0; part < songState.song.sections[section].parts.length; part++) {
         for(var note of songState.song.sections[section].parts[part].notes) {
           noteLengthInMillis = note.length * (secondsPerTick * 1000);
@@ -67,10 +68,12 @@ Song.play = function(songState) {
           setTimeout(removeNoteFn, offTime);
         }
 
-        loopOffset = loopOffset + (1000 * secondsPerTick) * (songState.song.beats * 96.0);
       }
+      loopOffset = loopOffset + (1000.0 * secondsPerTick) * (songState.song.beats * 96.0);
     }
+    loopOffset = 0;
   }
+
 
   var JUST_IN_TIME_INCREMENT = 3;
   function scheduleNotes(startOffset) {
@@ -111,7 +114,7 @@ var removeNote = function(note) {
 }
 
 Song.newSong = function(songState) {
-  songState.song = {tempo: 60, sections: [{parts: [{notes: []}]}]};
+  songState.song = {tempo: 60, beats: 4, sections: [{parts: [{notes: []}]}]};
   return songState;
 }
 
@@ -120,12 +123,34 @@ Song.setProperty = function(songState, commandWithArguments) {
   keyValueArray = keyValueArg.split("=");
   key = keyValueArray[0];
   value = keyValueArray[1];
-  songState.song[key] = value;
+  if (key === "loop") {
+    songState.song.sections[VIEW_STATE.active_section - 1]['loop'] = value;
+  } else {
+    songState.song[key] = value;
+  }
   return songState;
 }
 
 Song.getProperty = function(viewState, commandWithArguments) {
   propertyName = commandWithArguments.split(" ")[1];
   VIEW_STATE['commandResult'] = `${propertyName}=${SONG_STATE.song[propertyName]}`
+  return viewState;
+}
+
+Song.setSection = function(songState, commandWithArgumets) {
+  sectionArgument = commandWithArgumets.split(" ")[1];
+
+  if (sectionArgument.indexOf('!') > 0) {
+    songState.song["sections"].push({parts: [{notes: []}], loop: 1});
+  }
+
+  return songState;
+}
+
+Song.setActiveSection = function(viewState, commandWithArgumets) {
+  sectionArgument = commandWithArgumets.split(" ")[1];
+
+  viewState["active_section"] = parseInt(sectionArgument);
+
   return viewState;
 }
