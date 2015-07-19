@@ -17,6 +17,10 @@ Before do |scenario|
   @midi_destination = Test::MidiDestination.instance
 end
 
+After do |scenario|
+  display_logs
+end
+
 Capybara.register_driver :capachrome do |app|
   Capybara::Capachrome::Driver.new(app, browser: :chrome, args: ["enable-web-midi"])
 end

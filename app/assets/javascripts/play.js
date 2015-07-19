@@ -1,9 +1,9 @@
 window.Play = {};
-window.PLAY_STATE = {isPlaying: false, activeNotes: []};
+Play.PLAY_STATE = {isPlaying: false, activeNotes: []};
 
 Play.playStop = function(songState) {
-  if (!PLAY_STATE.isPlaying) {
-    PLAY_STATE = {isPlaying: true, activeNotes: []};
+  if (!Play.PLAY_STATE.isPlaying) {
+    Play.PLAY_STATE = {isPlaying: true, activeNotes: []};
     return Play.play(songState);
   } else {
     Play.stop(songState);
@@ -12,30 +12,26 @@ Play.playStop = function(songState) {
 }
 
 Play.stop = function(songState) {
-  for(var note of PLAY_STATE.activeNotes) {
+  for(var note of Play.PLAY_STATE.activeNotes) {
     Midi.sendOff(1, note.pitch, velocity = 80, 0);
     removeNote(note);
   }
 
-  PLAY_STATE = {isPlaying: false, activeNotes: []};
+  Play.PLAY_STATE = {isPlaying: false, activeNotes: []};
 
   return songState;
 }
 
-Play.play = function(songState) {
-  var pageStartedAt = performance.now() + 10;
+Play.makeEventsMap = function(songState, pageStartedAt) {
   var bpm = songState.song.tempo;
   var secondsPerTick = 60 / (96.0 * bpm);
-
-  PLAY_STATE.activeNotes = [];
-
   var eventsMap = new Array();
 
-  createOnFn = function(channel, pitch, velocity, onTime) {
+  var createOnFn = function(channel, pitch, velocity, onTime) {
     return function() { Midi.sendOn(1, pitch, velocity = 80, onTime); };
   }
 
-  createOffFn = function(channel, pitch, velocity, offTime) {
+  var createOffFn = function(channel, pitch, velocity, offTime) {
     return function() { Midi.sendOff(1, pitch, velocity = 80, offTime); };
   }
 
@@ -47,7 +43,7 @@ Play.play = function(songState) {
           noteLengthInMillis = note.length * (secondsPerTick * 1000);
 
           var start = note.start * (secondsPerTick * 1000) + pageStartedAt + loopOffset;
-          PLAY_STATE.activeNotes.push(note);
+          Play.PLAY_STATE.activeNotes.push(note);
 
           var onTime = start;
           var offTime = noteLengthInMillis + start;
@@ -67,6 +63,15 @@ Play.play = function(songState) {
     }
   }
 
+  return eventsMap;
+}
+
+Play.play = function(songState) {
+
+  var pageStartedAt = performance.now() + 10;
+  Play.PLAY_STATE.activeNotes = [];
+  var eventsMap = Play.makeEventsMap(songState, pageStartedAt);
+
   var JUST_IN_TIME_INCREMENT = 10;
   function scheduleNotes(startOffset) {
     var eventLimit = (pageStartedAt + startOffset + 5);
@@ -84,11 +89,11 @@ Play.play = function(songState) {
     }
 
     if (eventsMap.length > 0) {
-      if (window.PLAY_STATE.isPlaying) {
+      if (Play.PLAY_STATE.isPlaying) {
         var timeoutId = setTimeout(function() { scheduleNotes(startOffset + JUST_IN_TIME_INCREMENT); }, JUST_IN_TIME_INCREMENT );
       }
     } else {
-      PLAY_STATE = {isPlaying: false, activeNotes: []};
+      Play.PLAY_STATE = {isPlaying: false, activeNotes: []};
     }
   }
 
@@ -98,9 +103,9 @@ Play.play = function(songState) {
 }
 
 var removeNote = function(note) {
-  index = PLAY_STATE.activeNotes.indexOf(note);
+  index = Play.PLAY_STATE.activeNotes.indexOf(note);
   if (index > -1) {
-    PLAY_STATE.activeNotes.slice(index, 1);
+    Play.PLAY_STATE.activeNotes.slice(index, 1);
   }
-  return PLAY_STATE.activeNotes;
+  return Play.PLAY_STATE.activeNotes;
 }
