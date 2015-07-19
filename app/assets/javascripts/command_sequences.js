@@ -59,7 +59,7 @@ function currentNode(character) {
     "h": [NOOP, CursorMovement.moveLeft],
     "l": [NOOP, CursorMovement.moveRight],
     "c": [ Song.addNote, NOOP ],
-    " ": [ Song.playStop, NOOP ]
+    " ": [ Play.playStop, NOOP ]
   };
 
   middleOctaveMidiPitches = {
