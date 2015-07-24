@@ -17,6 +17,7 @@ When /^I provide credentials$/ do
 end
 
 Then /^I see songs index page$/ do
+  expect(page).to have_selector("#songs")
   expect(current_path).to eq "/"
 end
 
@@ -31,6 +32,7 @@ end
 
 Then /^I am on the song page$/ do
   song = Song.all.first
+  expect(page).to have_selector("songSection")
   expect(current_path).to eq "/songs/#{song.id}"
 end
 
