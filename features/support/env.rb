@@ -18,7 +18,9 @@ Before do |scenario|
 end
 
 After do |scenario|
-  display_logs
+  if Capybara::Capachrome::Driver === page.driver
+    display_logs
+  end
 end
 
 Capybara.register_driver :capachrome do |app|
