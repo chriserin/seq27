@@ -20,6 +20,10 @@ module ChromeLogDisplay
 
   def parse_message_content(content)
     match = /assets\/(.*).self\.js.*\s(\d*):(\d*)\s(.*)/.match(content)
-    return match[1], match[2], match[4]
+    if match
+      return match[1], match[2], match[4]
+    else
+      return "", "", ""
+    end
   end
 end
