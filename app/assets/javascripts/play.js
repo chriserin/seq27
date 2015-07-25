@@ -22,7 +22,7 @@ Play.stop = function(songState) {
   return songState;
 }
 
-Play.makeEventsMap = function(songState, pageStartedAt) {
+Play.makeEventsMap = function(songState, songStart) {
   var bpm = songState.song.tempo;
   var secondsPerTick = 60 / (96.0 * bpm);
   var eventsMap = new Array();
@@ -42,7 +42,7 @@ Play.makeEventsMap = function(songState, pageStartedAt) {
         for(var note of songState.song.sections[section].parts[part].notes) {
           noteLengthInMillis = note.length * (secondsPerTick * 1000);
 
-          var start = note.start * (secondsPerTick * 1000) + pageStartedAt + loopOffset;
+          var start = note.start * (secondsPerTick * 1000) + songStart + loopOffset;
           Play.PLAY_STATE.activeNotes.push(note);
 
           var onTime = start;
@@ -68,13 +68,13 @@ Play.makeEventsMap = function(songState, pageStartedAt) {
 
 Play.play = function(songState) {
 
-  var pageStartedAt = performance.now() + 10;
+  var songStart = performance.now() + 10;
   Play.PLAY_STATE.activeNotes = [];
-  var eventsMap = Play.makeEventsMap(songState, pageStartedAt);
+  var eventsMap = Play.makeEventsMap(songState, songStart);
 
   var JUST_IN_TIME_INCREMENT = 10;
   function scheduleNotes(startOffset) {
-    var eventLimit = (pageStartedAt + startOffset + 5);
+    var eventLimit = (songStart + startOffset + 5);
 
     while(eventsMap.length > 0) {
       var data = eventsMap.shift();
