@@ -19,7 +19,7 @@ end
 
 After do |scenario|
   if Capybara::Capachrome::Driver === page.driver
-    display_logs
+    Kernel.puts display_logs
   end
 end
 
