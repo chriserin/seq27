@@ -156,3 +156,20 @@ Then(/^I hear the each section of the song \(and the second section looped\)$/) 
   expect_midi_message(on_packets[1], on = 9, 1, 60, 80)
   expect_midi_message(on_packets[2], on = 9, 1, 60, 80)
 end
+
+Then(/^I hear the note 20 times with 10 ms intervals$/) do
+  @midi_destination.collect()
+  @midi_destination.expect(40)
+  packets = @midi_destination.finish()
+  expect(packets.count).to eq 40
+
+  on_packets = packets.select {|p| p[:data][0] == 145}
+
+  timestamps = on_packets.map { |note| note[:timestamp] }
+  time_differences = timestamps.each_cons(2).map {|a, b| (b - a).round}
+
+  puts time_differences
+  time_differences[1..-1].each_with_index do |diff, i|
+    expect(diff).to(eq(10), "The #{i}th note was out of sync")
+  end
+end

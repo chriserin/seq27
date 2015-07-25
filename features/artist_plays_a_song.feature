@@ -70,3 +70,14 @@ Feature: Artist plays a song
     Then I see a new note with pitch "69"
     When I press the space bar
     Then I hear the each section of the song (and the second section looped)
+
+  @javascript
+  Scenario: Artist plays a song and the song loops
+    Given a signed in artist with a song
+    When  I am on the song page
+    And   there is a midi output available
+    And   I type the ":set loop=20" command
+    And   I type the ":set beats=1" command
+    And   I set the tempo very high in order to shrink the test
+    And   I press the space bar
+    Then  I hear the note 20 times with 10 ms intervals
