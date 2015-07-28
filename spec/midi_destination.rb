@@ -7,7 +7,6 @@ module Test
   class MidiDestination
     def initialize
       @midi_destination = CoreMIDI::VirtualDestination.new(1, nil)
-      $midi_start = Time.now
       result = @midi_destination.connect("seq27-midi-output")
       @expected_packets = 0
       @recieved_packets = []

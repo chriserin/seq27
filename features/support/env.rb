@@ -21,6 +21,8 @@ After do |scenario|
   if Capybara::Capachrome::Driver === page.driver
     Kernel.puts display_logs
   end
+
+  GC.enable
 end
 
 Capybara.register_driver :capachrome do |app|

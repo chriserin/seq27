@@ -22,17 +22,19 @@ Play.stop = function(songState) {
   return songState;
 }
 
-Play.makeEventsMap = function(songState, songStart) {
+Play.makeEventsMap = function(songState) {
   var bpm = songState.song.tempo;
   var secondsPerTick = 60 / (96.0 * bpm);
   var eventsMap = new Array();
 
-  var createOnFn = function(channel, pitch, velocity, onTime) {
-    return function() { Midi.sendOn(1, pitch, velocity = 80, onTime); };
+  var createOnFn = function(channel, pitch, velocity) {
+    return function(onTime) {
+      Midi.sendOn(1, pitch, velocity = 80, onTime);
+    };
   }
 
-  var createOffFn = function(channel, pitch, velocity, offTime) {
-    return function() { Midi.sendOff(1, pitch, velocity = 80, offTime); };
+  var createOffFn = function(channel, pitch, velocity) {
+    return function(offTime) { Midi.sendOff(1, pitch, velocity = 80, offTime); };
   }
 
   var loopOffset = 0;
@@ -42,7 +44,7 @@ Play.makeEventsMap = function(songState, songStart) {
         for(var note of songState.song.sections[section].parts[part].notes) {
           noteLengthInMillis = note.length * (secondsPerTick * 1000);
 
-          var start = note.start * (secondsPerTick * 1000) + songStart + loopOffset;
+          var start = note.start * (secondsPerTick * 1000) + loopOffset;
           Play.PLAY_STATE.activeNotes.push(note);
 
           var onTime = start;
@@ -67,37 +69,17 @@ Play.makeEventsMap = function(songState, songStart) {
 }
 
 Play.play = function(songState) {
-
-  var songStart = performance.now() + 10;
   Play.PLAY_STATE.activeNotes = [];
-  var eventsMap = Play.makeEventsMap(songState, songStart);
+  var eventsMap = Play.makeEventsMap(songState);
 
-  var JUST_IN_TIME_INCREMENT = 10;
-  function scheduleNotes(startOffset) {
-    var eventLimit = (songStart + startOffset + 5);
-
-    while(eventsMap.length > 0) {
-      var data = eventsMap.shift();
-      var eventTime = data[0];
-
-      if (eventTime < eventLimit) {
-        data[1]();
-      } else {
-        eventsMap.unshift(data);
-        break;
-      }
-    }
-
-    if (eventsMap.length > 0) {
-      if (Play.PLAY_STATE.isPlaying) {
-        var timeoutId = setTimeout(function() { scheduleNotes(startOffset + JUST_IN_TIME_INCREMENT); }, JUST_IN_TIME_INCREMENT );
-      }
-    } else {
-      Play.PLAY_STATE = {isPlaying: false, activeNotes: []};
+  scheduleNotes(JUST_IN_TIME_INCREMENT, eventsMap);
+  var callScheduleFn = function() {
+    if (scheduleFnStack.length > 0) {
+      scheduleFnStack.shift()();
     }
   }
 
-  scheduleNotes(JUST_IN_TIME_INCREMENT);
+  setInterval(callScheduleFn, JUST_IN_TIME_INCREMENT );
 
   return songState;
 }
@@ -109,3 +91,35 @@ var removeNote = function(note) {
   }
   return Play.PLAY_STATE.activeNotes;
 }
+
+
+var scheduleFnStack = [];
+var JUST_IN_TIME_INCREMENT = 10;
+var scheduleNotes = function(startOffset, eventsMap, songStart) {
+  var eventLimit = startOffset + 5;
+
+  while(eventsMap.length > 0) {
+    var data = eventsMap.shift();
+    var eventTime = data[0];
+
+    songStart = songStart || function(){ return performance.now() + 50;}();
+    if (songStart + eventTime <= (performance.now() + 50) + eventLimit) {
+      scheduleTime = songStart + eventTime;
+      if (eventTime === 0) {
+      }
+      data[1](songStart + eventTime);
+    } else {
+      eventsMap.unshift(data);
+      break;
+    }
+  }
+
+  if (eventsMap.length > 0) {
+    if (Play.PLAY_STATE.isPlaying) {
+      scheduleFnStack.push(function() { scheduleNotes(startOffset + JUST_IN_TIME_INCREMENT, eventsMap, songStart); });
+    }
+  } else {
+    Play.PLAY_STATE = {isPlaying: false, activeNotes: []};
+  }
+}
+

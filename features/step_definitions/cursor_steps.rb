@@ -3,6 +3,7 @@ Then(/^I see a cursor in the top left corner$/) do
 end
 
 When /^I press the space bar$/ do
+  GC.disable
   page.execute_script("EVENT_TRIGGERS.downKey(' ')")
 end
 

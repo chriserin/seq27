@@ -169,7 +169,7 @@ Then(/^I hear the note 20 times with 10 ms intervals$/) do
   time_differences = timestamps.each_cons(2).map {|a, b| (b - a).round}
 
   puts time_differences
-  time_differences[1..-1].each_with_index do |diff, i|
+  time_differences.each_with_index do |diff, i|
     expect(diff).to(eq(10), "The #{i}th note was out of sync")
   end
 end
