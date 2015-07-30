@@ -60,7 +60,7 @@ GEM
       activesupport (>= 4.0.4)
       bcrypt (~> 3.1)
       railties (~> 4.0)
-    babel-source (5.8.3)
+    babel-source (5.8.12)
     babel-transpiler (0.7.0)
       babel-source (>= 4.0, < 6)
       execjs (~> 2.0)
