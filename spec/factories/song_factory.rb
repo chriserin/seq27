@@ -5,6 +5,10 @@ FactoryGirl.define do
     { "song": { "beats": 4, "tempo": 60, "sections": [{"loop": 1, "parts": [{"notes": [{"pitch": 64, "start": 0, "length": 96}]}]}]}}
     SONG
 
+    trait :with_no_notes do
+      definition '{"song": {"beats": 4, "tempo": 60, "sections": [{"loop": 1, "parts": [{"notes": []}]}]}}'
+    end
+
     trait :with_two_notes do
       definition '{"song": {"beats": 4, "tempo": 60, "sections": [{"loop": 1, "parts": [{"notes": [{"pitch": 64, "start": 0, "length": 96}, {"pitch": 64, "start": 96, "length": 96}]}]}]}}'
     end

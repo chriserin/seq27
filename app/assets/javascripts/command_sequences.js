@@ -75,6 +75,7 @@ function currentNode(character) {
   topNode["m"] = moveNodes();
   topNode["t"] = toUpNodes();
   topNode["T"] = toDownNodes();
+  topNode[">"] = lengthenNodes();
 
   //TODO: this doesn't work for a third level of nodes
   if (CommandSequence["sequence"] === '') {
@@ -125,6 +126,13 @@ function toDownNodes() {
   }
   nodes["o"] = [NOOP, Move.downOctave];
 
+  return nodes;
+}
+
+function lengthenNodes() {
+  nodes = {
+    ">": [Note.doubleLength, NOOP]
+  }
   return nodes;
 }
 

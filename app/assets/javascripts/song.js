@@ -1,7 +1,9 @@
 window.Song = {};
 
 Song.addNote = function(songState) {
-  songState["song"]["sections"][VIEW_STATE.active_section - 1]["parts"][0]["notes"].push({pitch: VIEW_STATE['cursor']['pitch'], start: 0, length: 96});
+  var lastNote = SongState.currentNote(songState);
+  delete lastNote.lastAdded;
+  songState["song"]["sections"][VIEW_STATE.active_section - 1]["parts"][0]["notes"].push({pitch: VIEW_STATE['cursor']['pitch'], start: 0, length: 96, lastAdded: true});
   return songState;
 }
 

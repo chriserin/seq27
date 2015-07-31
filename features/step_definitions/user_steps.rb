@@ -2,6 +2,10 @@ Given /^a user with songs$/ do
   create :user, :with_songs
 end
 
+Given /^a user with a new song$/ do
+  create :user, :with_a_new_song
+end
+
 Given /^a user$/ do
   create :user
 end

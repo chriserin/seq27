@@ -7,6 +7,15 @@ Given /^a signed in artist with a song$/ do
   }
 end
 
+Given /^a signed in artist with a new song$/ do
+  steps %Q{
+    Given a user with a new song
+    When I am on the signin page
+    And  I provide credentials
+    And  I click a song
+  }
+end
+
 Given /^a signed in artist with a song with two notes$/ do
   create :user, :with_a_song_with_two_notes
 

@@ -8,6 +8,7 @@ When /^I press the space bar$/ do
 end
 
 When(/^I press '(\w)'$/) do |char|
+  expect(page).to have_selector('songSection')
   page.execute_script("EVENT_TRIGGERS.downKey('#{char}')")
 end
 
@@ -30,6 +31,11 @@ end
 Then(/^I see a new note$/) do
   expect(page).to have_selector("note", count: 2)
   expect(page).to have_selector("note[data-start='0'][data-pitch='126']")
+end
+
+Then(/^I see a note with length "(.*?)"$/) do |length|
+  note = page.find('note')
+  expect(note['data-length']).to eq length
 end
 
 Then(/^I see a new note with pitch "(\d*)"$/) do |pitch|
