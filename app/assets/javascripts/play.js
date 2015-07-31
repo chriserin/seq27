@@ -14,7 +14,6 @@ Play.playStop = function(songState) {
 Play.stop = function(songState) {
   for(var note of Play.PLAY_STATE.activeNotes) {
     Midi.sendOff(1, note.pitch, velocity = 80, 0);
-    removeNote(note);
   }
 
   Play.PLAY_STATE = {isPlaying: false, activeNotes: []};
