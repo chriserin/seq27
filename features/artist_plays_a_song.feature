@@ -81,3 +81,7 @@ Feature: Artist plays a song
     And   I set the tempo very high in order to shrink the test
     And   I press the space bar
     Then  I hear the note 20 times with 10 ms intervals
+
+  @javascript
+  Scenario: Artist plays a song with multiple parts for a section
+  Scenario: Artist plays a song with unequal part lengths for a section
