@@ -77,6 +77,7 @@ function currentNode(character) {
   topNode["T"] = toDownNodes();
   topNode[">"] = lengthenNodes();
   topNode["<"] = shortenNodes();
+  topNode["d"] = deleteNodes();
 
   //TODO: this doesn't work for a third level of nodes
   if (CommandSequence["sequence"] === '') {
@@ -140,6 +141,13 @@ function lengthenNodes() {
 function shortenNodes() {
   nodes = {
     "<": [Note.halveLength, NOOP]
+  }
+  return nodes;
+}
+
+function deleteNodes() {
+  nodes = {
+    "d": [Note.deleteLatest, NOOP]
   }
   return nodes;
 }

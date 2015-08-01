@@ -1,8 +1,8 @@
 window.SongState = {};
 
 SongState.currentNote = function(songState) {
-  for(note of SongState.allNotes(songState)) {
-    if (note.lastAdded === true) {
+  for(var note of SongState.allNotes(songState)) {
+    if (note['note'].lastAdded === true) {
       return note;
     }
   };
@@ -15,6 +15,17 @@ SongState.allNotes = function(songState) {
 }
 
 SongState.allNotesForSection = function(section) {
-  partsNotes = section.parts.map(function(part) { return part.notes; });
+  partsNotes = section.parts.map(function(part) { return part.notes.map(function(note) {return {note: note, parent: part};}) });
   return [].concat.apply([], partsNotes); //flatten
+}
+
+SongState.indexOfNote = function(lookedForNote, parent) {
+  var counter = 0;
+  for (var note of parent.notes) {
+    if(lookedForNote === note) {
+      return counter;
+    }
+    counter++;
+  }
+  return -1;
 }
