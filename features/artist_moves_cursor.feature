@@ -22,7 +22,7 @@ Feature: Artist moves cursor
     When  I am on the song page
     Then  I see a cursor in the top left corner
     When  I press 'j'
-    And   I press 'c'
+    When  I type the "cn" sequence
     Then  I see a new note
 
   @javascript

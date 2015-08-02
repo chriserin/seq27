@@ -34,6 +34,10 @@ When /^I click a song$/ do
   click_link "song#{song.id}"
 end
 
+When /^I see the song$/ do
+  expect(page).to have_selector('#song')
+end
+
 Then /^I am on the song page$/ do
   song = Song.all.first
   expect(page).to have_selector("songSection")

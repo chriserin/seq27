@@ -78,6 +78,7 @@ function currentNode(character) {
   topNode[">"] = lengthenNodes();
   topNode["<"] = shortenNodes();
   topNode["d"] = deleteNodes();
+  topNode["c"] = createNodes();
 
   //TODO: this doesn't work for a third level of nodes
   if (CommandSequence["sequence"] === '') {
@@ -148,6 +149,14 @@ function shortenNodes() {
 function deleteNodes() {
   nodes = {
     "d": [Note.deleteLatest, NOOP]
+  }
+  return nodes;
+}
+
+function createNodes() {
+  nodes = {
+    "n": [Song.addNote, NOOP],
+    "h": [Song.createChord, NOOP]
   }
   return nodes;
 }

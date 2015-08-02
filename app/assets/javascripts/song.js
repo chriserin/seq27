@@ -7,6 +7,18 @@ Song.addNote = function(songState) {
   return songState;
 }
 
+Song.createChord = function(songState) {
+  cursor = VIEW_STATE['cursor']
+  activePart = SongState.activePart()
+  newNote = SongState.newNote(cursor.start, cursor.pitch, 96)
+  activePart.notes.push(newNote)
+  newNote = SongState.newNote(cursor.start, cursor.pitch + 3, 96)
+  activePart.notes.push(newNote)
+  newNote = SongState.newNote(cursor.start, cursor.pitch + 7, 96)
+  activePart.notes.push(newNote)
+  return songState;
+}
+
 Song.newSong = function(songState) {
   songState.song = {tempo: 60, beats: 4, sections: [{parts: [{notes: []}]}]};
   return songState;

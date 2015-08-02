@@ -29,3 +29,11 @@ SongState.indexOfNote = function(lookedForNote, parent) {
   }
   return -1;
 }
+
+SongState.newNote = function(start, pitch, length) {
+  return {pitch: pitch, start: start, length: length}
+}
+
+SongState.activePart = function() {
+  return SONG_STATE["song"]["sections"][VIEW_STATE.active_section - 1]["parts"][0]
+}

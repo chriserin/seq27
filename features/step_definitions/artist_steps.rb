@@ -13,6 +13,7 @@ Given /^a signed in artist with a new song$/ do
     When I am on the signin page
     And  I provide credentials
     And  I click a song
+    And  I see the song
   }
 end
 
@@ -72,12 +73,12 @@ end
 
 When(/^I move to middle C and I create a note$/) do
   type("mc")
-  type("c")
+  type("cn")
 end
 
 When(/^I move to middle A and I create a note$/) do
   type("ma")
-  type("c")
+  type("cn")
 end
 
 
