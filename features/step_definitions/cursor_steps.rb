@@ -38,6 +38,11 @@ Then(/^I see a note with length "(.*?)"$/) do |length|
   expect(note['data-length']).to eq length
 end
 
+Then(/^I see "(\d*)" notes with length "(.*?)"$/) do |note_count, length|
+  selector = "note[data-length='#{length}']"
+  expect(page).to have_selector(selector, count: note_count.to_i)
+end
+
 Then(/^I see a new note with pitch "(\d*)"$/) do |pitch|
   expect(page).to have_selector("note[data-pitch='#{pitch}']")
 end
