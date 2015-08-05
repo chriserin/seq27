@@ -4,7 +4,7 @@ var Part = React.createClass({
       return <note key={i} data-start={note.start} data-pitch={note.pitch} data-length={note.length}/>;
     });
 
-    return <part>
+    return <part data-part-id={this.props.partId}>
       <notesGrid>{notes_html}</notesGrid>
       <cursorGrid>
         <cursor
@@ -20,9 +20,8 @@ var Part = React.createClass({
 
 var Section = React.createClass({
   render: function() {
-    parts_html = window.SONG_STATE.song.sections[window.VIEW_STATE.active_section - 1].parts.map(function(part, i) {
-      return <Part key={i} data={part}/>;
-    });
+    var part = SongState.activePart()
+    var parts_html = <Part data={part} partId={window.VIEW_STATE.active_part}/>;
 
     return <songSection data-section-id={window.VIEW_STATE.active_section}>{parts_html}</songSection>;
   }

@@ -1,7 +1,8 @@
 window.Song = {};
 
 Song.addNote = function(songState) {
-  songState["song"]["sections"][VIEW_STATE.active_section - 1]["parts"][0]["notes"].push({pitch: VIEW_STATE['cursor']['pitch'], start: 0, length: 96, lastAdded: true});
+  cursor = VIEW_STATE['cursor']
+  SongState.activePart().notes.push(SongState.newNote(cursor.start, cursor.pitch, 96))
   return songState;
 }
 
@@ -32,17 +33,20 @@ Song.setProperty = function(songState, commandWithArguments) {
   keyValueArray = keyValueArg.split("=");
   key = keyValueArray[0];
   value = keyValueArray[1];
+
   if (key === "loop") {
     songState.song.sections[VIEW_STATE.active_section - 1]['loop'] = value;
+  } else if (key === "channel") {
+    SongState.activePart()["channel"] = value
   } else {
     songState.song[key] = value;
   }
+
   return songState;
 }
 
 Song.getProperty = function(viewState, commandWithArguments) {
   var propertyName = commandWithArguments.split(" ")[1];
-
 
   if (propertyName === "loop") {
     var propertyValue =  SONG_STATE.song.sections[VIEW_STATE.active_section - 1][propertyName];
@@ -64,10 +68,28 @@ Song.setSection = function(songState, commandWithArgumets) {
   return songState;
 }
 
+Song.setPart = function(songState, commandWithArgumets) {
+  partArgument = commandWithArgumets.split(" ")[1];
+
+  if (partArgument.indexOf('!') > 0) {
+    SongState.activeSection().parts.push({notes: []})
+  }
+
+  return songState;
+}
+
 Song.setActiveSection = function(viewState, commandWithArgumets) {
   sectionArgument = commandWithArgumets.split(" ")[1];
 
   viewState["active_section"] = parseInt(sectionArgument);
+
+  return viewState;
+}
+
+Song.setActivePart = function(viewState, commandWithArgumets) {
+  partArgument = commandWithArgumets.split(" ")[1];
+
+  viewState["active_part"] = parseInt(partArgument);
 
   return viewState;
 }

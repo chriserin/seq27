@@ -28,12 +28,12 @@ Play.makeEventsMap = function(songState) {
 
   var createOnFn = function(channel, pitch, velocity) {
     return function(onTime) {
-      Midi.sendOn(1, pitch, velocity = 80, onTime);
+      Midi.sendOn(channel, pitch, velocity = 80, onTime);
     };
   }
 
   var createOffFn = function(channel, pitch, velocity) {
-    return function(offTime) { Midi.sendOff(1, pitch, velocity = 80, offTime); };
+    return function(offTime) { Midi.sendOff(channel, pitch, velocity = 80, offTime); };
   }
 
   var loopOffset = 0;
@@ -49,8 +49,9 @@ Play.makeEventsMap = function(songState) {
           var onTime = start;
           var offTime = noteLengthInMillis + start;
 
-          eventsMap.push([onTime, createOnFn(1, note.pitch, velocity = 80, onTime) ]);
-          eventsMap.push([offTime, createOffFn(1, note.pitch, velocity = 80, offTime) ]);
+          var channel = songState.song.sections[section].parts[part].channel || 1
+          eventsMap.push([onTime, createOnFn(channel, note.pitch, velocity = 80, onTime) ]);
+          eventsMap.push([offTime, createOffFn(channel, note.pitch, velocity = 80, offTime) ]);
 
           var removeNoteFn = function (note) {
             removeNote(note);

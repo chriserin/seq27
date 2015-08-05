@@ -71,6 +71,11 @@ Then(/^I see that section "(\d*)" is active$/) do |active_section_id|
   expect(section['data-section-id']).to eq active_section_id
 end
 
+Then(/^I see that part "(.*?)" is active$/) do |active_part_id|
+  part = find("songSection part")
+  expect(part['data-part-id']).to eq active_part_id
+end
+
 When(/^I move to middle C and I create a note$/) do
   type("mc")
   type("cn")
@@ -178,8 +183,19 @@ Then(/^I hear the note 20 times with 10 ms intervals$/) do
   timestamps = on_packets.map { |note| note[:timestamp] }
   time_differences = timestamps.each_cons(2).map {|a, b| (b - a).round}
 
-  puts time_differences
   time_differences.each_with_index do |diff, i|
     expect(diff).to(eq(10), "The #{i}th note was out of sync")
   end
+end
+
+Then(/^I hear a note on each channel$/) do
+  @midi_destination.collect()
+  @midi_destination.expect(4)
+  packets = @midi_destination.finish()
+  expect(packets.count).to eq 4
+
+  on_packets = packets.select {|p| (p[:data][0] >> 4) == 9}
+
+  expect_midi_message(on_packets[0], on = 9, 2, 60, 80)
+  expect_midi_message(on_packets[1], on = 9, 3, 60, 80)
 end
