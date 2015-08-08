@@ -36,8 +36,8 @@ Song.setProperty = function(songState, commandWithArguments) {
 
   if (key === "loop") {
     songState.song.sections[VIEW_STATE.active_section - 1]['loop'] = value;
-  } else if (key === "channel") {
-    SongState.activePart()["channel"] = value
+  } else if (key === "channel" || key === "output") {
+    SongState.activePart()[key] = value
   } else {
     songState.song[key] = value;
   }

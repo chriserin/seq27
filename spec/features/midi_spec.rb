@@ -34,7 +34,7 @@ describe "Midi", type: :feature do
     visit '/js_spec'
     result = page.evaluate_script("Midi.connect();")
     sleep(0.05) #Allow the midi api to asychronously collect midi connections
-    result = page.evaluate_script("Midi.primaryOutput().name")
+    result = page.evaluate_script("Midi.selectOutput().name")
     expect(result).to eq "seq27-midi-output"
   end
 

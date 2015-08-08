@@ -5,15 +5,19 @@ class MidiTimeoutError < TimeoutError; end
 
 module Test
   class MidiDestination
-    def initialize
+    def initialize(name)
       @midi_destination = CoreMIDI::VirtualDestination.new(1, nil)
-      result = @midi_destination.connect("seq27-midi-output")
+      result = @midi_destination.connect(name)
       @expected_packets = 0
       @recieved_packets = []
     end
 
     def self.instance
-      @singleton ||= new
+      @singleton ||= new("seq27-midi-output")
+    end
+
+    def self.second_instance(name)
+      @second_singleton ||= new(name)
     end
 
     def collect

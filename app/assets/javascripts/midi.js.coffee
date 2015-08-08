@@ -3,6 +3,7 @@ TEST_OUTPUT = "seq27-midi-output"
 window.Midi = class Midi
   OFF = 0x80
   ON = 0x90
+
   @connections: new Map() #YES first use of Map
   @connect: ->
     midiPromise = navigator.requestMIDIAccess()
@@ -15,9 +16,9 @@ window.Midi = class Midi
       console.log("midi failure")
     )
 
-  @primaryOutput: ->
-    if Midi.connections.has(TEST_OUTPUT)
-      Midi.connections.get(TEST_OUTPUT)
+  @selectOutput: (name=TEST_OUTPUT) ->
+    if Midi.connections.has(name)
+      Midi.connections.get(name)
     else
       Midi.connections.values().next().value
 
@@ -28,12 +29,12 @@ window.Midi = class Midi
       names.push(output.value)
     return names
 
-  @sendOn: (channel, pitch, velocity, timeFromNow)->
-    @send(ON, channel, pitch, velocity, timeFromNow)
+  @sendOn: (channel, pitch, velocity, timeFromNow, output=TEST_OUTPUT)->
+    @send(ON, channel, pitch, velocity, timeFromNow, output)
 
-  @sendOff: (channel, pitch, velocity, timeFromNow)->
-    @send(OFF, channel, pitch, velocity, timeFromNow)
+  @sendOff: (channel, pitch, velocity, timeFromNow, output=TEST_OUTPUT)->
+    @send(OFF, channel, pitch, velocity, timeFromNow, output)
 
-  @send: (action, channel, pitch, velocity, timeFromNow=0)->
-    output = @primaryOutput()
+  @send: (action, channel, pitch, velocity, timeFromNow=0, output)->
+    output = @selectOutput(output)
     output.send [action ^ channel, pitch, velocity], timeFromNow

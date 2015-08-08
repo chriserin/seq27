@@ -13,5 +13,12 @@ Feature: Midi goes different places
     And   I press the space bar
     Then  I hear a note on each channel
 
-  Scenario: User sees error messages when settings incorrect channels
+  @javascript
   Scenario: User chooses a different midi output for a part and receives midi there
+    Given a second output named "seq-27-output-B"
+    And   a signed in artist with a new song
+    When  I type the "mccn" sequence
+    And   I type the ":set output=seq-27-output-B" command
+    And   I set the tempo very high in order to shrink the test
+    And   I press the space bar
+    Then  I hear a note on the second output
