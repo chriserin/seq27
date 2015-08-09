@@ -199,3 +199,18 @@ Then(/^I hear a note on each channel$/) do
   expect_midi_message(on_packets[0], on = 9, 2, 60, 80)
   expect_midi_message(on_packets[1], on = 9, 3, 60, 80)
 end
+
+Then(/^I hear the first part repeated (\d+) times$/) do |repititions|
+  @midi_destination.collect()
+  @midi_destination.expect(8)
+  packets = @midi_destination.finish()
+  expect(packets.count).to eq 8
+
+  on_packets = packets.select {|p| (p[:data][0] >> 4) == 9}
+  off_packets = packets.select {|p| (p[:data][0] >> 4) == 8}
+
+  repititions.to_i.times do |i|
+    expect_midi_message(on_packets[i], on = 9, 1, 60, 80)
+    expect_midi_message(off_packets[i], on = 8, 1, 60, 80)
+  end
+end

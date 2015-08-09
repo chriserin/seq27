@@ -24,7 +24,7 @@ Song.createChord = function(songState) {
 }
 
 Song.newSong = function(songState) {
-  songState.song = {tempo: 60, beats: 4, sections: [{parts: [{notes: []}]}]};
+  songState.song = {tempo: 60, sections: [{parts: [{beats: 4, notes: []}]}]};
   return songState;
 }
 
@@ -36,7 +36,7 @@ Song.setProperty = function(songState, commandWithArguments) {
 
   if (key === "loop") {
     songState.song.sections[VIEW_STATE.active_section - 1]['loop'] = value;
-  } else if (key === "channel" || key === "output") {
+  } else if (key === "channel" || key === "output" || key === "beats") {
     SongState.activePart()[key] = value
   } else {
     songState.song[key] = value;
@@ -50,6 +50,8 @@ Song.getProperty = function(viewState, commandWithArguments) {
 
   if (propertyName === "loop") {
     var propertyValue =  SONG_STATE.song.sections[VIEW_STATE.active_section - 1][propertyName];
+  } else if (propertyName === "channel" || propertyName === "output" || propertyName === "beats") {
+    var propertyValue =  SongState.activePart()[propertyName]
   } else {
     var propertyValue = SONG_STATE.song[propertyName];
   }
@@ -62,7 +64,7 @@ Song.setSection = function(songState, commandWithArgumets) {
   sectionArgument = commandWithArgumets.split(" ")[1];
 
   if (sectionArgument.indexOf('!') > 0) {
-    songState.song["sections"].push({parts: [{notes: []}], loop: 1});
+    songState.song["sections"].push({parts: [{beats: 4, notes: []}], loop: 1});
   }
 
   return songState;

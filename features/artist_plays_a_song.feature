@@ -84,4 +84,15 @@ Feature: Artist plays a song
 
   @javascript
   Scenario: Artist plays a song with multiple parts for a section
+
+  @javascript
   Scenario: Artist plays a song with unequal part lengths for a section
+    Given a signed in artist with a new song
+    When I am on the song page
+    And  I type the "mccn" sequence
+    And  I type the ":set beats=1" command
+    And  I type the ":part 2!" command
+    And  I type the ":set beats=4" command
+    And  I set the tempo very high in order to shrink the test
+    And  I press the space bar
+    Then I hear the first part repeated 4 times
