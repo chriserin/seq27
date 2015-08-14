@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
           songFn(window.SONG_STATE);
           viewFn(window.VIEW_STATE);
-          window.PART_VIEW.forceUpdate();
+          window.SONG_VIEW.forceUpdate();
         }
       );
     }
