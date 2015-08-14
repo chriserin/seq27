@@ -19,9 +19,9 @@ module ChromeLogDisplay
   end
 
   def parse_message_content(content)
-    match = /assets\/(.*).self\.js.*\s(\d*):(\d*)\s(.*)/.match(content)
+    match = /(assets\/(.*).self\.js|songs).*\s(\d*):(\d*)\s(.*)/.match(content)
     if match
-      return match[1], match[2], match[4]
+      return match[2], match[3], match[5]
     else
       return "", "", ""
     end
