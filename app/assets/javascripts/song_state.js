@@ -51,6 +51,8 @@ SongState.activeSection = function() {
 }
 
 SongState.activePart = function() {
+  console.log('activepart is ' + VIEW_STATE.active_part)
+  console.log(JSON.stringify(SongState.activeSection()))
   return SongState.activeSection()["parts"][VIEW_STATE.active_part - 1]
 }
 

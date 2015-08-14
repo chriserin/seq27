@@ -30,9 +30,9 @@ Song.newSong = function(songState) {
 
 Song.setProperty = function(songState, commandWithArguments) {
   keyValueArg = commandWithArguments.split(" ")[1];
-  keyValueArray = keyValueArg.split("=");
-  key = keyValueArray[0];
-  value = keyValueArray[1];
+  var keyValueArray = keyValueArg.split("=");
+  var key = keyValueArray[0];
+  var value = keyValueArray[1];
 
   if (key === "loop") {
     songState.song.sections[VIEW_STATE.active_section - 1]['loop'] = value;
@@ -61,17 +61,23 @@ Song.getProperty = function(viewState, commandWithArguments) {
 }
 
 Song.setSection = function(songState, commandWithArgumets) {
-  sectionArgument = commandWithArgumets.split(" ")[1];
+  var sectionArgument = commandWithArgumets.split(" ")[1];
 
   if (sectionArgument.indexOf('!') > 0) {
-    songState.song["sections"].push({parts: [{beats: 4, notes: []}], loop: 1});
+    var section = {parts: [], loop: 1}
+
+    songState.song.sections[0].parts.forEach(function(){
+      section['parts'].push({beats: 4, notes: []})
+    });
+
+    songState.song["sections"].push(section);
   }
 
   return songState;
 }
 
 Song.setPart = function(songState, commandWithArgumets) {
-  partArgument = commandWithArgumets.split(" ")[1];
+  var partArgument = commandWithArgumets.split(" ")[1];
 
   if (partArgument.indexOf('!') > 0) {
     SongState.activeSection().parts.push({notes: []})
@@ -81,15 +87,16 @@ Song.setPart = function(songState, commandWithArgumets) {
 }
 
 Song.setActiveSection = function(viewState, commandWithArgumets) {
-  sectionArgument = commandWithArgumets.split(" ")[1];
+  var sectionArgument = commandWithArgumets.split(" ")[1];
 
+  console.log('setting active section to ' + sectionArgument);
   viewState["active_section"] = parseInt(sectionArgument);
 
   return viewState;
 }
 
 Song.setActivePart = function(viewState, commandWithArgumets) {
-  partArgument = commandWithArgumets.split(" ")[1];
+  var partArgument = commandWithArgumets.split(" ")[1];
 
   viewState["active_part"] = parseInt(partArgument);
 
