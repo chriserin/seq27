@@ -22,7 +22,6 @@ Note.deleteLatest = function(songState) {
   var part = SongState.activePart()
   for (var note of notes) {
     var index = SongState.indexOfNote(note, part)
-    console.log('note to delete ' + index);
     delete part.notes[index];
   }
   return songState;

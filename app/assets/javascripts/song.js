@@ -89,7 +89,6 @@ Song.setPart = function(songState, commandWithArgumets) {
 Song.setActiveSection = function(viewState, commandWithArgumets) {
   var sectionArgument = commandWithArgumets.split(" ")[1];
 
-  console.log('setting active section to ' + sectionArgument);
   viewState["active_section"] = parseInt(sectionArgument);
 
   return viewState;

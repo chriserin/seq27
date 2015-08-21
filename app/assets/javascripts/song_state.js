@@ -3,15 +3,12 @@ window.SongState = {};
 SongState.currentNotes = function(songState) {
   var activePart = SongState.activePart()
   var sortedNotes = activePart.notes.sort(function(a, b) { return a.timestamp - b.timestamp;})
-  console.log(sortedNotes);
 
   var tag = sortedNotes[0].timestamp
-  console.log(tag);
 
   var results = []
 
   for(var i = 0; i < sortedNotes.length; i++) {
-    console.log(tag);
 
     if (sortedNotes[i].timestamp === tag) {
       results.push(sortedNotes[i])
@@ -51,8 +48,6 @@ SongState.activeSection = function() {
 }
 
 SongState.activePart = function() {
-  console.log('activepart is ' + VIEW_STATE.active_part)
-  console.log(JSON.stringify(SongState.activeSection()))
   return SongState.activeSection()["parts"][VIEW_STATE.active_part - 1]
 }
 
