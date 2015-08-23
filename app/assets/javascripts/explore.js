@@ -9,7 +9,12 @@ Explore.enterExploreMode = function(viewState) {
 Explore.moveCursorUp = function(viewState) {
   var explorerCursor = viewState['explorerCursor']
 
-  explorerCursor.partId = explorerCursor.partId - 1
+  if (explorerCursor.partId > 0) {
+    explorerCursor.partId = explorerCursor.partId - 1
+  } else {
+    explorerCursor.sectionId = explorerCursor.sectionId - 1
+    explorerCursor.partId = SongState.activeSection().parts.length
+  }
 
   return viewState
 }

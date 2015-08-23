@@ -17,6 +17,10 @@ Feature: Artist explores song
     Then I see that explorer cursor is on section 2 part 1
     When I press 'k'
     Then I see that explorer cursor is on section 2
+    When I press 'k'
+    Then I see that explorer cursor is on section 1 part 2
+    When I press 'k'
+    Then I see that explorer cursor is on section 1 part 1
 
   @javascript
   Scenario: Artist rearranges sections
