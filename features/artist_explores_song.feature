@@ -10,5 +10,11 @@ Feature: Artist explores song
   Scenario: Artist sees sections
     Then  I see 2 sections and 4 parts
 
+  @javascript
   Scenario: Artist navigates to parts of sections
+    Then I see that explorer cursor is on section 2 part 2
+    When I press 'k'
+    Then I see that explorer cursor is on section 2 part 1
+
+
   Scenario: Artist rearranges sections

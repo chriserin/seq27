@@ -58,7 +58,6 @@ function currentNode(character) {
     "k": [NOOP, CursorMovement.moveUp],
     "h": [NOOP, CursorMovement.moveLeft],
     "l": [NOOP, CursorMovement.moveRight],
-    "c": [ Song.addNote, NOOP ],
     " ": [ Play.playStop, NOOP ]
   };
 

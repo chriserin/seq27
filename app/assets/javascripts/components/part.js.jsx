@@ -33,7 +33,7 @@ SeqCom.Section = React.createClass({
 SeqCom.Song = React.createClass({
   render: function() {
     var innerComponent = <SeqCom.Section/>
-    if (VIEW_STATE.isExploring) {
+    if (VIEW_STATE.mode === "explorer") {
       innerComponent = <SeqCom.Explorer/>
     }
     return <song>{innerComponent}</song>;
@@ -43,23 +43,33 @@ SeqCom.Song = React.createClass({
 SeqCom.Explorer = React.createClass({
   render: function() {
     var sections_html = SONG_STATE.song.sections.map(function(section, i) {
-      return <SeqCom.Explorer.Section key={i} section={section}/>
+      return <SeqCom.Explorer.Section key={i} section={section} id={i+1}/>
     });
     return <explorer>{sections_html}</explorer>;
   }
 });
 
 SeqCom.Explorer.Section = React.createClass({
+  isCursorOnPart: function(sectionId, partId) {
+    var explorerCursor = VIEW_STATE['explorerCursor']
+    return (explorerCursor['sectionId'] === sectionId && explorerCursor['partId'] === partId);
+  },
   render: function() {
-    var parts_html = this.props.section.parts.map(function(part, i) {
-      return <SeqCom.Explorer.Part key={i}/>;
+    var sectionId = this.props.id
+    var parts_html = this.props.section.parts.map((part, i)=> {
+      return <SeqCom.Explorer.Part key={i} id={i+1} isCursorOnPart={this.isCursorOnPart(sectionId, i+1)}/>;
     })
-    return <songSection>{parts_html}</songSection>
+    return <songSection data-id={this.props.id}>{parts_html}</songSection>
   }
 });
 
 SeqCom.Explorer.Part = React.createClass({
+  classes: function() {
+    if(this.props.isCursorOnPart) {
+      return "cursor"
+    }
+  },
   render: function() {
-    return <part></part>
+    return <part data-id={this.props.id} className={this.classes()}></part>
   }
 });

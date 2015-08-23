@@ -4,7 +4,7 @@ CommandMode.push = function(key) {
   if (key === "\r") {
     return [
       CommandMode.executeCommandBuffer,
-      Modes.normalMode
+      Modes.transitionToNextMode
     ];
   }
 
