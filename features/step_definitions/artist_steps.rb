@@ -60,6 +60,10 @@ When(/^I type the "(.*)" (command|sequence)$/) do |command, _|
   page.execute_script("EVENT_TRIGGERS.downKey('\\r')")
 end
 
+When(/I hit enter/) do
+  page.execute_script("EVENT_TRIGGERS.downKey('\\r')")
+end
+
 Then(/^I see the value of the "(.*?)" setting is (\d+)$/) do |setting_name, number|
   within 'commandLine' do
     expect(page).to have_content "#{setting_name}=#{number}"

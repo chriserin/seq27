@@ -37,6 +37,10 @@ Feature: Artist explores song
     Then I see that explorer cursor is on section 2 part 2
     When I press 'j'
     Then I see that explorer cursor is on section 2 part 2
+    When I press 'k'
+    And  I hit enter
+    Then I see that section "2" is active
+    And  I see that part "1" is active
 
   @javascript
   Scenario: Artist rearranges sections

@@ -26,6 +26,7 @@ Explore.moveCursorDown = function(viewState) {
   var explorerCursor = viewState['explorerCursor']
   var maxParts = SongState.activeSection().parts.length
   var maxSections = SongState.sectionsLength()
+
   if (explorerCursor.sectionId === maxSections && explorerCursor.partId === maxParts) {
     return viewState
   }
@@ -36,6 +37,16 @@ Explore.moveCursorDown = function(viewState) {
     explorerCursor.sectionId = explorerCursor.sectionId + 1
     explorerCursor.partId = 0
   }
+
+  return viewState
+}
+
+Explore.goToPartOrSection = function(viewState) {
+  var explorerCursor = viewState['explorerCursor']
+
+  viewState.active_part = explorerCursor.partId
+  viewState.active_section = explorerCursor.sectionId
+  Modes.normalMode(viewState)
 
   return viewState
 }
