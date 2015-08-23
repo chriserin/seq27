@@ -60,3 +60,7 @@ SongState.tagNotes = function(notes) {
 
   return notes
 }
+
+SongState.sectionsLength = function() {
+  return SONG_STATE['song']['sections'].length
+}

@@ -25,6 +25,10 @@ Explore.moveCursorUp = function(viewState) {
 Explore.moveCursorDown = function(viewState) {
   var explorerCursor = viewState['explorerCursor']
   var maxParts = SongState.activeSection().parts.length
+  var maxSections = SongState.sectionsLength()
+  if (explorerCursor.sectionId === maxSections && explorerCursor.partId === maxParts) {
+    return viewState
+  }
 
   if (explorerCursor.partId < maxParts) {
     explorerCursor.partId = explorerCursor.partId + 1
