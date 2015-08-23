@@ -5,10 +5,14 @@ Then(/^I see (\d+) sections and (\d+) parts$/) do |s, p|
   end
 end
 
-Then(/^I see that explorer cursor is on section (\d+) part (\d+)$/) do |arg1, arg2|
-  a = arg1
-  b = arg2
-  selector = "songSection[data-id='#{a}'] part[data-id='#{b}']"
+Then(/^I see that explorer cursor is on section (\d+) part (\d+)$/) do |sectionId, partId|
+  selector = "songSection[data-id='#{sectionId}'] part[data-id='#{partId}']"
   partNode = find(selector)
   expect(partNode['class']).to include "cursor"
+end
+
+Then(/^I see that explorer cursor is on section (\d+)$/) do |sectionId|
+  selector = "songSection[data-id='#{sectionId}']"
+  sectionNode = find(selector)
+  expect(sectionNode['class']).to include "cursor"
 end
