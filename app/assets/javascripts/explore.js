@@ -44,7 +44,11 @@ Explore.moveCursorDown = function(viewState) {
 Explore.goToPartOrSection = function(viewState) {
   var explorerCursor = viewState['explorerCursor']
 
-  viewState.active_part = explorerCursor.partId
+  if ( explorerCursor.partId === 0) {
+    viewState.active_part = 1
+  } else {
+    viewState.active_part = explorerCursor.partId
+  }
   viewState.active_section = explorerCursor.sectionId
   Modes.normalMode(viewState)
 
