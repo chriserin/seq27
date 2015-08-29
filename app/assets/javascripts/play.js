@@ -47,8 +47,10 @@ Play.makeEventsMap = function(songState) {
 
   var loopOffset = 0;
   var sections = songState.song.sections
+  var arrangement = songState.song.arrangement
   var section = null, part = null;
-  for(var sectionIndex = 0; section = sections[sectionIndex]; sectionIndex++) {
+
+  for(var arrangementIndex = 0; section = sections[arrangement[arrangementIndex]]; arrangementIndex++) {
     var maxBeats = Play.maxBeatsForSection(section)
 
     for(var loop = 0; loop < section.loop; loop++) {

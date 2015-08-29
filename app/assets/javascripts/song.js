@@ -24,7 +24,7 @@ Song.createChord = function(songState) {
 }
 
 Song.newSong = function(songState) {
-  songState.song = {tempo: 60, sections: [{parts: [{beats: 4, notes: []}]}]};
+  songState.song = {tempo: 60, sections: [{parts: [{beats: 4, notes: []}]}], arrangement: [0]};
   return songState;
 }
 
@@ -70,7 +70,8 @@ Song.setSection = function(songState, commandWithArgumets) {
       section['parts'].push({beats: 4, notes: []})
     });
 
-    songState.song["sections"].push(section);
+    var sectionsLength = songState.song["sections"].push(section);
+    songState.song["arrangement"].push(sectionsLength - 1)
   }
 
   return songState;
