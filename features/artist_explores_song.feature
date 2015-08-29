@@ -43,10 +43,12 @@ Feature: Artist explores song
     And  I see that part "1" is active
 
   @javascript
-  Scenario: Artist rearranges sections
+  Scenario: Artist switches the active section
     When I press 'k'
-    When I press 'k'
+    And  I press 'k'
     Then I see that explorer cursor is on section 2
     And  I hit enter
     Then I see that section "2" is active
     And  I see that part "1" is active
+
+
