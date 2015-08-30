@@ -61,8 +61,7 @@ Feature: Artist explores song
 
   @javascript
   Scenario: Artist moves last section to first
-    When I press 'k'
-    And  I press 'k'
+    When I press 'h'
     Then I see that explorer cursor is on section 2
     When I press 'v'
     And  I press 'k'

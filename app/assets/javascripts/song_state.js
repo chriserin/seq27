@@ -64,3 +64,7 @@ SongState.tagNotes = function(notes) {
 SongState.sectionsLength = function() {
   return SONG_STATE['song']['sections'].length
 }
+
+SongState.arrangedSections = function() {
+  return SONG_STATE['song']['arrangement'].map(function(sectionIndex) { return [sectionIndex, SONG_STATE['song']['sections'][sectionIndex]] })
+}

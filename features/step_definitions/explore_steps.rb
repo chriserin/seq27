@@ -28,3 +28,10 @@ Then(/^I do see parts displayed in the explorer$/) do
     expect(page).to have_selector('songSection part')
   end
 end
+
+Then(/^I see that section (\d+) is displayed in the explorer first$/) do |arg1|
+  within 'explorer' do
+    firstSection = find("songSection:first-child")
+    expect(firstSection['data-id']).to eq "2"
+  end
+end

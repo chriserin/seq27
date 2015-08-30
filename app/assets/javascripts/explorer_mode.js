@@ -9,13 +9,22 @@ ExplorerMode.push = function(character) {
 }
 
 ExplorerMode.currentNode = function() {
-  var topNode = {
-    'h': [NOOP, Explore.hideParts],
-    'j': [NOOP, Explore.moveCursorDown],
-    'k': [NOOP, Explore.moveCursorUp],
-    'l': [NOOP, Explore.showParts],
-    "\r": [NOOP, Explore.goToPartOrSection]
-  };
+  var topNode = {}
+  if (VIEW_STATE.exploreMode === 'visual') {
+    topNode = {
+      'k': [Explore.moveMarkedSectionUp, NOOP],
+      "\r": [NOOP, Explore.normalMode]
+    }
+  } else {
+    topNode = {
+      'h': [NOOP, Explore.hideParts],
+      'j': [NOOP, Explore.moveCursorDown],
+      'k': [NOOP, Explore.moveCursorUp],
+      'l': [NOOP, Explore.showParts],
+      'v': [NOOP, Explore.visualMode],
+      "\r": [NOOP, Explore.goToPartOrSection]
+    };
+  }
 
   return topNode;
 }

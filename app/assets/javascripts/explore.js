@@ -56,11 +56,29 @@ Explore.goToPartOrSection = function(viewState) {
 }
 
 Explore.hideParts = function(viewState) {
+  viewState.explorerCursor.partId = 0
   viewState.explorerDisplayParts = false
   return viewState
 }
 
 Explore.showParts = function(viewState) {
+  viewState.explorerCursor.partId = viewState.active_part
   viewState.explorerDisplayParts = true
   return viewState
+}
+
+Explore.visualMode = function(viewState) {
+  viewState.exploreMode = 'visual'
+  viewState.selectedArrangementIndexes = [viewState.explorerCursor.sectionId - 1]
+  return viewState
+}
+
+Explore.moveMarkedSectionUp = function(songState) {
+  var selectedIndex = VIEW_STATE.selectedArrangementIndexes[0]
+
+  var tmp = songState.song.arrangement[selectedIndex - 1]
+  songState.song.arrangement[selectedIndex - 1] = songState.song.arrangement[selectedIndex]
+  songState.song.arrangement[selectedIndex] = tmp
+
+  return songState
 }

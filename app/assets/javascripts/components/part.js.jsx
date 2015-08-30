@@ -42,8 +42,10 @@ SeqCom.Song = React.createClass({
 
 SeqCom.Explorer = React.createClass({
   render: function() {
-    var sections_html = SONG_STATE.song.sections.map(function(section, i) {
-      return <SeqCom.Explorer.Section key={i} section={section} id={i+1}/>
+    var sections_html = SongState.arrangedSections().map(function(sectionValues, i) {
+      sectionIndex = sectionValues[0]
+      section = sectionValues[1]
+      return <SeqCom.Explorer.Section key={i} section={section} id={sectionIndex+1}/>
     });
     return <explorer>{sections_html}</explorer>;
   }
