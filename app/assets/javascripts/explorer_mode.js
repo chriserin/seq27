@@ -10,8 +10,10 @@ ExplorerMode.push = function(character) {
 
 ExplorerMode.currentNode = function() {
   var topNode = {
-    'k': [NOOP, Explore.moveCursorUp],
+    'h': [NOOP, Explore.hideParts],
     'j': [NOOP, Explore.moveCursorDown],
+    'k': [NOOP, Explore.moveCursorUp],
+    'l': [NOOP, Explore.showParts],
     "\r": [NOOP, Explore.goToPartOrSection]
   };
 

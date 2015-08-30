@@ -16,3 +16,15 @@ Then(/^I see that explorer cursor is on section (\d+)$/) do |sectionId|
   sectionNode = find(selector)
   expect(sectionNode['class']).to include "cursor"
 end
+
+Then(/^I do not see parts displayed in the explorer$/) do
+  within 'explorer' do
+    expect(page).to have_no_selector('songSection part')
+  end
+end
+
+Then(/^I do see parts displayed in the explorer$/) do
+  within 'explorer' do
+    expect(page).to have_selector('songSection part')
+  end
+end

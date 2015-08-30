@@ -54,3 +54,13 @@ Explore.goToPartOrSection = function(viewState) {
 
   return viewState
 }
+
+Explore.hideParts = function(viewState) {
+  viewState.explorerDisplayParts = false
+  return viewState
+}
+
+Explore.showParts = function(viewState) {
+  viewState.explorerDisplayParts = true
+  return viewState
+}

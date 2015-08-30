@@ -63,12 +63,20 @@ SeqCom.Explorer.Section = React.createClass({
       return "cursor"
     }
   },
+  renderParts(sectionId) {
+    var parts_html = ''
+
+    if (VIEW_STATE['explorerDisplayParts']) {
+      parts_html = this.props.section.parts.map((part, i)=> {
+        return <SeqCom.Explorer.Part key={i} id={i+1} isCursorOnPart={this.isCursorOnPart(sectionId, i+1)}/>;
+      })
+    }
+
+    return parts_html
+  },
   render: function() {
     var sectionId = this.props.id
-    var parts_html = this.props.section.parts.map((part, i)=> {
-      return <SeqCom.Explorer.Part key={i} id={i+1} isCursorOnPart={this.isCursorOnPart(sectionId, i+1)}/>;
-    })
-    return <songSection data-id={this.props.id} className={this.classes()} data-id={sectionId}>{parts_html}</songSection>
+    return <songSection data-id={this.props.id} className={this.classes()} data-id={sectionId}>{this.renderParts(sectionId)}</songSection>
   }
 });
 

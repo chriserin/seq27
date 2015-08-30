@@ -51,4 +51,19 @@ Feature: Artist explores song
     Then I see that section "2" is active
     And  I see that part "1" is active
 
+  @javascript
+  Scenario: Artist moves last section to first
+    Then I do see parts displayed in the explorer
+    When I press 'h'
+    Then I do not see parts displayed in the explorer
+    When I press 'l'
+    Then I do see parts displayed in the explorer
 
+  @javascript
+  Scenario: Artist moves last section to first
+    When I press 'k'
+    And  I press 'k'
+    Then I see that explorer cursor is on section 2
+    When I press 'v'
+    And  I press 'k'
+    Then I see that section 2 is displayed in the explorer first

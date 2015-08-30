@@ -1,7 +1,7 @@
 %section#song
 :javascript
   Midi.connect();
-  window.VIEW_STATE = {mode: 'normal', cursor: {pitch: 127, start: 0, length: 96}, active_section: 1, active_part: 1};
+  window.VIEW_STATE = {mode: 'normal', cursor: {pitch: 127, start: 0, length: 96}, active_section: 1, active_part: 1, explorerDisplayParts: true};
   window.SONG_STATE = #{song_json.to_json};
   var view = React.createElement(SeqCom.Song, null)
   window.SONG_VIEW = React.render(view, window.song)
