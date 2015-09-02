@@ -25,7 +25,7 @@ function getFunctionsFor(key) {
 
   switch (VIEW_STATE.mode) {
     case "normal":
-      commandFns = CommandSequence.push(key);
+      commandFns = NormalMode.push(key);
       break;
     case "command":
       commandFns = CommandMode.push(key);

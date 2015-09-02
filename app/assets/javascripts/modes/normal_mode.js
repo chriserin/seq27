@@ -1,6 +1,6 @@
-window.CommandSequence = {"sequence": '', "number": ''};
+window.NormalMode = {"sequence": '', "number": ''};
 
-CommandSequence.push = function(character) {
+NormalMode.push = function(character) {
   isNumber = captureNumber(character);
   if (isNumber) {return [NOOP, NOOP];}
 
@@ -9,28 +9,28 @@ CommandSequence.push = function(character) {
 
   if (node === undefined) {
     //node does not exist
-    CommandSequence["sequence"] = '';
-    CommandSequence["number"] = '';
+    NormalMode["sequence"] = '';
+    NormalMode["number"] = '';
     return [NOOP, NOOP];
   } else if (node.length === undefined) {
     //node contains nodes
-    CommandSequence["sequence"] += character;
+    NormalMode["sequence"] += character;
     return [NOOP, NOOP];
   } else {
     //node is an end node
     commandFns = addNumberArgument(node); //array of 2 functions or just 1 function
-    CommandSequence["sequence"] = '';
-    CommandSequence["number"] = '';
+    NormalMode["sequence"] = '';
+    NormalMode["number"] = '';
     return commandFns;
   }
 }
 
 function addNumberArgument(node) {
-  if(CommandSequence["number"] === '') {
+  if(NormalMode["number"] === '') {
     return node;
   }
 
-  number = parseInt(CommandSequence['number']);
+  number = parseInt(NormalMode['number']);
 
   if (node.length === undefined) {
     numberedNode = function(state) {return node(state, number); }
@@ -46,7 +46,7 @@ function captureNumber(possibleNumber) {
   if(isNaN(parsedNumber)) {
     return false;
   } else {
-    CommandSequence["number"] += possibleNumber
+    NormalMode["number"] += possibleNumber
     return true;
   }
 }
@@ -80,10 +80,10 @@ function currentNode(character) {
   topNode["c"] = createNodes();
 
   //TODO: this doesn't work for a third level of nodes
-  if (CommandSequence["sequence"] === '') {
+  if (NormalMode["sequence"] === '') {
     return topNode;
   } else {
-    return topNode[CommandSequence["sequence"]];
+    return topNode[NormalMode["sequence"]];
   }
 }
 
