@@ -1,0 +1,3 @@
+{
+    "app/assets/javascripts/components/*.js.jsx": {"type": "component"}
+}
