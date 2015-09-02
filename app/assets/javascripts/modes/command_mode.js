@@ -2,10 +2,7 @@ window.CommandMode = {}
 
 CommandMode.push = function(key) {
   if (key === "\r") {
-    return [
-      CommandMode.executeCommandBuffer,
-      Modes.transitionToNextMode
-    ];
+    return CommandMode.executionMethods()
   }
 
   return [
@@ -33,20 +30,27 @@ CommandMode.addToCommandBuffer = function(state, key) {
   return state;
 }
 
-CommandMode.executeCommandBuffer = function(state) {
-  commandBuffer = window.VIEW_STATE["commandBuffer"].join("")
-  command = commandBuffer.split(" ")[0]
+CommandMode.executionMethods = function() {
+  var commandBuffer = window.VIEW_STATE["commandBuffer"].join("")
+  var command = commandBuffer.split(" ")[0]
 
-  cm = CommandMode.commandMapping()
-  commandFns = cm[command]
+  var commandMapping = CommandMode.commandMapping()
+  var commandFns = commandMapping[command]
 
-  commandFns[0](SONG_STATE, commandBuffer)
-  commandFns[1](VIEW_STATE, commandBuffer)
+  var songStateFn = function (songState) {
+    return commandFns[0](songState, commandBuffer)
+  }
 
-  clearCommandBuffer();
-  return state;
+  var viewStateFn = function (viewState) {
+    var state = commandFns[1](viewState, commandBuffer)
+    state = Modes.transitionToNextMode(state)
+    return clearCommandBuffer(state)
+  }
+
+  return [songStateFn, viewStateFn];
 }
 
-var clearCommandBuffer = function(state) {
-  window.VIEW_STATE["commandBuffer"] = []
+var clearCommandBuffer = function(viewState) {
+  viewState["commandBuffer"] = []
+  return viewState
 }

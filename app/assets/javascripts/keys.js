@@ -1,4 +1,4 @@
-window.NOOP = function(){}
+window.NOOP = function(state){return state;}
 
 document.addEventListener("DOMContentLoaded", function () {
     if(window.song) {
