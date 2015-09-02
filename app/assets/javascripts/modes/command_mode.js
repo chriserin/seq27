@@ -23,15 +23,13 @@ CommandMode.commandMapping = function() {
   };
 }
 
-CommandMode.addToCommandBuffer = function(state, key) {
-  if(state["commandBuffer"] === undefined)
-    state["commandBuffer"] = [];
-  state["commandBuffer"].push(key);
-  return state;
+CommandMode.addToCommandBuffer = function(viewState, key) {
+  viewState["commandBuffer"].push(key);
+  return viewState;
 }
 
 CommandMode.executionMethods = function() {
-  var commandBuffer = window.VIEW_STATE["commandBuffer"].join("")
+  var commandBuffer = ViewState.commandBuffer.join("")
   var command = commandBuffer.split(" ")[0]
 
   var commandMapping = CommandMode.commandMapping()

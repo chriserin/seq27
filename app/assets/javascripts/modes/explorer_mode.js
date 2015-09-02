@@ -10,7 +10,7 @@ ExplorerMode.push = function(character) {
 
 ExplorerMode.currentNode = function() {
   var topNode = {}
-  if (VIEW_STATE.exploreMode === 'visual') {
+  if (ViewState.explorerMode === 'visual') {
     topNode = {
       'k': [Explore.moveMarkedSectionUp, NOOP],
       "\r": [NOOP, Explore.normalMode]

@@ -1,13 +1,13 @@
 window.Song = {};
 
 Song.addNote = function(songState) {
-  cursor = VIEW_STATE['cursor']
+  cursor = ViewState.cursor
   SongState.activePart().notes.push(SongState.newNote(cursor.start, cursor.pitch, 96))
   return songState;
 }
 
 Song.createChord = function(songState) {
-  cursor = VIEW_STATE['cursor']
+  cursor = ViewState.cursor
   results = []
   var activePart = SongState.activePart()
   var newNote = SongState.newNote(cursor.start, cursor.pitch, 96)
@@ -35,7 +35,7 @@ Song.setProperty = function(songState, commandWithArguments) {
   var value = keyValueArray[1];
 
   if (key === "loop") {
-    songState.song.sections[VIEW_STATE.active_section - 1]['loop'] = value;
+    songState.song.sections[ViewState.active_section - 1]['loop'] = value;
   } else if (key === "channel" || key === "output" || key === "beats") {
     SongState.activePart()[key] = value
   } else {
@@ -49,14 +49,14 @@ Song.getProperty = function(viewState, commandWithArguments) {
   var propertyName = commandWithArguments.split(" ")[1];
 
   if (propertyName === "loop") {
-    var propertyValue =  SONG_STATE.song.sections[VIEW_STATE.active_section - 1][propertyName];
+    var propertyValue =  SONG_STATE.song.sections[ViewState.active_section - 1][propertyName];
   } else if (propertyName === "channel" || propertyName === "output" || propertyName === "beats") {
     var propertyValue =  SongState.activePart()[propertyName]
   } else {
     var propertyValue = SONG_STATE.song[propertyName];
   }
 
-  VIEW_STATE['commandResult'] = `${propertyName}=${propertyValue}`
+  viewState['commandResult'] = `${propertyName}=${propertyValue}`
   return viewState;
 }
 

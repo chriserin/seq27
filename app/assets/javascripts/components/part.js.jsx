@@ -10,12 +10,12 @@ SeqCom.Part = React.createClass({
       <notesGrid>{notes_html}</notesGrid>
       <cursorGrid>
         <cursor
-          data-start={VIEW_STATE['cursor']['start']}
-          data-pitch={VIEW_STATE['cursor']['pitch']}
-          data-length={VIEW_STATE['cursor']['length']}
+          data-start={ViewState.cursor['start']}
+          data-pitch={ViewState.cursor['pitch']}
+          data-length={ViewState.cursor['length']}
         />
       </cursorGrid>
-      <commandLine>{VIEW_STATE['commandResult']}</commandLine>
+      <commandLine>{ViewState.commandResult}</commandLine>
     </part>;
   }
 });
@@ -23,9 +23,9 @@ SeqCom.Part = React.createClass({
 SeqCom.Section = React.createClass({
   render: function() {
     var part = SongState.activePart()
-    var parts_html = <SeqCom.Part data={part} partId={window.VIEW_STATE.active_part}/>;
+    var parts_html = <SeqCom.Part data={part} partId={ViewState.active_part}/>;
 
-    return <songSection data-section-id={window.VIEW_STATE.active_section}>{parts_html}</songSection>;
+    return <songSection data-section-id={ViewState.active_section}>{parts_html}</songSection>;
   }
 });
 
@@ -33,7 +33,7 @@ SeqCom.Section = React.createClass({
 SeqCom.Song = React.createClass({
   render: function() {
     var innerComponent = <SeqCom.Section/>
-    if (VIEW_STATE.mode === "explorer") {
+    if (ViewState.mode === "explorer") {
       innerComponent = <SeqCom.Explorer/>
     }
     return <song>{innerComponent}</song>;
@@ -53,11 +53,11 @@ SeqCom.Explorer = React.createClass({
 
 SeqCom.Explorer.Section = React.createClass({
   isCursorOnPart: function(sectionId, partId) {
-    var explorerCursor = VIEW_STATE['explorerCursor']
+    var explorerCursor = ViewState.explorerCursor
     return (explorerCursor['sectionId'] === sectionId && explorerCursor['partId'] === partId);
   },
   isCursorOnSection: function(sectionId) {
-    var explorerCursor = VIEW_STATE['explorerCursor']
+    var explorerCursor = ViewState.explorerCursor
     return (explorerCursor['sectionId'] === sectionId && explorerCursor['partId'] <= 0);
   },
   classes: function() {
@@ -68,7 +68,7 @@ SeqCom.Explorer.Section = React.createClass({
   renderParts(sectionId) {
     var parts_html = ''
 
-    if (VIEW_STATE['explorerDisplayParts']) {
+    if (ViewState.explorerDisplayParts) {
       parts_html = this.props.section.parts.map((part, i)=> {
         return <SeqCom.Explorer.Part key={i} id={i+1} isCursorOnPart={this.isCursorOnPart(sectionId, i+1)}/>;
       })

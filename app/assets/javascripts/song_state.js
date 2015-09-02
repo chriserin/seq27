@@ -44,11 +44,11 @@ SongState.newNote = function(start, pitch, length) {
 }
 
 SongState.activeSection = function() {
-  return SONG_STATE["song"]["sections"][VIEW_STATE.active_section - 1]
+  return SONG_STATE["song"]["sections"][ViewState.active_section - 1]
 }
 
 SongState.activePart = function() {
-  return SongState.activeSection()["parts"][VIEW_STATE.active_part - 1]
+  return SongState.activeSection()["parts"][ViewState.active_part - 1]
 }
 
 SongState.tagNotes = function(notes) {

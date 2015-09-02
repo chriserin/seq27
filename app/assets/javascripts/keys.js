@@ -4,12 +4,12 @@ document.addEventListener("DOMContentLoaded", function () {
     if(window.song) {
       document.addEventListener('keypress',
         function(keyboardEvent) {
-          key = String.fromCharCode(keyboardEvent.charCode);
+          var key = String.fromCharCode(keyboardEvent.charCode);
 
-          fnArray = getFunctionsFor(key);
+          var fnArray = getFunctionsFor(key);
 
-          songFn = fnArray[0];
-          viewFn = fnArray[1];
+          var songFn = fnArray[0];
+          var viewFn = fnArray[1];
 
           songFn(window.SONG_STATE);
           viewFn(window.VIEW_STATE);
@@ -21,9 +21,9 @@ document.addEventListener("DOMContentLoaded", function () {
 )
 
 function getFunctionsFor(key) {
-  commandFns = [];
+  var commandFns = [];
 
-  switch (VIEW_STATE.mode) {
+  switch (ViewState.mode) {
     case "normal":
       commandFns = NormalMode.push(key);
       break;

@@ -50,9 +50,8 @@ Explore.goToPartOrSection = function(viewState) {
     viewState.active_part = explorerCursor.partId
   }
   viewState.active_section = explorerCursor.sectionId
-  Modes.normalMode(viewState)
 
-  return viewState
+  return Modes.normalMode(viewState)
 }
 
 Explore.hideParts = function(viewState) {
@@ -68,15 +67,16 @@ Explore.showParts = function(viewState) {
 }
 
 Explore.visualMode = function(viewState) {
-  viewState.exploreMode = 'visual'
+  viewState.explorerMode = 'visual'
   viewState.selectedArrangementIndexes = [viewState.explorerCursor.sectionId - 1]
   return viewState
 }
 
 Explore.moveMarkedSectionUp = function(songState) {
-  var selectedIndex = VIEW_STATE.selectedArrangementIndexes[0]
+  var selectedIndex = ViewState.selectedArrangementIndexes[0]
 
   var tmp = songState.song.arrangement[selectedIndex - 1]
+
   songState.song.arrangement[selectedIndex - 1] = songState.song.arrangement[selectedIndex]
   songState.song.arrangement[selectedIndex] = tmp
 
