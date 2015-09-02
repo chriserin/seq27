@@ -23,7 +23,7 @@ module ChromeLogDisplay
     if match
       return match[2], match[3], match[5]
     else
-      return "", "", ""
+      return "", "", content
     end
   end
 end
