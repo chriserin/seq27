@@ -3,4 +3,5 @@
 //= require_directory ./state
 //= require_directory ./components
 //= require_directory ./modes
+//= require_directory ./actions
 //= require_directory .
