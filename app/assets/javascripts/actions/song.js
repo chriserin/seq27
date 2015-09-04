@@ -34,11 +34,11 @@ Song.setProperty = function(songState, commandWithArguments) {
   var value = keyValueArray[1];
 
   if (key === "loop") {
-    songState.song.sections[ViewState.active_section - 1]['loop'] = value;
+    songState.sections[ViewState.active_section - 1]['loop'] = value;
   } else if (key === "channel" || key === "output" || key === "beats") {
     SongState.activePart()[key] = value
   } else {
-    songState.song[key] = value;
+    songState[key] = value;
   }
 
   return songState;
@@ -48,11 +48,11 @@ Song.getProperty = function(viewState, commandWithArguments) {
   var propertyName = commandWithArguments.split(" ")[1];
 
   if (propertyName === "loop") {
-    var propertyValue =  SONG_STATE.song.sections[ViewState.active_section - 1][propertyName];
+    var propertyValue =  SONG_STATE.sections[ViewState.active_section - 1][propertyName];
   } else if (propertyName === "channel" || propertyName === "output" || propertyName === "beats") {
     var propertyValue =  SongState.activePart()[propertyName]
   } else {
-    var propertyValue = SONG_STATE.song[propertyName];
+    var propertyValue = SONG_STATE[propertyName];
   }
 
   viewState['commandResult'] = `${propertyName}=${propertyValue}`
@@ -65,12 +65,12 @@ Song.setSection = function(songState, commandWithArgumets) {
   if (sectionArgument.indexOf('!') > 0) {
     var section = {parts: [], loop: 1}
 
-    songState.song.sections[0].parts.forEach(function(){
+    songState.sections[0].parts.forEach(function(){
       section['parts'].push({beats: 4, notes: []})
     });
 
-    var sectionsLength = songState.song["sections"].push(section);
-    songState.song["arrangement"].push(sectionsLength - 1)
+    var sectionsLength = songState["sections"].push(section);
+    songState["arrangement"].push(sectionsLength - 1)
   }
 
   return songState;

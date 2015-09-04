@@ -1,21 +1,19 @@
 window.SongState = {};
 
 INITIAL_SONG_STATE = {
-  song: {
-    tempo: 60,
-    arrangement: [0],
-    sections: [
-      {
-        loop: 1,
-        parts: [
-           {
-             beats: 4,
-             notes: []
-           }
-        ]
-      }
-    ]
-  }
+  tempo: 60,
+  arrangement: [0],
+  sections: [
+    {
+      loop: 1,
+      parts: [
+         {
+           beats: 4,
+           notes: []
+         }
+      ]
+    }
+  ]
 }
 
 SongState.currentNotes = function(songState) {
@@ -56,7 +54,7 @@ SongState.newNote = function(start, pitch, length) {
 }
 
 SongState.activeSection = function() {
-  return SONG_STATE["song"]["sections"][ViewState.active_section - 1]
+  return SONG_STATE["sections"][ViewState.active_section - 1]
 }
 
 SongState.activePart = function() {
@@ -74,9 +72,9 @@ SongState.tagNotes = function(notes) {
 }
 
 SongState.sectionsLength = function() {
-  return SONG_STATE['song']['sections'].length
+  return SONG_STATE['sections'].length
 }
 
 SongState.arrangedSections = function() {
-  return SONG_STATE['song']['arrangement'].map(function(sectionIndex) { return [sectionIndex, SONG_STATE['song']['sections'][sectionIndex]] })
+  return SONG_STATE['arrangement'].map(function(sectionIndex) { return [sectionIndex, SONG_STATE['sections'][sectionIndex]] })
 }

@@ -30,7 +30,7 @@ Play.maxBeatsForSection = function(section) {
 }
 
 Play.makeEventsMap = function(songState) {
-  var bpm = songState.song.tempo;
+  var bpm = songState.tempo;
   var secondsPerTick = 60 / (96.0 * bpm);
   var msPerTick = secondsPerTick * 1000;
   var eventsMap = new Array();
@@ -46,8 +46,8 @@ Play.makeEventsMap = function(songState) {
   }
 
   var loopOffset = 0;
-  var sections = songState.song.sections
-  var arrangement = songState.song.arrangement
+  var sections = songState.sections
+  var arrangement = songState.arrangement
   var section = null, part = null;
 
   for(var arrangementIndex = 0; section = sections[arrangement[arrangementIndex]]; arrangementIndex++) {

@@ -78,10 +78,10 @@ Explore.visualMode = function(viewState) {
 Explore.moveMarkedSectionUp = function(songState) {
   var selectedIndex = ViewState.selectedArrangementIndexes[0]
 
-  var tmp = songState.song.arrangement[selectedIndex - 1]
+  var tmp = songState.arrangement[selectedIndex - 1]
 
-  songState.song.arrangement[selectedIndex - 1] = songState.song.arrangement[selectedIndex]
-  songState.song.arrangement[selectedIndex] = tmp
+  songState.arrangement[selectedIndex - 1] = songState.arrangement[selectedIndex]
+  songState.arrangement[selectedIndex] = tmp
 
   return songState
 }
