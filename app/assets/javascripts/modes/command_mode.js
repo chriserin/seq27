@@ -7,7 +7,7 @@ CommandMode.push = function(key) {
 
   return [
     NOOP,
-    function(state) { CommandMode.addToCommandBuffer(state, key); }
+    function(state) { return CommandMode.addToCommandBuffer(state, key); }
   ];
 }
 

@@ -1,5 +1,22 @@
 window.SongState = {};
 
+INITIAL_SONG_STATE = {
+  song: {
+    tempo: 60,
+    arrangement: [0],
+    sections: [
+      {
+        loop: 1,
+        parts: [
+           {
+             beats: 4,
+             notes: []
+           }
+        ]
+      }
+    ]
+  }
+}
 SongState.currentNotes = function(songState) {
   var activePart = SongState.activePart()
   var sortedNotes = activePart.notes.sort(function(a, b) { return a.timestamp - b.timestamp;})

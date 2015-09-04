@@ -11,8 +11,8 @@ document.addEventListener("DOMContentLoaded", function () {
           var songFn = fnArray[0];
           var viewFn = fnArray[1];
 
-          songFn(window.SONG_STATE);
-          viewFn(window.VIEW_STATE);
+          SONG_STATE = songFn(SONG_STATE);
+          VIEW_STATE = viewFn(VIEW_STATE);
           window.SONG_VIEW.forceUpdate();
         }
       );

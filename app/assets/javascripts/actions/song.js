@@ -24,8 +24,7 @@ Song.createChord = function(songState) {
 }
 
 Song.newSong = function(songState) {
-  songState.song = {tempo: 60, sections: [{parts: [{beats: 4, notes: []}]}], arrangement: [0]};
-  return songState;
+  return INITIAL_SONG_STATE;
 }
 
 Song.setProperty = function(songState, commandWithArguments) {

@@ -56,7 +56,7 @@ Play.makeEventsMap = function(songState) {
     for(var loop = 0; loop < section.loop; loop++) {
       for(var partIndex = 0; part = section.parts[partIndex]; partIndex++) {
         var sectionFilled = false
-        var fillOffset = 0;
+        var fillOffset = 0
         var count = 0
 
         while((!sectionFilled) && (count < 5)) {
