@@ -17,6 +17,7 @@ INITIAL_SONG_STATE = {
     ]
   }
 }
+
 SongState.currentNotes = function(songState) {
   var activePart = SongState.activePart()
   var sortedNotes = activePart.notes.sort(function(a, b) { return a.timestamp - b.timestamp;})
@@ -47,7 +48,11 @@ SongState.indexOfNote = function(lookedForNote, parent) {
 }
 
 SongState.newNote = function(start, pitch, length) {
-  return {pitch: pitch, start: start, length: length}
+  return {
+    pitch: pitch,
+    start: start,
+    length: length
+  }
 }
 
 SongState.activeSection = function() {
