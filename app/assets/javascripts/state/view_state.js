@@ -9,8 +9,8 @@ VIEW_STATE = {
     sectionId: 1,
     partId: 1
   },
-  active_section: 1,
-  active_part: 1,
+  activeSection: 1,
+  activePart: 1,
   commandResult: '',
   commandBuffer: [],
   explorerDisplayParts: true,

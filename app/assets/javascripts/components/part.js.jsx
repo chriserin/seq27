@@ -23,9 +23,9 @@ SeqCom.Part = React.createClass({
 SeqCom.Section = React.createClass({
   render: function() {
     var part = SongState.activePart()
-    var parts_html = <SeqCom.Part data={part} partId={ViewState.active_part}/>;
+    var parts_html = <SeqCom.Part data={part} partId={ViewState.activePart}/>;
 
-    return <songSection data-section-id={ViewState.active_section}>{parts_html}</songSection>;
+    return <songSection data-section-id={ViewState.activeSection}>{parts_html}</songSection>;
   }
 });
 

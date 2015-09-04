@@ -3,8 +3,8 @@ window.Explore = {}
 Explore.enterExploreMode = function(viewState) {
 
   viewState.mode = "explorer"
-  viewState.explorerCursor.sectionId = viewState['active_section']
-  viewState.explorerCursor.partId    = viewState['active_part']
+  viewState.explorerCursor.sectionId = viewState['activeSection']
+  viewState.explorerCursor.partId    = viewState['activePart']
 
   return viewState;
 }
@@ -48,11 +48,11 @@ Explore.goToPartOrSection = function(viewState) {
   var explorerCursor = viewState['explorerCursor']
 
   if ( explorerCursor.partId === 0) {
-    viewState.active_part = 1
+    viewState.activePart = 1
   } else {
-    viewState.active_part = explorerCursor.partId
+    viewState.activePart = explorerCursor.partId
   }
-  viewState.active_section = explorerCursor.sectionId
+  viewState.activeSection = explorerCursor.sectionId
 
   return Modes.normalMode(viewState)
 }
@@ -64,7 +64,7 @@ Explore.hideParts = function(viewState) {
 }
 
 Explore.showParts = function(viewState) {
-  viewState.explorerCursor.partId = viewState.active_part
+  viewState.explorerCursor.partId = viewState.activePart
   viewState.explorerDisplayParts = true
   return viewState
 }
