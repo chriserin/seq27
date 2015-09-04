@@ -35,16 +35,6 @@ SongState.currentNotes = function(songState) {
   return results;
 }
 
-SongState.allNotes = function(songState) {
-  var sectionsNotes = songState.song.sections.map(function(section) { return SongState.allNotesForSection(section); });
-  return [].concat.apply([], sectionsNotes); //flatten
-}
-
-SongState.allNotesForSection = function(section) {
-  partsNotes = section.parts.map(function(part) { return part.notes.map(function(note) {return {note: note, parent: part};}) });
-  return [].concat.apply([], partsNotes); //flatten
-}
-
 SongState.indexOfNote = function(lookedForNote, parent) {
   var counter = 0;
   for (var note of parent.notes) {
