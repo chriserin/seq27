@@ -1,6 +1,6 @@
 {
     "app/assets/javascripts/components/*.js.jsx": {"type": "component"},
     "app/assets/javascripts/modes/*.js": {"type": "mode"},
-    "app/assets/javascripts/state/*.js": {"type": "state"}
     "app/assets/javascripts/actions/*.js": {"type": "action"},
+    "app/assets/javascripts/state/*.js": {"type": "state"}
 }
