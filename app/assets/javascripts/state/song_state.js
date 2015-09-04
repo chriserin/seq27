@@ -22,14 +22,7 @@ SongState.currentNotes = function(songState) {
 
   var tag = sortedNotes[0].timestamp
 
-  var results = []
-
-  for(var i = 0; i < sortedNotes.length; i++) {
-
-    if (sortedNotes[i].timestamp === tag) {
-      results.push(sortedNotes[i])
-    }
-  }
+  var results = sortedNotes.filter(function(note){ return note.timestamp === tag})
 
   return results;
 }
