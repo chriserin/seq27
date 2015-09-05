@@ -6,7 +6,7 @@ VIEW_STATE = {
     length: 96
   },
   explorerCursor: {
-    sectionId: 1,
+    arrangementIndex: 0,
     partId: 1
   },
   activeSection: 1,

@@ -3,7 +3,7 @@ window.Explore = {}
 Explore.enterExploreMode = function(viewState) {
 
   viewState.mode = "explorer"
-  viewState.explorerCursor.sectionId = viewState['activeSection']
+  viewState.explorerCursor.arrangementIndex = SongState.activeArrangementIndex()
   viewState.explorerCursor.partId    = viewState['activePart']
 
   return viewState;
@@ -11,14 +11,15 @@ Explore.enterExploreMode = function(viewState) {
 
 Explore.moveCursorUp = function(viewState) {
   var explorerCursor = viewState['explorerCursor']
-  if (explorerCursor.sectionId === 1 && explorerCursor.partId === 0) {
+
+  if (explorerCursor.arrangementIndex === 0 && explorerCursor.partId === 0) {
     return viewState
   }
 
   if (explorerCursor.partId > 0) {
     explorerCursor.partId = explorerCursor.partId - 1
   } else {
-    explorerCursor.sectionId = explorerCursor.sectionId - 1
+    explorerCursor.arrangementIndex = explorerCursor.arrangementIndex - 1
     explorerCursor.partId = SongState.activeSection().parts.length
   }
 
@@ -28,16 +29,16 @@ Explore.moveCursorUp = function(viewState) {
 Explore.moveCursorDown = function(viewState) {
   var explorerCursor = viewState['explorerCursor']
   var maxParts = SongState.activeSection().parts.length
-  var maxSections = SongState.sectionsLength()
+  var lastArrangementIndex = SONG_STATE.arrangement.length - 1
 
-  if (explorerCursor.sectionId === maxSections && explorerCursor.partId === maxParts) {
+  if (explorerCursor.arrangementIndex === lastArrangementIndex && explorerCursor.partId === maxParts) {
     return viewState
   }
 
-  if (explorerCursor.partId < maxParts) {
+  if (explorerCursor.partId < maxParts && ViewState.explorerDisplayParts) {
     explorerCursor.partId = explorerCursor.partId + 1
   } else {
-    explorerCursor.sectionId = explorerCursor.sectionId + 1
+    explorerCursor.arrangementIndex = explorerCursor.arrangementIndex + 1
     explorerCursor.partId = 0
   }
 
@@ -47,12 +48,12 @@ Explore.moveCursorDown = function(viewState) {
 Explore.goToPartOrSection = function(viewState) {
   var explorerCursor = viewState['explorerCursor']
 
-  if ( explorerCursor.partId === 0) {
+  if (explorerCursor.partId === 0) {
     viewState.activePart = 1
   } else {
     viewState.activePart = explorerCursor.partId
   }
-  viewState.activeSection = explorerCursor.sectionId
+  viewState.activeSection = SONG_STATE.arrangement[explorerCursor.arrangementIndex] + 1
 
   return Modes.normalMode(viewState)
 }
@@ -71,17 +72,22 @@ Explore.showParts = function(viewState) {
 
 Explore.visualMode = function(viewState) {
   viewState.explorerMode = 'visual'
-  viewState.selectedArrangementIndexes = [viewState.explorerCursor.sectionId - 1]
+  viewState.selectedArrangementIndexes = [viewState.explorerCursor.arrangementIndex]
+  return viewState
+}
+
+Explore.normalMode = function(viewState) {
+  viewState.explorerMode = 'normal'
+  viewState.selectedArrangementIndexes = []
   return viewState
 }
 
 Explore.moveMarkedSectionUp = function(songState) {
   var selectedIndex = ViewState.selectedArrangementIndexes[0]
 
-  var tmp = songState.arrangement[selectedIndex - 1]
-
+  var swapTmp = songState.arrangement[selectedIndex - 1]
   songState.arrangement[selectedIndex - 1] = songState.arrangement[selectedIndex]
-  songState.arrangement[selectedIndex] = tmp
+  songState.arrangement[selectedIndex] = swapTmp
 
   return songState
 }

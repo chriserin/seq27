@@ -12,7 +12,7 @@ ExplorerMode.currentNode = function() {
   var topNode = {}
   if (ViewState.explorerMode === 'visual') {
     topNode = {
-      'k': [Explore.moveMarkedSectionUp, NOOP],
+      'k': [Explore.moveMarkedSectionUp, Explore.moveCursorUp],
       "\r": [NOOP, Explore.normalMode]
     }
   } else {

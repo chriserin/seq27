@@ -16,6 +16,24 @@ INITIAL_SONG_STATE = {
   ]
 }
 
+SongState.activeSection = function() {
+  return SONG_STATE["sections"][ViewState.activeSection - 1]
+}
+
+SongState.activePart = function() {
+  return SongState.activeSection()["parts"][ViewState.activePart - 1]
+}
+
+SongState.arrangedSections = function() {
+  return SONG_STATE['arrangement'].map(function(sectionIndex) { return [sectionIndex, SONG_STATE['sections'][sectionIndex]] })
+}
+
+SongState.activeArrangementIndex = function() {
+  var sectionId = ViewState.activeSection - 1
+
+  return SONG_STATE.arrangement.findIndex(function(arrangementSectionId) {return arrangementSectionId === sectionId})
+}
+
 SongState.currentNotes = function(songState) {
   var activePart = SongState.activePart()
   var sortedNotes = activePart.notes.sort(function(a, b) { return a.timestamp - b.timestamp;})
@@ -46,14 +64,6 @@ SongState.newNote = function(start, pitch, length) {
   }
 }
 
-SongState.activeSection = function() {
-  return SONG_STATE["sections"][ViewState.activeSection - 1]
-}
-
-SongState.activePart = function() {
-  return SongState.activeSection()["parts"][ViewState.activePart - 1]
-}
-
 SongState.tagNotes = function(notes) {
   var timestamp = Date.now()
 
@@ -66,8 +76,4 @@ SongState.tagNotes = function(notes) {
 
 SongState.sectionsLength = function() {
   return SONG_STATE['sections'].length
-}
-
-SongState.arrangedSections = function() {
-  return SONG_STATE['arrangement'].map(function(sectionIndex) { return [sectionIndex, SONG_STATE['sections'][sectionIndex]] })
 }

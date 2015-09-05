@@ -5,14 +5,14 @@ Then(/^I see (\d+) sections and (\d+) parts$/) do |s, p|
   end
 end
 
-Then(/^I see that explorer cursor is on section (\d+) part (\d+)$/) do |sectionId, partId|
-  selector = "songSection[data-id='#{sectionId}'] part[data-id='#{partId}']"
+Then(/^I see that explorer cursor is on arrangement index (\d+) part (\d+)$/) do |arrangementIndex, partId|
+  selector = "songSection[data-arrangement-index='#{arrangementIndex}'] part[data-id='#{partId}']"
   partNode = find(selector)
   expect(partNode['class']).to include "cursor"
 end
 
-Then(/^I see that explorer cursor is on section (\d+)$/) do |sectionId|
-  selector = "songSection[data-id='#{sectionId}']"
+Then(/^I see that explorer cursor is on arrangement index (\d+)$/) do |arrangementIndex|
+  selector = "songSection[data-arrangement-index='#{arrangementIndex}']"
   sectionNode = find(selector)
   expect(sectionNode['class']).to include "cursor"
 end
@@ -32,6 +32,6 @@ end
 Then(/^I see that section (\d+) is displayed in the explorer first$/) do |arg1|
   within 'explorer' do
     firstSection = find("songSection:first-child")
-    expect(firstSection['data-id']).to eq "2"
+    expect(firstSection['data-section-id']).to eq "2"
   end
 end
