@@ -3,6 +3,8 @@ window.CommandMode = {}
 CommandMode.push = function(key) {
   if (key === "\r") {
     return CommandMode.executionMethods()
+  } else if (key === 'ESC') {
+    return [NOOP, function(viewState) { return clearCommandBuffer(Modes.normalMode(viewState)) }]
   }
 
   return [
