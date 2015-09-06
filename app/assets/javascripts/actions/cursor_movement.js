@@ -11,11 +11,11 @@ CursorMovement.moveUp = function(state) {
 }
 
 CursorMovement.moveRight = function(state) {
-  state['cursor']['start']++;
+  state['cursor']['start'] += 96;
   return state;
 }
 
 CursorMovement.moveLeft = function(state) {
-  state['cursor']['start']--;
+  state['cursor']['start'] -= 96;
   return state;
 }

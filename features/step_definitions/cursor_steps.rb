@@ -16,7 +16,7 @@ Then /^I see the cursor has moved (down|up|right|left)$/ do |direction|
   positions = {
     down: {start: 0, pitch: 126},
     up: {start: 0, pitch: 127},
-    right: {start: 1, pitch: 127},
+    right: {start: 96, pitch: 127},
     left: {start: 0, pitch: 127}
   }
 
