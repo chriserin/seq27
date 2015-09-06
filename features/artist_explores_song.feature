@@ -66,6 +66,6 @@ Feature: Artist explores song
     When I press 'v'
     And  I press 'k'
     Then I see that section 2 is displayed in the explorer first
-    When I hit enter
+    When I hit escape
     And  I press 'j'
     Then I see that explorer cursor is on arrangement index 1

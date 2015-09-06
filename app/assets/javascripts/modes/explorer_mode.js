@@ -13,7 +13,7 @@ ExplorerMode.currentNode = function() {
   if (ViewState.explorerMode === 'visual') {
     topNode = {
       'k': [Explore.moveMarkedSectionUp, Explore.moveCursorUp],
-      "\r": [NOOP, Explore.normalMode]
+      'ESC': [NOOP, Explore.normalMode]
     }
   } else {
     topNode = {

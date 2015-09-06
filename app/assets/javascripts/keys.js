@@ -6,6 +6,10 @@ document.addEventListener("DOMContentLoaded", function () {
         function(keyboardEvent) {
           var key = String.fromCharCode(keyboardEvent.charCode);
 
+          if (keyboardEvent.keyCode == '27') {
+            key = 'ESC'
+          }
+
           var fnArray = getFunctionsFor(key);
 
           var songFn = fnArray[0];
