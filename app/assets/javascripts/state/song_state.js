@@ -21,7 +21,7 @@ SongState.activeSection = function() {
 }
 
 SongState.activePart = function() {
-  return SongState.activeSection()["parts"][ViewState.activePart - 1]
+  return SongState.activeSection()["parts"][ViewState.activePart]
 }
 
 SongState.arrangedSections = function() {

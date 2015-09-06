@@ -7,10 +7,10 @@ VIEW_STATE = {
   },
   explorerCursor: {
     arrangementIndex: 0,
-    partId: 1
+    partId: 0
   },
   activeSection: 0,
-  activePart: 1,
+  activePart: 0,
   commandResult: '',
   commandBuffer: [],
   explorerDisplayParts: true,

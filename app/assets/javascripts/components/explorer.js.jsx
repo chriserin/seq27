@@ -14,7 +14,7 @@ SeqCom.Explorer = React.createClass({
 SeqCom.Explorer.Section = React.createClass({
   isCursorOnSection: function(arrangementIndex) {
     var explorerCursor = ViewState.explorerCursor
-    return (explorerCursor['arrangementIndex'] === arrangementIndex && explorerCursor['partId'] <= 0);
+    return (explorerCursor['arrangementIndex'] === arrangementIndex && explorerCursor['partId'] < 0);
   },
   isCursorOnPart: function(arrangementIndex, partId) {
     var explorerCursor = ViewState.explorerCursor
@@ -30,7 +30,7 @@ SeqCom.Explorer.Section = React.createClass({
 
     if (ViewState.explorerDisplayParts) {
       parts_html = this.props.section.parts.map((part, i)=> {
-        return <SeqCom.Explorer.Part key={i} id={i+1} isCursorOnPart={this.isCursorOnPart(arrangementIndex, i+1)}/>;
+        return <SeqCom.Explorer.Part key={i} id={i} isCursorOnPart={this.isCursorOnPart(arrangementIndex, i)}/>;
       })
     }
 

@@ -91,7 +91,7 @@ Feature: Artist plays a song
     When I am on the song page
     And  I type the "mccn" sequence
     And  I type the ":set beats=1" command
-    And  I type the ":part 2!" command
+    And  I type the ":part 1!" command
     And  I type the ":set beats=4" command
     And  I set the tempo very high in order to shrink the test
     And  I press the space bar

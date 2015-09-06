@@ -5,8 +5,8 @@ Feature: Midi goes different places
     Given a signed in artist with a new song
     When  I type the "mccn" sequence
     And   I type the ":set channel=2" command
-    And   I type the ":part 2!" command
-    Then  I see that part "2" is active
+    And   I type the ":part 1!" command
+    Then  I see that part "1" is active
     When  I type the "mccn" sequence
     And   I type the ":set channel=3" command
     And   I set the tempo very high in order to shrink the test

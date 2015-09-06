@@ -12,15 +12,15 @@ Explore.enterExploreMode = function(viewState) {
 Explore.moveCursorUp = function(viewState) {
   var explorerCursor = viewState['explorerCursor']
 
-  if (explorerCursor.arrangementIndex === 0 && explorerCursor.partId === 0) {
+  if (explorerCursor.arrangementIndex === 0 && explorerCursor.partId === -1) {
     return viewState
   }
 
-  if (explorerCursor.partId > 0) {
+  if (explorerCursor.partId > -1) {
     explorerCursor.partId = explorerCursor.partId - 1
   } else {
     explorerCursor.arrangementIndex = explorerCursor.arrangementIndex - 1
-    explorerCursor.partId = SongState.activeSection().parts.length
+    explorerCursor.partId = SongState.activeSection().parts.length - 1
   }
 
   return viewState
@@ -28,7 +28,7 @@ Explore.moveCursorUp = function(viewState) {
 
 Explore.moveCursorDown = function(viewState) {
   var explorerCursor = viewState['explorerCursor']
-  var maxParts = SongState.activeSection().parts.length
+  var maxParts = SongState.activeSection().parts.length - 1
   var lastArrangementIndex = SONG_STATE.arrangement.length - 1
 
   if (explorerCursor.arrangementIndex === lastArrangementIndex && explorerCursor.partId === maxParts) {
@@ -39,7 +39,7 @@ Explore.moveCursorDown = function(viewState) {
     explorerCursor.partId = explorerCursor.partId + 1
   } else {
     explorerCursor.arrangementIndex = explorerCursor.arrangementIndex + 1
-    explorerCursor.partId = 0
+    explorerCursor.partId = -1
   }
 
   return viewState
@@ -48,8 +48,8 @@ Explore.moveCursorDown = function(viewState) {
 Explore.goToPartOrSection = function(viewState) {
   var explorerCursor = viewState['explorerCursor']
 
-  if (explorerCursor.partId === 0) {
-    viewState.activePart = 1
+  if (explorerCursor.partId === -1) {
+    viewState.activePart = 0
   } else {
     viewState.activePart = explorerCursor.partId
   }
@@ -59,7 +59,7 @@ Explore.goToPartOrSection = function(viewState) {
 }
 
 Explore.hideParts = function(viewState) {
-  viewState.explorerCursor.partId = 0
+  viewState.explorerCursor.partId = -1
   viewState.explorerDisplayParts = false
   return viewState
 }
