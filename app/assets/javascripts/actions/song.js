@@ -24,7 +24,7 @@ Song.createChord = function(songState) {
 }
 
 Song.newSong = function(songState) {
-  return INITIAL_SONG_STATE;
+  return JSON.parse(JSON.stringify(INITIAL_SONG_STATE));
 }
 
 Song.setProperty = function(songState, commandWithArguments) {
