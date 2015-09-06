@@ -3,7 +3,7 @@ Feature: Artist explores song
   Background:
     Given a signed in artist with a new song
     When  I type the ":part 2!" command
-    And   I type the ":section 2!" command
+    And   I type the ":section 1!" command
     And   I type the ":explore" command
 
   @javascript
@@ -39,7 +39,7 @@ Feature: Artist explores song
     Then I see that explorer cursor is on arrangement index 1 part 2
     When I press 'k'
     And  I hit enter
-    Then I see that section "2" is active
+    Then I see that section "1" is active
     And  I see that part "1" is active
 
   @javascript
@@ -48,7 +48,7 @@ Feature: Artist explores song
     And  I press 'k'
     Then I see that explorer cursor is on arrangement index 1
     And  I hit enter
-    Then I see that section "2" is active
+    Then I see that section "1" is active
     And  I see that part "1" is active
 
   @javascript

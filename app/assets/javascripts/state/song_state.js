@@ -17,7 +17,7 @@ INITIAL_SONG_STATE = {
 }
 
 SongState.activeSection = function() {
-  return SONG_STATE["sections"][ViewState.activeSection - 1]
+  return SONG_STATE["sections"][ViewState.activeSection]
 }
 
 SongState.activePart = function() {
@@ -29,7 +29,7 @@ SongState.arrangedSections = function() {
 }
 
 SongState.activeArrangementIndex = function() {
-  var sectionId = ViewState.activeSection - 1
+  var sectionId = ViewState.activeSection
 
   return SONG_STATE.arrangement.findIndex(function(arrangementSectionId) {return arrangementSectionId === sectionId})
 }

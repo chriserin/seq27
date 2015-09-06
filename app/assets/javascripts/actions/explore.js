@@ -53,7 +53,7 @@ Explore.goToPartOrSection = function(viewState) {
   } else {
     viewState.activePart = explorerCursor.partId
   }
-  viewState.activeSection = SONG_STATE.arrangement[explorerCursor.arrangementIndex] + 1
+  viewState.activeSection = SONG_STATE.arrangement[explorerCursor.arrangementIndex]
 
   return Modes.normalMode(viewState)
 }

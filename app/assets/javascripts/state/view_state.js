@@ -9,7 +9,7 @@ VIEW_STATE = {
     arrangementIndex: 0,
     partId: 1
   },
-  activeSection: 1,
+  activeSection: 0,
   activePart: 1,
   commandResult: '',
   commandBuffer: [],

@@ -57,13 +57,13 @@ Feature: Artist plays a song
     And  there is a midi output available
     And  I type the ":new" command
     #create a new section with the bang operator
-    And  I type the ":section 2!" command
-    Then I see that section "2" is active
+    And  I type the ":section 1!" command
+    Then I see that section "1" is active
     When I move to middle C and I create a note
     Then I see a new note with pitch "60"
     When I type the ":set loop=2" command
     #without the bang operator the section command will switch to the specified section
-    And  I type the ":section 1" command
+    And  I type the ":section 0" command
     And  I type the ":set loop=1" command
     And  I move to middle A and I create a note
     And  I set the tempo very high in order to shrink the test

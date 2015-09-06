@@ -34,7 +34,7 @@ Song.setProperty = function(songState, commandWithArguments) {
   var value = keyValueArray[1];
 
   if (key === "loop") {
-    songState.sections[ViewState.activeSection - 1]['loop'] = value;
+    songState.sections[ViewState.activeSection]['loop'] = value;
   } else if (key === "channel" || key === "output" || key === "beats") {
     SongState.activePart()[key] = value
   } else {
@@ -48,7 +48,7 @@ Song.getProperty = function(viewState, commandWithArguments) {
   var propertyName = commandWithArguments.split(" ")[1];
 
   if (propertyName === "loop") {
-    var propertyValue =  SONG_STATE.sections[ViewState.activeSection - 1][propertyName];
+    var propertyValue =  SONG_STATE.sections[ViewState.activeSection][propertyName];
   } else if (propertyName === "channel" || propertyName === "output" || propertyName === "beats") {
     var propertyValue =  SongState.activePart()[propertyName]
   } else {
