@@ -1,15 +1,6 @@
-Given /^a signed in artist with a song$/ do
-  steps %Q{
-    Given a user with songs
-    When I am on the signin page
-    And  I provide credentials
-    And  I click a song
-  }
-end
-
 Given /^a signed in artist with a new song$/ do
   steps %Q{
-    Given a user with a new song
+    Given a user with songs
     When I am on the signin page
     And  I provide credentials
     And  I click a song
@@ -19,26 +10,6 @@ end
 
 Given(/^an artist on the new song page$/) do
   visit new_song_path
-end
-
-Given /^a signed in artist with a song with two notes$/ do
-  create :user, :with_a_song_with_two_notes
-
-  steps %Q{
-    When I am on the signin page
-    And  I provide credentials
-    And  I click a song
-  }
-end
-
-Given(/^a signed in artist with a song with two sections$/) do
-  create :user, :with_a_song_with_two_sections
-
-  steps %Q{
-    When I am on the signin page
-    And  I provide credentials
-    And  I click a song
-  }
 end
 
 Given(/^there is a midi output available$/) do

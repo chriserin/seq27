@@ -16,7 +16,7 @@ Feature: Midi goes different places
   @javascript
   Scenario: User chooses a different midi output for a part and receives midi there
     Given a second output named "seq-27-output-B"
-    And   an artist on the new song page
+    And   a signed in artist with a new song
     When  I type the "mccn" sequence
     And   I type the ":set output=seq-27-output-B" command
     And   I set the tempo very high in order to shrink the test
