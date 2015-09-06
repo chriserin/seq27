@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
   root 'songs#index'
 
-  resources :songs, only: [:index, :show]
+  resources :songs, only: [:index, :show, :new]
 
   if Rails.env.test?
     get 'js_spec' => 'test#js_spec'

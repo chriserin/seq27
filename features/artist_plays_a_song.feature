@@ -2,35 +2,35 @@ Feature: Artist plays a song
 
   @javascript
   Scenario: Artist plays a song
-    Given a signed in artist with a song
-    When  I am on the song page
-    And   there is a midi output available
+    Given an artist on the new song page
+    When   there is a midi output available
     And   I set the tempo very high in order to shrink the test
+    And   I type the "mecn" sequence
     And   I press the space bar
     Then  I hear the song (via midi)
 
   @javascript
   Scenario: Artist plays a song with two notes
-    Given a signed in artist with a song with two notes
-    When  I am on the song page
-    And   there is a midi output available
+    Given an artist on the new song page
+    When   there is a midi output available
     And   I set the tempo very high in order to shrink the test
+    And   I type the "mecnlcn" sequence
     And   I press the space bar
     Then  I hear the song with two notes
 
   @javascript
   Scenario: Artist plays a song and stops the song before it ends
-    Given a signed in artist with a song
-    When  I am on the song page
-    And   there is a midi output available
+    Given an artist on the new song page
+    When  there is a midi output available
+    And   I type the "mecn" sequence
     And   I press the space bar
     Then  I hear the song interrupted by the space bar
 
   @javascript
   Scenario: Artist plays a song and the song loops
-    Given a signed in artist with a song
-    When  I am on the song page
-    And   there is a midi output available
+    Given an artist on the new song page
+    When  there is a midi output available
+    And   I type the "mecn" sequence
     And   I type the ":set loop=2" command
     And   I type the ":get loop" command
     Then  I see the value of the "loop" setting is 2
@@ -43,8 +43,10 @@ Feature: Artist plays a song
 
   @javascript
   Scenario: Artist plays a song with two sections
-    Given a signed in artist with a song with two sections
-    When  I am on the song page
+    Given an artist on the new song page
+    When  I type the "mecn" sequence
+    And   I type the ":section 1!" command
+    And   I type the "mecn" sequence
     And   there is a midi output available
     And   I set the tempo very high in order to shrink the test
     And   I press the space bar
@@ -52,17 +54,15 @@ Feature: Artist plays a song
 
   @javascript
   Scenario: Artist creates and plays a song with two sections (the second section loops)
-    Given a signed in artist with a song
-    When I am on the song page
-    And  there is a midi output available
+    Given an artist on the new song page
+    When  there is a midi output available
+    And  I type the "mecn" sequence
     And  I type the ":new" command
-    #create a new section with the bang operator
     And  I type the ":section 1!" command
     Then I see that section "1" is active
     When I move to middle C and I create a note
     Then I see a new note with pitch "60"
     When I type the ":set loop=2" command
-    #without the bang operator the section command will switch to the specified section
     And  I type the ":section 0" command
     And  I type the ":set loop=1" command
     And  I move to middle A and I create a note
@@ -73,9 +73,9 @@ Feature: Artist plays a song
 
   @javascript
   Scenario: Artist plays a song and the song loops
-    Given a signed in artist with a song
-    When  I am on the song page
-    And   there is a midi output available
+    Given an artist on the new song page
+    When  there is a midi output available
+    And   I type the "mecn" sequence
     And   I type the ":set loop=20" command
     And   I type the ":set beats=1" command
     And   I set the tempo very high in order to shrink the test
@@ -83,13 +83,9 @@ Feature: Artist plays a song
     Then  I hear the note 20 times with 10 ms intervals
 
   @javascript
-  Scenario: Artist plays a song with multiple parts for a section
-
-  @javascript
   Scenario: Artist plays a song with unequal part lengths for a section
-    Given a signed in artist with a new song
-    When I am on the song page
-    And  I type the "mccn" sequence
+    Given an artist on the new song page
+    When I type the "mccn" sequence
     And  I type the ":set beats=1" command
     And  I type the ":part 1!" command
     And  I type the ":set beats=4" command

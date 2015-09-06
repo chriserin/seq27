@@ -17,6 +17,10 @@ Given /^a signed in artist with a new song$/ do
   }
 end
 
+Given(/^an artist on the new song page$/) do
+  visit new_song_path
+end
+
 Given /^a signed in artist with a song with two notes$/ do
   create :user, :with_a_song_with_two_notes
 

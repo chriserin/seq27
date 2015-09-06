@@ -29,7 +29,6 @@ Then /^I see that the cursor has not moved$/ do
 end
 
 Then(/^I see a new note$/) do
-  expect(page).to have_selector("note", count: 2)
   expect(page).to have_selector("note[data-start='0'][data-pitch='126']")
 end
 

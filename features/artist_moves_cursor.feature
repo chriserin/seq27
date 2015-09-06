@@ -2,8 +2,7 @@ Feature: Artist moves cursor
 
   @javascript
   Scenario: Artist moves cursor in each direction
-    Given a signed in artist with a song
-    When  I am on the song page
+    Given an artist on the new song page
     Then  I see a cursor in the top left corner
     When  I press 'j'
     Then  I see the cursor has moved down
@@ -13,13 +12,14 @@ Feature: Artist moves cursor
     Then  I see the cursor has moved right
     When  I press 'h'
     Then  I see the cursor has moved left
+    Then  I see a cursor in the top left corner
+    # test that capitol J does nothing
     When  I press 'J'
     Then  I see a cursor in the top left corner
 
   @javascript
   Scenario: Artist creates note at cursor
-    Given a signed in artist with a song
-    When  I am on the song page
+    Given an artist on the new song page
     Then  I see a cursor in the top left corner
     When  I press 'j'
     When  I type the "cn" sequence
@@ -27,24 +27,21 @@ Feature: Artist moves cursor
 
   @javascript
   Scenario: Artist moves to middle C
-    Given a signed in artist with a song
-    When  I am on the song page
+    Given an artist on the new song page
     Then  I see a cursor in the top left corner
     When  I type the "mc" sequence
     Then  I see the cursor is at middle c
 
   @javascript
   Scenario: Artist moves to middle D
-    Given a signed in artist with a song
-    When  I am on the song page
+    Given an artist on the new song page
     Then  I see a cursor in the top left corner
     When  I type the "md" sequence
     Then  I see the cursor is at middle d
 
   @javascript
   Scenario: Artist moves to all notes in middle octave
-    Given a signed in artist with a song
-    When  I am on the song page
+    Given an artist on the new song page
     Then  I see a cursor in the top left corner
     When  I type a sequence then I see the cursor at the right pitch:
       | sequence | midipitch |
@@ -63,8 +60,7 @@ Feature: Artist moves cursor
 
   @javascript
   Scenario: Artist moves to all notes above middle octave
-    Given a signed in artist with a song
-    When  I am on the song page
+    Given an artist on the new song page
     Then  I see a cursor in the top left corner
     When  I type a sequence then I see the cursor at the right pitch:
       | sequence | midipitch |
@@ -119,8 +115,7 @@ Feature: Artist moves cursor
 
   @javascript
   Scenario: Artist moves to all notes below middle octave
-    Given a signed in artist with a song
-    When  I am on the song page
+    Given an artist on the new song page
     Then  I see a cursor in the top left corner
     When  I type a sequence then I see the cursor at the right pitch:
       | sequence | midipitch |
@@ -175,8 +170,7 @@ Feature: Artist moves cursor
 
   @javascript
   Scenario: Artist moves to all notes in middle octave
-    Given a signed in artist with a song
-    When  I am on the song page
+    Given an artist on the new song page
     Then  I see a cursor in the top left corner
     When  I type a sequence then I see the cursor at the right pitch:
       | sequence | midipitch |

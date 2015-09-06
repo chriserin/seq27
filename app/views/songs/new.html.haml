@@ -1,0 +1,7 @@
+%section#song
+:javascript
+  Midi.connect();
+  ViewState.init()
+  window.SONG_STATE = Song.newSong()
+  var view = React.createElement(SeqCom.Song, null)
+  window.SONG_VIEW = React.render(view, window.song)

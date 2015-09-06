@@ -20,12 +20,3 @@ Feature: User signs in
     Then  I see songs index page
     When  I click a song
     Then  I am on the song page
-    And   I see a note
-
-  @javascript
-  Scenario: Artist plays a song
-    Given a signed in artist with a song
-    When  I am on the song page
-    Then  I see a note
-    When  I type the ":new" command
-    Then  I do not see a note

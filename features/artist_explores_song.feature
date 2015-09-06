@@ -1,7 +1,7 @@
 Feature: Artist explores song
 
   Background:
-    Given a signed in artist with a new song
+    Given an artist on the new song page
     When  I type the ":part 1!" command
     And   I type the ":section 1!" command
     And   I type the ":explore" command
