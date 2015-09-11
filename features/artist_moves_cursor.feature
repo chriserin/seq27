@@ -15,6 +15,8 @@ Feature: Artist moves cursor
     Then  I see a note at beat 0 and pitch 65
     When  I type the "n" sequence
     Then  I see the cursor at beat 0 and pitch 60
+    When  I type the "N" sequence
+    Then  I see the cursor at beat 0 and pitch 65
 
   @javascript
   Scenario: Artist moves cursor in each direction

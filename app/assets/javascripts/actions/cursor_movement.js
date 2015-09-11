@@ -41,8 +41,14 @@ CursorMovement.moveToNextNote = function(viewState) {
 CursorMovement.moveToPrevNote = function(viewState) {
   var notes = SongState.currentPartNotes()
 
-  var nextNote = notes.filter(function(note) { return note.start < viewState['cursor']['start'] })[0]
+  var filterFn = function(note) {
+    return note.start < viewState['cursor']['start'] ||
+      ( note.pitch > viewState['cursor']['pitch'] && note.start === viewState['cursor']['start'] )
+  }
+
+  var nextNote = notes.filter(filterFn)[0]
 
   viewState['cursor']['start'] = nextNote.start;
+  viewState['cursor']['pitch'] = nextNote.pitch;
   return viewState;
 }
