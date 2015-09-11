@@ -1,7 +1,7 @@
 window.Note = {}
 
 Note.doubleLength = function(songState) {
-  var notes = SongState.currentNotes(songState)
+  var notes = SongState.currentGroupNotes(songState)
   for (var note of notes) {
     note['length'] = note['length'] * 2
   }
@@ -9,7 +9,7 @@ Note.doubleLength = function(songState) {
 }
 
 Note.halveLength = function(songState) {
-  var notes = SongState.currentNotes(songState)
+  var notes = SongState.currentGroupNotes(songState)
 
   for (var note of notes) {
     note['length'] = note['length'] / 2
@@ -18,7 +18,7 @@ Note.halveLength = function(songState) {
 }
 
 Note.deleteLatest = function(songState) {
-  var notes = SongState.currentNotes(songState)
+  var notes = SongState.currentGroupNotes(songState)
   var part = SongState.activePart()
   for (var note of notes) {
     var index = SongState.indexOfNote(note, part)

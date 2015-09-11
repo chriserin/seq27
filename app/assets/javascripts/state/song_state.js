@@ -34,7 +34,7 @@ SongState.activeArrangementIndex = function() {
   return SONG_STATE.arrangement.findIndex(function(arrangementSectionId) {return arrangementSectionId === sectionId})
 }
 
-SongState.currentNotes = function(songState) {
+SongState.currentGroupNotes = function(songState) {
   var activePart = SongState.activePart()
   var sortedNotes = activePart.notes.sort(function(a, b) { return a.timestamp - b.timestamp;})
 
