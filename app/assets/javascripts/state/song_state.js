@@ -45,6 +45,13 @@ SongState.currentGroupNotes = function(songState) {
   return results;
 }
 
+SongState.currentPartNotes = function(songState) {
+  var activePart = SongState.activePart()
+  var sortedNotes = activePart.notes.sort(function(a, b) { if (a.start === b.start) {return b.pitch - a.pitch } else { return a.start - b.start};})
+
+  return sortedNotes;
+}
+
 SongState.indexOfNote = function(lookedForNote, parent) {
   var counter = 0;
   for (var note of parent.notes) {

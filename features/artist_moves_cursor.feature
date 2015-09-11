@@ -1,6 +1,22 @@
 Feature: Artist moves cursor
 
   @javascript
+  Scenario: Artist moves cursor to next note
+    Given an artist on the new song page
+    When  I type the "5lmccn" sequence
+    Then  I see a note at beat 5 and pitch 60
+    When  I type the "5hmccn" sequence
+    Then  I see a note at beat 0 and pitch 60
+    When  I type the "n" sequence
+    Then  I see the cursor at beat 5 and pitch 60
+    When  I type the "N" sequence
+    Then  I see the cursor at beat 0 and pitch 60
+    When  I type the "5kcn" sequence
+    Then  I see a note at beat 0 and pitch 65
+    When  I type the "n" sequence
+    Then  I see the cursor at beat 0 and pitch 60
+
+  @javascript
   Scenario: Artist moves cursor in each direction
     Given an artist on the new song page
     Then  I see a cursor in the top left corner

@@ -58,7 +58,9 @@ function currentNode(character) {
     "k": [NOOP, CursorMovement.moveUp],
     "h": [NOOP, CursorMovement.moveLeft],
     "l": [NOOP, CursorMovement.moveRight],
-    " ": [ Play.playStop, NOOP ]
+    " ": [ Play.playStop, NOOP ],
+    "n": [NOOP, CursorMovement.moveToNextNote],
+    "N": [NOOP, CursorMovement.moveToPrevNote]
   };
 
   middleOctaveMidiPitches = {

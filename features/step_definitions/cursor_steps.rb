@@ -32,6 +32,16 @@ Then(/^I see a new note$/) do
   expect(page).to have_selector("note[data-start='0'][data-pitch='126']")
 end
 
+Then(/^I see a note at beat (\d*) and pitch (\d*)$/) do |beat, pitch|
+  notes = all('note').map {|n| {beat: n['data-start'].to_i, pitch: n['data-pitch'].to_i}}
+
+  expect(notes).to include({beat: beat.to_i * 96, pitch: pitch.to_i})
+end
+
+Then(/^I see the cursor at beat (\d*) and pitch (\d*)$/) do |beat, pitch|
+  expect(cursor).to have_a_position_of(beat.to_i * 96, pitch)
+end
+
 Then(/^I see a note with length "(.*?)"$/) do |length|
   note = page.find('note')
   expect(note['data-length']).to eq length
