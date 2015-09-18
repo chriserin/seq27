@@ -60,7 +60,8 @@ function currentNode(character) {
     "l": [NOOP, CursorMovement.moveRight],
     " ": [ Play.playStop, NOOP ],
     "n": [NOOP, CursorMovement.moveToNextNote],
-    "N": [NOOP, CursorMovement.moveToPrevNote]
+    "N": [NOOP, CursorMovement.moveToPrevNote],
+    "v": [NOOP, Modes.visualMode]
   };
 
   middleOctaveMidiPitches = {
@@ -148,9 +149,14 @@ function shortenNodes() {
 }
 
 function deleteNodes() {
-  nodes = {
-    "d": [Note.deleteLatest, NOOP]
+  var nodes = {
+    "d": [Delete.deleteLatest, NOOP]
   }
+
+  if (ViewState.mode === 'visual') {
+    nodes = [Delete.deleteSelected, NOOP]
+  }
+
   return nodes;
 }
 

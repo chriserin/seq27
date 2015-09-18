@@ -34,6 +34,9 @@ function getFunctionsFor(key) {
     case "command":
       commandFns = CommandMode.push(key);
       break;
+    case "visual":
+      commandFns = NormalMode.push(key);
+      break;
     case "explorer":
       commandFns = ExplorerMode.push(key);
       break;

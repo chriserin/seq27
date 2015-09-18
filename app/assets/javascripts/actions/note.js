@@ -16,13 +16,3 @@ Note.halveLength = function(songState) {
   }
   return songState;
 }
-
-Note.deleteLatest = function(songState) {
-  var notes = SongState.currentGroupNotes(songState)
-  var part = SongState.activePart()
-  for (var note of notes) {
-    var index = SongState.indexOfNote(note, part)
-    delete part.notes[index];
-  }
-  return songState;
-}

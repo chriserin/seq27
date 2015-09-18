@@ -10,6 +10,12 @@ Modes.normalMode = function (viewState) {
   return viewState;
 };
 
+Modes.visualMode = function (viewState) {
+  viewState['anchorCursor'] = JSON.parse(JSON.stringify(viewState['cursor']))
+  viewState["mode"] = 'visual';
+  return viewState;
+};
+
 Modes.explorerMode = function (viewState) {
   viewState["mode"] = 'explorer';
   return viewState;

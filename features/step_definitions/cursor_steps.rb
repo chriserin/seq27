@@ -32,6 +32,10 @@ Then(/^I see a new note$/) do
   expect(page).to have_selector("note[data-start='0'][data-pitch='126']")
 end
 
+Then(/^I see only one note$/) do
+  expect(page).to have_selector("note", count: 1)
+end
+
 Then(/^I see a note at beat (\d*) and pitch (\d*)$/) do |beat, pitch|
   notes = all('note').map {|n| {beat: n['data-start'].to_i, pitch: n['data-pitch'].to_i}}
 

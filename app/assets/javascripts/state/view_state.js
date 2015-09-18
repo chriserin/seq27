@@ -5,6 +5,11 @@ VIEW_STATE = {
     start: 0,
     length: 96
   },
+  anchorCursor: {
+    pitch: -1,
+    start: -1,
+    length: -1
+  },
   explorerCursor: {
     arrangementIndex: 0,
     partId: 0
@@ -27,4 +32,18 @@ ViewState.init = function() {
 
 function defineProp(stateKey) {
   Object.defineProperty(ViewState, stateKey, { get: function() {return VIEW_STATE[stateKey]}})
+}
+
+ViewState.selectedNotes = function(songState){
+  var part = SongState.activePart()
+
+  var anchorCursor = VIEW_STATE['anchorCursor']
+  var cursorCursor = VIEW_STATE['cursor']
+
+  var leftEdge = Math.min(anchorCursor.start, cursorCursor.start)
+  var rightEdge = Math.max(anchorCursor.start + anchorCursor.length, cursorCursor.start + cursorCursor.length)
+
+  return part.notes.filter(function(note) {
+    return ((note.start + note.length - 1) >= leftEdge && note.start < rightEdge)
+  })
 }
