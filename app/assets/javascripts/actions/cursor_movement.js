@@ -49,7 +49,7 @@ CursorMovement.moveToPrevNote = function(viewState) {
 
   var notesAfterCursor = notes.filter(filterFn)
 
-  var nextNote = filteredNotes[notesAfterCursor.length - 1]
+  var nextNote = notesAfterCursor[notesAfterCursor.length - 1]
 
   viewState['cursor']['start'] = nextNote.start;
   viewState['cursor']['pitch'] = nextNote.pitch;

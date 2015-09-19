@@ -37,6 +37,20 @@ function defineProp(stateKey) {
 ViewState.selectedNotes = function(songState){
   var part = SongState.activePart()
 
+  var selection = ViewState.selection()
+
+  var notesSelectedOnBeatsAxis = part.notes.filter(function(note) {
+    return ((note.start + note.length - 1) >= selection.left && note.start < selection.right)
+  })
+
+  var selectedNotes = notesSelectedOnBeatsAxis.filter(function(note) {
+    return (note.pitch <= selection.top && note.pitch >= selection.bottom);
+  })
+
+  return selectedNotes
+}
+
+ViewState.selection = function() {
   var anchorCursor = VIEW_STATE['anchorCursor']
   var cursorCursor = VIEW_STATE['cursor']
 
@@ -45,13 +59,10 @@ ViewState.selectedNotes = function(songState){
   var topPitch = Math.max(anchorCursor.pitch, cursorCursor.pitch)
   var bottomPitch = Math.min(anchorCursor.pitch, cursorCursor.pitch)
 
-  var notesSelectedOnBeatsAxis = part.notes.filter(function(note) {
-    return ((note.start + note.length - 1) >= leftEdge && note.start < rightEdge)
-  })
-
-  var selectedNotes = notesSelectedOnBeatsAxis.filter(function(note) {
-    return (note.pitch <= topPitch && note.pitch >= bottomPitch);
-  })
-
-  return selectedNotes
+  return {
+    left: leftEdge,
+    right: rightEdge,
+    top: topPitch,
+    bottom: bottomPitch
+  }
 }

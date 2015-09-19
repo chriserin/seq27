@@ -6,6 +6,7 @@ SeqCom.Part = React.createClass({
       return <note key={i} data-start={note.start} data-pitch={note.pitch} data-length={note.length}/>;
     });
 
+    var selection = ViewState.selection()
     return <part data-part-id={this.props.partId}>
       <notesGrid>{notes_html}</notesGrid>
       <cursorGrid>
@@ -14,6 +15,7 @@ SeqCom.Part = React.createClass({
           data-pitch={ViewState.cursor['pitch']}
           data-length={ViewState.cursor['length']}
         />
+        <SeqCom.VisualSelection left={selection.left} right={selection.right} top={selection.top} bottom={selection.bottom}/>
       </cursorGrid>
       <commandLine>{ViewState.commandResult}</commandLine>
     </part>;
