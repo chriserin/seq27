@@ -42,8 +42,16 @@ ViewState.selectedNotes = function(songState){
 
   var leftEdge = Math.min(anchorCursor.start, cursorCursor.start)
   var rightEdge = Math.max(anchorCursor.start + anchorCursor.length, cursorCursor.start + cursorCursor.length)
+  var topPitch = Math.max(anchorCursor.pitch, cursorCursor.pitch)
+  var bottomPitch = Math.min(anchorCursor.pitch, cursorCursor.pitch)
 
-  return part.notes.filter(function(note) {
+  var notesSelectedOnBeatsAxis = part.notes.filter(function(note) {
     return ((note.start + note.length - 1) >= leftEdge && note.start < rightEdge)
   })
+
+  var selectedNotes = notesSelectedOnBeatsAxis.filter(function(note) {
+    return (note.pitch <= topPitch && note.pitch >= bottomPitch);
+  })
+
+  return selectedNotes
 }

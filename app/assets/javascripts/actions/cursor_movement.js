@@ -1,7 +1,8 @@
 window.CursorMovement = {}
 
-CursorMovement.moveDown = function(state) {
-  state['cursor']['pitch']--;
+CursorMovement.moveDown = function(state, number) {
+  var pitches = number || 1
+  state['cursor']['pitch'] -= pitches;
   return state;
 }
 
@@ -46,7 +47,9 @@ CursorMovement.moveToPrevNote = function(viewState) {
       ( note.pitch > viewState['cursor']['pitch'] && note.start === viewState['cursor']['start'] )
   }
 
-  var nextNote = notes.filter(filterFn)[0]
+  var notesAfterCursor = notes.filter(filterFn)
+
+  var nextNote = filteredNotes[notesAfterCursor.length - 1]
 
   viewState['cursor']['start'] = nextNote.start;
   viewState['cursor']['pitch'] = nextNote.pitch;
