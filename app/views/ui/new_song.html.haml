@@ -1,0 +1,18 @@
+%song
+  %grids
+    %noteGrid
+      %pitchGrid
+        - (0..127).to_a.reverse.each do |pitch|
+          %pitch{class: [sharpForNumber(pitch), cPitch(pitch)].join(' ')}
+            %pianoKey{class: [sharpForNumber(pitch), cPitch(pitch)].join(' ')}
+      %beatGrid
+        - 16.times.each do
+          %beat
+    %part
+    %cursorGrid
+      %cursor
+  %statusLine
+    %name seq27
+    %filler
+    %cursorPosition 11:45 c6
+  %commandLine

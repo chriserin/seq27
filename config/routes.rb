@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'ui(/:action)', controller: 'ui' unless Rails.env.production?
 
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
   get 'signin' => 'sessions#new'

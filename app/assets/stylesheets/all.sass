@@ -1,0 +1,83 @@
+body
+  margin: 0px
+
+song
+  height: 100vh
+  display: flex
+  flex-direction: column
+  background-color: white
+
+  noteGrid
+    height: calc(100vh - 40px)
+    display: flex
+    flex-direction: column
+    overflow: scroll
+    z-index: 100
+
+    pitchGrid
+      z-index: 100
+
+      pitch
+        $c-color: rgba(200,200,250, 0.8)
+        $sharp-color: rgba(220,220,220, 0.5)
+        height: 10px
+        min-height: 10px
+        width: 100%
+        border-top: 1px solid $sharp-color
+        display: block
+
+        &.sharp
+          background-color: $sharp-color
+          border-top: 1px solid $sharp-color
+
+        &.c
+          background-color: $c-color + rgba(40,40,40,0.8)
+
+        pianoKey
+          background-color: white
+          width: 60px
+          height: 10px
+          display: block
+          border-right: 1px solid black
+          box-shadow: 1px 0px 1px 1px rgba(0, 0, 0, 0.2)
+
+          &.sharp
+            background-color: black
+
+          &.c
+            background-color: $c-color
+
+    beatGrid
+      position: fixed
+      top: 0
+      left: 0
+      height: calc(100% - 40px)
+      padding-left: 60px
+      display: flex
+      z-index: 10
+
+      beat
+        width: 100px
+        border-right: 1px dashed black
+
+  statusLine
+    height: 20px
+    width: 100%
+    display: flex
+    background-color: rgba(0, 0, 194, 0.6)
+    vertical-align: bottom
+    name
+      width: 60px
+      text-align: center
+      background-color: rgba(200, 200, 200, 0.4)
+    filler
+      flex-grow: 20
+    cursorPosition
+      flex: 10
+      text-align: center
+      min-width: 40px
+  commandLine
+    height: 20px
+    width: 100%
+    display: block
+    vertical-align: bottom
