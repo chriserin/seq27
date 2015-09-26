@@ -3,14 +3,18 @@
     %noteGrid
       %pitchGrid
         - (0..127).to_a.reverse.each do |pitch|
-          %pitch{class: [sharpForNumber(pitch), cPitch(pitch)].join(' ')}
-            %pianoKey{class: [sharpForNumber(pitch), cPitch(pitch)].join(' ')}
+          %pitch{class: [sharpForNumber(pitch), cPitch(pitch), octave(pitch)].join(' ')}
+            %pianoKey{class: [sharpForNumber(pitch), cPitch(pitch), octave(pitch)].join(' ')}
+              = cOctave(pitch)
       %beatGrid
         - 16.times.each do
           %beat
-    %part
-    %cursorGrid
-      %cursor
+      %cursorGrid
+        %cursor{style: "top: #{11 * 60}px; left: 60px;"}
+      %part
+        %note{style: "top: #{11 * (127 - 60)}px; left: 160px; width: 98px"}
+        %note{style: "top: #{11 * (127 - 57)}px; left: 160px; width: 200px"}
+        %note{style: "top: #{11 * (127 - 53)}px; left: 160px; width: 98px"}
   %statusLine
     %name seq27
     %filler

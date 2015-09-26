@@ -10,6 +10,7 @@ song
   noteGrid
     height: calc(100vh - 40px)
     display: flex
+    position: relative
     flex-direction: column
     overflow: scroll
     z-index: 100
@@ -19,19 +20,19 @@ song
 
       pitch
         $c-color: rgba(200,200,250, 0.8)
-        $sharp-color: rgba(220,220,220, 0.5)
+        $sharp-color: rgb(250,250,250)
         height: 10px
         min-height: 10px
         width: 100%
-        border-top: 1px solid $sharp-color
+        border-top: 1px solid transparentize($sharp-color, 0.5)
         display: block
 
         &.sharp
-          background-color: $sharp-color
-          border-top: 1px solid $sharp-color
+          border-top: 1px solid transparentize($sharp-color, 0.5)
 
         &.c
-          background-color: $c-color + rgba(40,40,40,0.8)
+          border-top: 0
+          border-bottom: 1px solid lighten(blue, 30%)
 
         pianoKey
           background-color: white
@@ -46,6 +47,87 @@ song
 
           &.c
             background-color: $c-color
+            font-size: 10px
+            text-align: center
+
+        $octave-color: rgb(180,180,180)
+        &.octave10
+          $trans-amount: 0.95
+          background-color: transparentize($octave-color, $trans-amount)
+          &.sharp
+            background-color: darken(transparentize($octave-color, $trans-amount), 10%)
+          &.c
+            background-color: transparentize(adjust-color($octave-color, $blue: 200), $trans-amount - 0.3)
+        &.octave9
+          $trans-amount: 0.85
+          background-color: transparentize($octave-color, $trans-amount + 0.1)
+          &.sharp
+            background-color: darken(transparentize($octave-color, $trans-amount), 10%)
+          &.c
+            background-color: transparentize(adjust-color($octave-color, $blue: 200), $trans-amount - 0.3)
+        &.octave8
+          $trans-amount: 0.75
+          background-color: transparentize($octave-color, $trans-amount + 0.1)
+          &.sharp
+            background-color: darken(transparentize($octave-color, $trans-amount), 10%)
+          &.c
+            background-color: transparentize(adjust-color($octave-color, $blue: 200), $trans-amount - 0.3)
+        &.octave7
+          $trans-amount: 0.65
+          background-color: transparentize($octave-color, $trans-amount + 0.1)
+          &.sharp
+            background-color: darken(transparentize($octave-color, $trans-amount), 10%)
+          &.c
+            background-color: transparentize(adjust-color($octave-color, $blue: 200), $trans-amount - 0.3)
+        &.octave6
+          $trans-amount: 0.55
+          background-color: transparentize($octave-color, $trans-amount + 0.1)
+          &.sharp
+            background-color: darken(transparentize($octave-color, $trans-amount), 10%)
+          &.c
+            background-color: transparentize(adjust-color($octave-color, $blue: 200), $trans-amount - 0.3)
+        &.octave5
+          $trans-amount: 0.45
+          background-color: transparentize($octave-color, $trans-amount + 0.1)
+          &.sharp
+            background-color: darken(transparentize($octave-color, $trans-amount), 10%)
+          &.c
+            background-color: transparentize(adjust-color($octave-color, $blue: 200), $trans-amount - 0.3)
+        &.octave4
+          $trans-amount: 0.355
+          background-color: transparentize($octave-color, $trans-amount + 0.1)
+          &.sharp
+            background-color: darken(transparentize($octave-color, $trans-amount), 10%)
+          &.c
+            background-color: transparentize(adjust-color($octave-color, $blue: 200), $trans-amount)
+        &.octave3
+          $trans-amount: 0.35
+          background-color: transparentize($octave-color, $trans-amount + 0.1)
+          &.sharp
+            background-color: darken(transparentize($octave-color, $trans-amount), 10%)
+          &.c
+            background-color: transparentize(adjust-color($octave-color, $blue: 200), $trans-amount)
+        &.octave2
+          $trans-amount: 0.255
+          background-color: transparentize($octave-color, $trans-amount + 0.1)
+          &.sharp
+            background-color: darken(transparentize($octave-color, $trans-amount), 10%)
+          &.c
+            background-color: transparentize(adjust-color($octave-color, $blue: 200), $trans-amount)
+        &.octave1
+          $trans-amount: 0.25
+          background-color: transparentize($octave-color, $trans-amount + 0.1)
+          &.sharp
+            background-color: darken(transparentize($octave-color, $trans-amount), 10%)
+          &.c
+            background-color: transparentize(adjust-color($octave-color, $blue: 200), $trans-amount)
+        &.octave0
+          $trans-amount: 0.155
+          background-color: transparentize($octave-color, $trans-amount + 0.1)
+          &.sharp
+            background-color: darken(transparentize($octave-color, $trans-amount), 10%)
+          &.c
+            background-color: transparentize(adjust-color($octave-color, $blue: 200), $trans-amount)
 
     beatGrid
       position: fixed
@@ -59,6 +141,40 @@ song
       beat
         width: 100px
         border-right: 1px dashed black
+
+    cursorGrid
+      position: absolute
+      top: 0
+      left: 0
+      height: calc(100% - 40px)
+      padding-left: 60px
+      display: flex
+      z-index: 1000
+
+      cursor
+        position: absolute
+        display: block
+        border-radius: 3px
+        background-color: rgba(200,255,200, 0.75)
+        height: 10px
+        width:  98px
+        border: 1px solid green
+
+    part
+      position: absolute
+      top: 0
+      left: 0
+      height: calc(100% - 40px)
+      padding-left: 60px
+      z-index: 500
+
+      note
+        position: absolute
+        display: block
+        border-radius: 3px
+        background: linear-gradient(90deg, blue, transparentize(lightblue, .1))
+        height: 10px
+        border: 1px solid lightblue
 
   statusLine
     height: 20px

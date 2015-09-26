@@ -44,4 +44,14 @@ module PianoHelper
   def cPitch(pitchNumber)
     pitchNumber % 12 == 0 ? 'c' : ''
   end
+
+  def octave(pitchNumber)
+    "octave#{pitchNumber / 12}"
+  end
+
+  def cOctave(pitchNumber)
+    if pitchNumber % 12 == 0
+      pitchNumber / 12
+    end
+  end
 end
