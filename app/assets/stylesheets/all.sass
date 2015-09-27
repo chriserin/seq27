@@ -21,9 +21,19 @@ song
 
     songSection
       display: block
+      margin-top: 10px
+
+      .cursor
+        background-color: lightgreen
+
+      part, > span
+        display: block
+
+        span.label
+          font-weight: bold
+        span.value
 
       part
-        display: block
         padding-left: 20px
 
   grids
@@ -173,13 +183,24 @@ song
       display: flex
       z-index: 1000
 
-      cursor
+      cursor, anchorCursor
         position: absolute
         display: block
         border-radius: 3px
         background-color: rgba(200,255,200, 0.75)
         height: 15px
         width:  98px
+        border: 1px solid green
+
+      anchorCursor
+        border: 1px solid red
+        background-color: rgba(255,140,140, 0.9)
+
+      visualSelection
+        position: absolute
+        display: block
+        border-radius: 3px
+        background-color: rgba(200,255,200, 0.5)
         border: 1px solid green
 
     part

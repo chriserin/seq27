@@ -8,8 +8,12 @@
     %beatGrid
       - 16.times.each do
         %beat
-    %cursorGrid
+    %cursorGrid{data: {stage: 'selection', scene: 'none'}}
       %cursor{style: "top: #{17 * 60}px; left: 60px;"}
+    %cursorGrid{data: {stage: 'selection', scene: 'selected'}}
+      %cursor{style: "top: #{17 * 60}px; left: 260px;"}
+      %anchorCursor{style: "top: #{17 * 79}px; left: 560px;"}
+      %visualSelection{style: "top: #{17 * 60}px; left: 260px; height: #{17 * 20}px; width: 400px"}
     %part
       %note{style: "top: #{17 * (127 - 60)}px; left: 160px; width: 98px"}
       %note{style: "top: #{17 * (127 - 57)}px; left: 160px; width: 200px"}

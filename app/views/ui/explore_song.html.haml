@@ -2,8 +2,28 @@
   %explorer
     %h1 Explorer
     %songSection
-      section 1
-      %part
-        part 1
+      %span
+        section 1
+        %span.label beats:
+        %span.value 16
+      %part part 1
+      %part part 2
+      %part part 3
+      %part part 4
+    %songSection{data: {stage: 'cursor', scene: 'section'}}
+      %span.cursor section 2
+      %part part 1
+      %part part 2
+      %part part 3
+      %part part 4
+    %songSection{data: {stage: 'cursor', scene: 'part'}}
+      %span
+        section 2
+      %part part 1
+      %part.cursor part 2
+      %part part 3
+      %part part 4
   %statusline
+    %name seq27
   %commandline
+    \-- Explorer --
