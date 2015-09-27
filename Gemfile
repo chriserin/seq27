@@ -16,6 +16,11 @@ gem 'haml'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 
+group :development do
+  gem 'jquery-rails'
+  gem 'spicerack', github: 'hashrocket/spicerack'
+end
+
 group :development, :test do
   gem 'jasmine-rails'
   gem 'pry-rails'
