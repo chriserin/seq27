@@ -1,5 +1,6 @@
 body
   margin: 0px
+  font-family: monospace
 
 song
   height: 100vh
@@ -20,15 +21,15 @@ song
 
       pitch
         $c-color: rgba(200,200,250, 0.8)
-        $sharp-color: rgb(250,250,250)
-        height: 10px
-        min-height: 10px
+        $sharp-color: rgb(100,100,100)
+        height: 16px
+        min-height: 16px
         width: 100%
-        border-top: 1px solid transparentize($sharp-color, 0.5)
+        border-top: 1px solid transparentize(rgb(250,250,250), 0.5)
         display: block
 
         &.sharp
-          border-top: 1px solid transparentize($sharp-color, 0.5)
+          border-top: 1px solid transparentize(rgb(250,250,250), 0.5)
 
         &.c
           border-top: 0
@@ -37,7 +38,7 @@ song
         pianoKey
           background-color: white
           width: 60px
-          height: 10px
+          height: 16px
           display: block
           border-right: 1px solid black
           box-shadow: 1px 0px 1px 1px rgba(0, 0, 0, 0.2)
@@ -49,84 +50,85 @@ song
             background-color: $c-color
             font-size: 10px
             text-align: center
+            border-top: 1px solid transparentize(rgb(250,250,250), 0.5)
 
-        $octave-color: rgb(180,180,180)
+        $octave-color: rgb(225,225,225)
         &.octave10
-          $trans-amount: 0.95
-          background-color: transparentize($octave-color, $trans-amount)
+          $trans-amount: 0.9
+          // background-color: transparentize($octave-color, $trans-amount)
           &.sharp
             background-color: darken(transparentize($octave-color, $trans-amount), 10%)
-          &.c
+          &.cdisable
             background-color: transparentize(adjust-color($octave-color, $blue: 200), $trans-amount - 0.3)
         &.octave9
           $trans-amount: 0.85
-          background-color: transparentize($octave-color, $trans-amount + 0.1)
+          // background-color: transparentize($octave-color, $trans-amount + 0.1)
           &.sharp
             background-color: darken(transparentize($octave-color, $trans-amount), 10%)
-          &.c
+          &.cdisable
             background-color: transparentize(adjust-color($octave-color, $blue: 200), $trans-amount - 0.3)
         &.octave8
           $trans-amount: 0.75
-          background-color: transparentize($octave-color, $trans-amount + 0.1)
+          // background-color: transparentize($octave-color, $trans-amount + 0.1)
           &.sharp
             background-color: darken(transparentize($octave-color, $trans-amount), 10%)
-          &.c
+          &.cdisable
             background-color: transparentize(adjust-color($octave-color, $blue: 200), $trans-amount - 0.3)
         &.octave7
           $trans-amount: 0.65
-          background-color: transparentize($octave-color, $trans-amount + 0.1)
+          // background-color: transparentize($octave-color, $trans-amount + 0.1)
           &.sharp
             background-color: darken(transparentize($octave-color, $trans-amount), 10%)
-          &.c
+          &.cdisable
             background-color: transparentize(adjust-color($octave-color, $blue: 200), $trans-amount - 0.3)
         &.octave6
           $trans-amount: 0.55
-          background-color: transparentize($octave-color, $trans-amount + 0.1)
+          // background-color: transparentize($octave-color, $trans-amount + 0.1)
           &.sharp
             background-color: darken(transparentize($octave-color, $trans-amount), 10%)
-          &.c
+          &.cdisable
             background-color: transparentize(adjust-color($octave-color, $blue: 200), $trans-amount - 0.3)
         &.octave5
           $trans-amount: 0.45
-          background-color: transparentize($octave-color, $trans-amount + 0.1)
+          // background-color: transparentize($octave-color, $trans-amount + 0.1)
           &.sharp
             background-color: darken(transparentize($octave-color, $trans-amount), 10%)
-          &.c
+          &.cdisable
             background-color: transparentize(adjust-color($octave-color, $blue: 200), $trans-amount - 0.3)
         &.octave4
           $trans-amount: 0.355
-          background-color: transparentize($octave-color, $trans-amount + 0.1)
+          // background-color: transparentize($octave-color, $trans-amount + 0.1)
           &.sharp
             background-color: darken(transparentize($octave-color, $trans-amount), 10%)
-          &.c
+          &.cdisable
             background-color: transparentize(adjust-color($octave-color, $blue: 200), $trans-amount)
         &.octave3
           $trans-amount: 0.35
-          background-color: transparentize($octave-color, $trans-amount + 0.1)
+          // background-color: transparentize($octave-color, $trans-amount + 0.1)
           &.sharp
             background-color: darken(transparentize($octave-color, $trans-amount), 10%)
-          &.c
+          &.cdisable
             background-color: transparentize(adjust-color($octave-color, $blue: 200), $trans-amount)
         &.octave2
           $trans-amount: 0.255
-          background-color: transparentize($octave-color, $trans-amount + 0.1)
+          // background-color: transparentize($octave-color, $trans-amount + 0.1)
           &.sharp
             background-color: darken(transparentize($octave-color, $trans-amount), 10%)
-          &.c
+          &.cdisable
             background-color: transparentize(adjust-color($octave-color, $blue: 200), $trans-amount)
         &.octave1
           $trans-amount: 0.25
-          background-color: transparentize($octave-color, $trans-amount + 0.1)
+          // background-color: transparentize($octave-color, $trans-amount + 0.1)
           &.sharp
             background-color: darken(transparentize($octave-color, $trans-amount), 10%)
-          &.c
+          &.cdisable
             background-color: transparentize(adjust-color($octave-color, $blue: 200), $trans-amount)
         &.octave0
           $trans-amount: 0.155
-          background-color: transparentize($octave-color, $trans-amount + 0.1)
+          // background-color: transparentize($octave-color, $trans-amount + 0.1)
           &.sharp
             background-color: darken(transparentize($octave-color, $trans-amount), 10%)
-          &.c
+          &.cdisable
             background-color: transparentize(adjust-color($octave-color, $blue: 200), $trans-amount)
 
     beatGrid
@@ -156,7 +158,7 @@ song
         display: block
         border-radius: 3px
         background-color: rgba(200,255,200, 0.75)
-        height: 10px
+        height: 15px
         width:  98px
         border: 1px solid green
 
@@ -172,20 +174,20 @@ song
         position: absolute
         display: block
         border-radius: 3px
-        background: linear-gradient(90deg, blue, transparentize(lightblue, .1))
-        height: 10px
-        border: 1px solid lightblue
+        background: linear-gradient(90deg, blue, transparent)
+        height: 15px
+        border: 1px solid blue
 
   statusLine
     height: 20px
     width: 100%
     display: flex
-    background-color: rgba(0, 0, 194, 0.6)
+    background-color: lighten(rgba(0, 0, 194, 0.6), 40%)
     vertical-align: bottom
     name
       width: 60px
       text-align: center
-      background-color: rgba(200, 200, 200, 0.4)
+      background-color: lighten(rgba(200, 200, 200, 0.4), 40%)
     filler
       flex-grow: 20
     cursorPosition
