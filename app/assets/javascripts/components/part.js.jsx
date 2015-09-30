@@ -115,13 +115,16 @@ SeqCom.StatusLine = React.createClass({
 
 SeqCom.CursorPosition = React.createClass({
   render() {
+    var cursor = ViewState.cursor
+    var part = SongState.activePart()
+
     return <cursorPosition>
       <span className='label'>pitch:</span>
-      <span className='value'>c6</span>
+      <span className='value'>{ cursor.pitch }</span>
       <span className='label'>beats:</span>
-      <span className='value'>11/16</span>
+      <span className='value'>{Math.round(cursor.start / 96)}/{part.beats}</span>
       <span className='label'>ticks:</span>
-      <span className='value'>45</span>
+      <span className='value'>{cursor.start % 96}</span>
     </cursorPosition>
   }
 })
