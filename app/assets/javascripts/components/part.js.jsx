@@ -9,7 +9,7 @@ SeqCom.Song = React.createClass({
     return <song>
       {innerComponent}
       <SeqCom.StatusLine/>
-      <commandLine>{ViewState.commandResult}</commandLine>
+      <SeqCom.CommandLine/>
     </song>;
   }
 });
@@ -48,7 +48,8 @@ SeqCom.PitchGrid = React.createClass({
 
 SeqCom.BeatGrid = React.createClass({
   renderBeats(beats) {
-    return Array.from(Array(beats).keys()).map(()=> {return <beat/>})
+    var beatsArray = Array.from(Array(parseInt(beats)).keys()).map((_, i)=> {return <beat key={i}/>})
+    return beatsArray
   },
   render() {
     return <beatGrid>
@@ -110,6 +111,17 @@ SeqCom.StatusLine = React.createClass({
       <filler/>
       <SeqCom.CursorPosition/>
     </statusLine>
+  }
+})
+
+SeqCom.CommandLine = React.createClass({
+  renderContent() {
+    if(ViewState.mode === 'command') {
+       return ':' + ViewState.commandBuffer.join('')
+    }
+  },
+  render() {
+    return <commandLine>{this.renderContent()}</commandLine>
   }
 })
 

@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if(window.song) {
       document.addEventListener('keypress',
         function(keyboardEvent) {
+          keyboardEvent.preventDefault()
           var key = String.fromCharCode(keyboardEvent.charCode);
 
           if (keyboardEvent.keyCode == '27') {
