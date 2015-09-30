@@ -71,6 +71,13 @@ SongState.newNote = function(start, pitch, length) {
   }
 }
 
+SongState.newPart = function() {
+  return {
+    beats: 4,
+    notes: []
+  }
+}
+
 SongState.tagNotes = function(notes) {
   var timestamp = Date.now()
 

@@ -7,7 +7,10 @@ SeqCom.Explorer = React.createClass({
       section = sectionValues[1]
       return <SeqCom.Explorer.Section key={i} arrangementIndex={i} section={section} sectionId={sectionIndex+1} />
     });
-    return <explorer>{sections_html}</explorer>;
+    return <explorer>
+      <h1>Explorer</h1>
+      {sections_html}
+    </explorer>;
   }
 });
 
@@ -44,6 +47,7 @@ SeqCom.Explorer.Section = React.createClass({
               className={this.classes()}
               data-section-id={sectionId}
               data-arrangement-index={arrangementIndex}>
+                <span>section {sectionId}</span>
                 {this.renderParts(arrangementIndex)}
            </songSection>;
   }
@@ -56,6 +60,6 @@ SeqCom.Explorer.Part = React.createClass({
     }
   },
   render: function() {
-    return <part data-id={this.props.id} className={this.classes()}></part>
+    return <part data-id={this.props.id} className={this.classes()}>part {this.props.id}</part>
   }
 });
