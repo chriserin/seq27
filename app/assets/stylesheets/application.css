@@ -14,8 +14,4 @@
  *= require_self
  */
 
-* {
-  display: block;
-  height: 10px;
-  width: 10px;
-}
+//= require all
