@@ -118,6 +118,8 @@ SeqCom.CommandLine = React.createClass({
   renderContent() {
     if(ViewState.mode === 'command') {
        return ':' + ViewState.commandBuffer.join('')
+    } else {
+      return ViewState.commandResult
     }
   },
   render() {
