@@ -59,7 +59,7 @@ SeqCom.Section = React.createClass({
 SeqCom.PitchGrid = React.createClass({
   renderPitches() {
     return Array.from(Array(127).keys()).reverse().map((i)=>{
-      return <pitch className={this.classes(i)}>
+      return <pitch key={i} className={this.classes(i)}>
         <pianoKey className={this.classes(i)}>{Piano.cOctave(i)}</pianoKey>
       </pitch>
     })
