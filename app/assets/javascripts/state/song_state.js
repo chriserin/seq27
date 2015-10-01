@@ -36,7 +36,7 @@ SongState.activeArrangementIndex = function() {
 
 SongState.currentGroupNotes = function(songState) {
   var activePart = SongState.activePart()
-  var sortedNotes = activePart.notes.sort(function(a, b) { return a.timestamp - b.timestamp;})
+  var sortedNotes = activePart.notes.sort(function(a, b) { return b.timestamp - a.timestamp;})
 
   var tag = sortedNotes[0].timestamp
 
