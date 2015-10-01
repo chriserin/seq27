@@ -26,12 +26,12 @@ Piano.cPitch = function(pitchNumber) {
 }
 
 Piano.octave = function(pitchNumber) {
-  return `octave${pitchNumber / 12}`
+  return `octave${Math.round(pitchNumber / 12)}`
 }
 
 Piano.cOctave = function(pitchNumber) {
   if (pitchNumber % 12 == 0) {
-    return pitchNumber / 12
+    return Math.round(pitchNumber / 12)
   } else {
     return ''
   }
