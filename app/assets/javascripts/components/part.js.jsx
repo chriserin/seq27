@@ -15,11 +15,39 @@ SeqCom.Song = React.createClass({
 });
 
 SeqCom.Section = React.createClass({
+  cursorTop() {
+    return (16 * (127 - ViewState.cursor.pitch))
+  },
+  componentDidMount() {
+    React.findDOMNode(this.refs.grids).scrollTop = (16 * (127 - (60 + 15)))
+  },
+  componentDidUpdate() {
+    var elem = React.findDOMNode(this.refs.grids)
+
+    var lowerDiff = this.cursorTop() - (elem.scrollTop + elem.clientHeight - (16 * 2))
+
+    if (lowerDiff > 0) {
+      if (lowerDiff <= 16) {
+        elem.scrollTop = this.cursorTop() - (elem.clientHeight - (16 * 2))
+      } else {
+        elem.scrollTop = this.cursorTop() - (elem.clientHeight / 2)
+      }
+    }
+
+    var upperDiff = (elem.scrollTop + 16) - this.cursorTop()
+
+    if (upperDiff > 0) {
+      if (upperDiff <= 16)
+        elem.scrollTop = this.cursorTop() - (16)
+      else
+        elem.scrollTop = this.cursorTop() - (elem.clientHeight / 2)
+    }
+  },
   render: function() {
     var part = SongState.activePart()
     var parts_html = <SeqCom.Part data={part} partId={ViewState.activePart}/>;
 
-    return <grids data-section-id={ViewState.activeSection}>
+    return <grids ref='grids' data-section-id={ViewState.activeSection}>
       <SeqCom.PitchGrid/>
       <SeqCom.BeatGrid beats={part.beats}/>
       <SeqCom.CursorGrid/>
