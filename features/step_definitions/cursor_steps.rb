@@ -1,5 +1,5 @@
 Then(/^I see a cursor in the top left corner$/) do
-  expect(cursor).to have_a_position_of(0, 127)
+  expect(cursor).to have_a_position_of(0, 60)
 end
 
 When /^I press the space bar$/ do
@@ -8,16 +8,15 @@ When /^I press the space bar$/ do
 end
 
 When(/^I press '(\w)'$/) do |char|
-  expect(page).to have_selector('songSection')
   page.execute_script("EVENT_TRIGGERS.downKey('#{char}')")
 end
 
 Then /^I see the cursor has moved (down|up|right|left)$/ do |direction|
   positions = {
-    down: {start: 0, pitch: 126},
-    up: {start: 0, pitch: 127},
-    right: {start: 96, pitch: 127},
-    left: {start: 0, pitch: 127}
+    down: {start: 0, pitch: 59},
+    up: {start: 0, pitch: 60},
+    right: {start: 96, pitch: 60},
+    left: {start: 0, pitch: 60}
   }
 
   position = positions[direction.to_sym]
@@ -29,7 +28,7 @@ Then /^I see that the cursor has not moved$/ do
 end
 
 Then(/^I see a new note$/) do
-  expect(page).to have_selector("note[data-start='0'][data-pitch='126']")
+  expect(page).to have_selector("note[data-start='0'][data-pitch='59']")
 end
 
 Then(/^I see only one note$/) do

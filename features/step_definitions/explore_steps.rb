@@ -31,7 +31,7 @@ end
 
 Then(/^I see that section (\d+) is displayed in the explorer first$/) do |arg1|
   within 'explorer' do
-    firstSection = find("songSection:first-child")
+    firstSection = find("h1 + songSection")
     expect(firstSection['data-section-id']).to eq "2"
   end
 end

@@ -40,7 +40,7 @@ end
 
 Then /^I am on the song page$/ do
   song = Song.all.first
-  expect(page).to have_selector("songSection")
+  expect(page).to have_selector("song")
   expect(current_path).to eq "/songs/#{song.id}"
 end
 

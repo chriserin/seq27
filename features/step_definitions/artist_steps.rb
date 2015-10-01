@@ -54,12 +54,12 @@ Then(/^I see the value of the "(.*?)" setting is (\d+)$/) do |setting_name, numb
 end
 
 Then(/^I see that section "(\d*)" is active$/) do |active_section_id|
-  section = find("songSection")
+  section = find("grids")
   expect(section['data-section-id']).to eq active_section_id
 end
 
 Then(/^I see that part "(.*?)" is active$/) do |active_part_id|
-  part = find("songSection part")
+  part = find("grids part")
   expect(part['data-part-id']).to eq active_part_id
 end
 

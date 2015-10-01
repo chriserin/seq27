@@ -44,7 +44,8 @@ Feature: Artist plays a song
   @javascript
   Scenario: Artist plays a song with two sections
     Given an artist on the new song page
-    When  I type the "mecn" sequence
+    When  I type the ":set beats=4" command
+    And   I type the "mecn" sequence
     And   I type the ":section 1!" command
     And   I type the "mecn" sequence
     And   there is a midi output available
