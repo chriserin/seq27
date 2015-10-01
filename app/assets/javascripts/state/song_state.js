@@ -8,7 +8,7 @@ INITIAL_SONG_STATE = {
       loop: 1,
       parts: [
          {
-           beats: 4,
+           beats: 16,
            notes: []
          }
       ]
@@ -73,7 +73,7 @@ SongState.newNote = function(start, pitch, length) {
 
 SongState.newPart = function() {
   return {
-    beats: 4,
+    beats: 16,
     notes: []
   }
 }

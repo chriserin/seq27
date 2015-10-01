@@ -1,7 +1,7 @@
 VIEW_STATE = {
   mode: 'normal',
   cursor: {
-    pitch: 127,
+    pitch: 60,
     start: 0,
     length: 96
   },
