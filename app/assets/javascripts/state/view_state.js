@@ -14,6 +14,7 @@ VIEW_STATE = {
     arrangementIndex: 0,
     partId: 0
   },
+  error: null,
   activeSection: 0,
   activePart: 0,
   commandResult: '',

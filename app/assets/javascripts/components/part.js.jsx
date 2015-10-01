@@ -147,6 +147,9 @@ SeqCom.CommandLine = React.createClass({
     if(ViewState.mode === 'command') {
        return ':' + ViewState.commandBuffer.join('')
     } else {
+      if (ViewState.error) {
+        return <span className='error'>{ViewState.error}</span>
+      }
       return ViewState.commandResult
     }
   },
