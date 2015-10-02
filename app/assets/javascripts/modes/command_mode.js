@@ -30,6 +30,16 @@ CommandMode.addToCommandBuffer = function(viewState, key) {
   return viewState;
 }
 
+CommandMode.removeFromCommandBuffer = function(viewState) {
+  if (viewState.commandBuffer.length === 0) {
+    return Modes.normalMode(viewState)
+  }
+
+  viewState.commandBuffer = viewState.commandBuffer.slice(0, viewState.commandBuffer.length - 1)
+
+  return viewState;
+}
+
 CommandMode.executionMethods = function() {
   var commandBuffer = ViewState.commandBuffer.join("")
   var command = commandBuffer.split(" ")[0]

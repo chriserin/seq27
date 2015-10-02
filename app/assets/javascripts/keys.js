@@ -1,6 +1,20 @@
 window.NOOP = function(state){return state;}
 
 document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener('keydown',
+    function(keyboardEvent) {
+      if(keyboardEvent.keyCode === 8) {
+        keyboardEvent.preventDefault()
+        if (ViewState.mode === 'command') {
+          VIEW_STATE = CommandMode.removeFromCommandBuffer(VIEW_STATE)
+        }
+        window.SONG_VIEW.forceUpdate();
+      }
+    }
+  );
+})
+
+document.addEventListener("DOMContentLoaded", function () {
     if(window.song) {
       document.addEventListener('keypress',
         function(keyboardEvent) {
