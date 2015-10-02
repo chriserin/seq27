@@ -8,12 +8,14 @@ Move.toMiddleNote = function(viewState, note, octave) {
 }
 
 Move.upOctave = function(viewState) {
-  viewState['cursor']['pitch'] += 12;
+  var tmpPitch = viewState['cursor']['pitch'] + 12;
+  viewState = ViewState.setCursorPitch(viewState, tmpPitch);
   return viewState;
 }
 
 Move.downOctave = function(viewState) {
-  viewState['cursor']['pitch'] -= 12;
+  var tmpPitch = viewState['cursor']['pitch'] - 12;
+  viewState = ViewState.setCursorPitch(viewState, tmpPitch);
   return viewState;
 }
 
