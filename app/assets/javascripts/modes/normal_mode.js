@@ -61,6 +61,7 @@ function currentNode(character) {
     " ": [ Play.playStop, NOOP ],
     "n": [NOOP, CursorMovement.moveToNextNote],
     "N": [NOOP, CursorMovement.moveToPrevNote],
+    "G": [NOOP, CursorMovement.moveToBottom],
     "v": [NOOP, Modes.visualMode]
   };
 
@@ -81,6 +82,7 @@ function currentNode(character) {
   topNode["<"] = shortenNodes();
   topNode["d"] = deleteNodes();
   topNode["c"] = createNodes();
+  topNode["g"] = gotoNodes();
 
   //TODO: this doesn't work for a third level of nodes
   if (NormalMode["sequence"] === '') {
@@ -164,6 +166,13 @@ function createNodes() {
   nodes = {
     "n": [Song.addNote, NOOP],
     "h": [Song.createChord, NOOP]
+  }
+  return nodes;
+}
+
+function gotoNodes() {
+  var nodes = {
+    "g": [NOOP, CursorMovement.moveToTop]
   }
   return nodes;
 }

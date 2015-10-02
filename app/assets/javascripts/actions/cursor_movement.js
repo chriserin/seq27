@@ -55,3 +55,13 @@ CursorMovement.moveToPrevNote = function(viewState) {
   viewState['cursor']['pitch'] = nextNote.pitch;
   return viewState;
 }
+
+CursorMovement.moveToTop = function(viewState) {
+  viewState = ViewState.setCursorPitch(viewState, 127);
+  return viewState
+}
+
+CursorMovement.moveToBottom = function(viewState) {
+  viewState = ViewState.setCursorPitch(viewState, 0);
+  return viewState
+}
