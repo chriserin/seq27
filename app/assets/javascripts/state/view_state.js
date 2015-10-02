@@ -35,6 +35,17 @@ function defineProp(stateKey) {
   Object.defineProperty(ViewState, stateKey, { get: function() {return VIEW_STATE[stateKey]}})
 }
 
+ViewState.setCursorPitch = function(state, pitch) {
+  if(pitch > 127) {
+    state.cursor['pitch'] = 127
+  } else if (pitch < 0) {
+    state.cursor['pitch'] = 0
+  } else {
+    state.cursor['pitch'] = pitch
+  }
+  return state
+}
+
 ViewState.selectedNotes = function(songState){
   var part = SongState.activePart()
 

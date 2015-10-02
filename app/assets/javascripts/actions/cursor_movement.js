@@ -2,13 +2,13 @@ window.CursorMovement = {}
 
 CursorMovement.moveDown = function(state, number) {
   var pitches = number || 1
-  state['cursor']['pitch'] -= pitches;
+  state = ViewState.setCursorPitch(state, state['cursor']['pitch'] - pitches);
   return state;
 }
 
 CursorMovement.moveUp = function(state, number) {
   var pitches = number || 1
-  state['cursor']['pitch'] += pitches;
+  state = ViewState.setCursorPitch(state, state['cursor']['pitch'] + pitches);
   return state;
 }
 
