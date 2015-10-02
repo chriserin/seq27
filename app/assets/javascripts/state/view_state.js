@@ -46,6 +46,17 @@ ViewState.setCursorPitch = function(state, pitch) {
   return state
 }
 
+ViewState.setCursorStart = function(state, start) {
+  if(start > SongState.activePart().beats * 96) {
+    state.cursor['start'] = SongState.activePart().beats * 96
+  } else if (start < 0) {
+    state.cursor['start'] = 0
+  } else {
+    state.cursor['start'] = start
+  }
+  return state
+}
+
 ViewState.selectedNotes = function(songState){
   var part = SongState.activePart()
 

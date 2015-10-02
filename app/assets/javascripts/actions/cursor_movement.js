@@ -14,13 +14,13 @@ CursorMovement.moveUp = function(state, number) {
 
 CursorMovement.moveRight = function(state, number) {
   var beats = number || 1
-  state['cursor']['start'] += (96 * beats);
+  state = ViewState.setCursorStart(state, state['cursor']['start'] + (96 * beats));
   return state;
 }
 
 CursorMovement.moveLeft = function(state, number) {
   var beats = number || 1
-  state['cursor']['start'] -= (96 * beats);
+  state = ViewState.setCursorStart(state, state['cursor']['start'] - (96 * beats));
   return state;
 }
 
