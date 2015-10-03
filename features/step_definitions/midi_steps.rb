@@ -14,3 +14,10 @@ Then(/^I hear a note on the second output$/) do
 
   expect_midi_message(on_packets[0], on = 9, 1, 60, 80)
 end
+
+Then(/^I see the outputs in the command line$/) do
+  within 'commandLine' do
+    expect(page).to have_selector('p', text: 'seq27-midi-output')
+    expect(page).to have_selector('p', text: 'seq-27-output-B')
+  end
+end

@@ -22,3 +22,10 @@ Feature: Midi goes different places
     And   I set the tempo very high in order to shrink the test
     And   I press the space bar
     Then  I hear a note on the second output
+
+  @javascript
+  Scenario: User sees available outputs
+    Given a second output named "seq-27-output-B"
+    And   a signed in artist with a new song
+    When  I type the ":outputs" command
+    Then  I see the outputs in the command line

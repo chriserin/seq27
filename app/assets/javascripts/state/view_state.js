@@ -21,7 +21,9 @@ VIEW_STATE = {
   commandBuffer: [],
   explorerDisplayParts: true,
   explorerMode: 'normal',
-  selectedArrangementIndexes: []
+  selectedArrangementIndexes: [],
+  reportItems: null,
+  reportTitle: ''
 };
 
 window.ViewState = {}

@@ -21,6 +21,7 @@ CommandMode.commandMapping = function() {
     "section": [Song.setSection, Song.setActiveSection],
     "part": [Song.setPart, Song.setActivePart],
     "explore": [NOOP, Explore.enterExploreMode],
+    "outputs": [NOOP, Report.outputs],
     "throw": [Testing.throwError, NOOP]
   };
 }

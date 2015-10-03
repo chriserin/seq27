@@ -142,21 +142,6 @@ SeqCom.StatusLine = React.createClass({
   }
 })
 
-SeqCom.CommandLine = React.createClass({
-  renderContent() {
-    if(ViewState.mode === 'command') {
-       return ':' + ViewState.commandBuffer.join('')
-    } else {
-      if (ViewState.error) {
-        return <span className='error'>{ViewState.error}</span>
-      }
-      return ViewState.commandResult
-    }
-  },
-  render() {
-    return <commandLine>{this.renderContent()}</commandLine>
-  }
-})
 
 SeqCom.CursorPosition = React.createClass({
   render() {
