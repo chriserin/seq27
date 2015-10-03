@@ -48,7 +48,7 @@ CommandMode.executionMethods = function() {
   var commandFns = commandMapping[command]
 
   if(commandFns === undefined) {
-    commandFns = [NOOP, Error.notACommand]
+    commandFns = [NOOP, SeqError.notACommand]
   }
 
   var songStateFn = function (songState) {
