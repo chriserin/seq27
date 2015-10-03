@@ -9,7 +9,9 @@ INITIAL_SONG_STATE = {
       parts: [
          {
            beats: 16,
-           notes: []
+           notes: [],
+           channel: 1,
+           output: 0
          }
       ]
     }
