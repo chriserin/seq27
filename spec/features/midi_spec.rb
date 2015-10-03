@@ -38,6 +38,17 @@ describe "Midi", type: :feature do
     expect(result).to eq "seq27-midi-output"
   end
 
+  it 'should find midi output if passed an index' do
+    @second_midi_destination = Test::MidiDestination.second_instance('secondIndex')
+    visit '/js_spec'
+    result = page.evaluate_script("Midi.connect();")
+    sleep(0.05) #Allow the midi api to asychronously collect midi connections
+    result = page.evaluate_script("Midi.outputNames()")
+    index = result.find_index('secondIndex')
+    result = page.evaluate_script("Midi.selectOutput(#{index}).name")
+    expect(result).to eq "secondIndex"
+  end
+
   it 'should expose the list of midi outputs' do
     visit '/js_spec'
     result = page.evaluate_script("Midi.connect();")

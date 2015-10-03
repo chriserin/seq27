@@ -17,10 +17,13 @@ window.Midi = class Midi
     )
 
   @selectOutput: (name=TEST_OUTPUT) ->
-    if Midi.connections.has(name)
-      Midi.connections.get(name)
+    if (isNaN(name))
+      if Midi.connections.has(name)
+        Midi.connections.get(name)
+      else
+        Midi.connections.values().next().value
     else
-      Midi.connections.values().next().value
+      Array.from(Midi.connections)[name][1]
 
   @outputNames: ->
     names = []
