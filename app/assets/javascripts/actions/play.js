@@ -2,10 +2,14 @@ window.Play = {};
 Play.PLAY_STATE = {isPlaying: false, activeNotes: []};
 
 Play.playStop = function(songState) {
+  console.log('play stop')
+  console.log(JSON.stringify(Play.PLAY_STATE))
   if (!Play.PLAY_STATE.isPlaying) {
+    console.log('play')
     Play.PLAY_STATE = {isPlaying: true, activeNotes: []};
     return Play.play(songState);
   } else {
+    console.log('stop')
     Play.stop(songState);
     return songState;
   }
@@ -13,9 +17,11 @@ Play.playStop = function(songState) {
 
 Play.stop = function(songState) {
   for(var note of Play.PLAY_STATE.activeNotes) {
+    removeNote(note)
     Midi.sendOff(1, note.pitch, velocity = 80, 0);
   }
 
+  console.log('stopping')
   Play.PLAY_STATE = {isPlaying: false, activeNotes: []};
 
   return songState;
@@ -60,7 +66,8 @@ Play.makeEventsMap = function(songState) {
         var count = 0
 
         while((!sectionFilled) && (count < 5)) {
-          for(var note of part.notes) {
+          for(var note of part.notes.sort(function(a, b){ return a.start - b.start})) {
+            console.log('note start ' + note.start)
             var noteLengthInMillis = note.length * msPerTick;
 
             var startTicks = note.start + loopOffset + (fillOffset * 96.0)
@@ -75,6 +82,8 @@ Play.makeEventsMap = function(songState) {
 
               var channel = part.channel || 1
               var output =  part.output
+              console.log('on ' + onTime)
+              console.log('of ' + offTime)
               eventsMap.push([onTime, createOnFn(channel, note.pitch, velocity = 80, output) ]);
               eventsMap.push([offTime, createOffFn(channel, note.pitch, velocity = 80, output) ]);
 
@@ -91,9 +100,10 @@ Play.makeEventsMap = function(songState) {
     }
   }
 
-  return eventsMap;
+  return eventsMap.sort(function(a, b) { return a[0] - b[0]});
 }
 
+var intervalTask = null
 Play.play = function(songState) {
   Play.PLAY_STATE.activeNotes = [];
   var eventsMap = Play.makeEventsMap(songState);
@@ -105,7 +115,7 @@ Play.play = function(songState) {
     }
   }
 
-  setInterval(callScheduleFn, JUST_IN_TIME_INCREMENT );
+  intervalTask = setInterval(callScheduleFn, JUST_IN_TIME_INCREMENT );
 
   return songState;
 }
@@ -118,7 +128,6 @@ var removeNote = function(note) {
   return Play.PLAY_STATE.activeNotes;
 }
 
-
 var scheduleFnStack = [];
 var JUST_IN_TIME_INCREMENT = 10;
 var scheduleNotes = function(startOffset, eventsMap, songStart) {
@@ -128,11 +137,9 @@ var scheduleNotes = function(startOffset, eventsMap, songStart) {
     var data = eventsMap.shift();
     var eventTime = data[0];
 
-    songStart = songStart || function(){ return performance.now() + 50;}();
-    if (songStart + eventTime <= (performance.now() + 50) + eventLimit) {
+    var songStart = songStart || function(){ return performance.now() + 50;}();
+    if (songStart + eventTime <= (performance.now() + 50) + JUST_IN_TIME_INCREMENT) {
       scheduleTime = songStart + eventTime;
-      if (eventTime === 0) {
-      }
       data[1](songStart + eventTime);
     } else {
       eventsMap.unshift(data);
@@ -145,7 +152,8 @@ var scheduleNotes = function(startOffset, eventsMap, songStart) {
       scheduleFnStack.push(function() { scheduleNotes(startOffset + JUST_IN_TIME_INCREMENT, eventsMap, songStart); });
     }
   } else {
+    console.log('ok we"re stopping now')
+    clearInterval(intervalTask)
     Play.PLAY_STATE = {isPlaying: false, activeNotes: []};
   }
 }
-

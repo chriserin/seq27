@@ -39,5 +39,6 @@ window.Midi = class Midi
     @send(OFF, channel, pitch, velocity, timeFromNow, output)
 
   @send: (action, channel, pitch, velocity, timeFromNow=0, output)->
+    console.log('sending ' + pitch + ' channel ' + channel)
     output = @selectOutput(output)
     output.send [action ^ channel, pitch, velocity], timeFromNow

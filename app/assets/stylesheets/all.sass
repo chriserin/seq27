@@ -169,6 +169,7 @@ song
       width: calc(100% - 60px)
       display: flex
       z-index: 10
+      overflow: scroll
 
       beat
         width: 100px
@@ -252,11 +253,15 @@ song
   commandLine
     min-height: 20px
     width: 100%
-    display: block
     vertical-align: bottom
     z-index: 100
     background-color: white
     flex-grow: 0
+
+    partialSequence
+      margin-left: 80%
+      padding-right: 20px
+      width: auto
 
     span.lefttab
       padding-left: 20px

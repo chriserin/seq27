@@ -53,6 +53,12 @@ Then(/^I see the value of the "(.*?)" setting is (\d+)$/) do |setting_name, numb
   end
 end
 
+Then(/^I see the command result "(.*?)"$/) do |result|
+  within 'commandLine' do
+    expect(page).to have_content result
+  end
+end
+
 Then(/^I see that section "(\d*)" is active$/) do |active_section_id|
   section = find("grids")
   expect(section['data-section-id']).to eq active_section_id
