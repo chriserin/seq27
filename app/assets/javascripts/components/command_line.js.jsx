@@ -2,7 +2,6 @@ window.SeqCom = window.SeqCom || {}
 
 SeqCom.Error = React.createClass({
   render() {
-    console.log('error')
     if(ViewState.error) {
       return <span className='error'>{ViewState.error}</span>
     }
@@ -22,7 +21,6 @@ SeqCom.Command = React.createClass({
 
 SeqCom.Result = React.createClass({
   render() {
-    console.log('result')
     return <span>{ViewState.commandResult}</span>
   }
 })
