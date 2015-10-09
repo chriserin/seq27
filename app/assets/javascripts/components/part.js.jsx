@@ -16,10 +16,10 @@ SeqCom.Song = React.createClass({
 
 SeqCom.Section = React.createClass({
   cursorTop() {
-    return (16 * (127 - ViewState.cursor.pitch))
+    return (16 * (126 - ViewState.cursor.pitch))
   },
   componentDidMount() {
-    React.findDOMNode(this.refs.grids).scrollTop = (16 * (127 - (60 + 15)))
+    React.findDOMNode(this.refs.grids).scrollTop = (16 * (126 - (60 + 15)))
   },
   componentDidUpdate() {
     var elem = React.findDOMNode(this.refs.grids)
@@ -110,7 +110,7 @@ SeqCom.CursorGrid = React.createClass({
 SeqCom.Part = React.createClass({
   notePosition(note) {
     return {
-      top: (16 * (127 - note.pitch)),
+      top: (16 * (126 - note.pitch)),
       left: ((note.start / 96.0) * 75) + 60,
       width: ((note.length / 96.0) * 75)
     }
