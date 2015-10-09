@@ -76,7 +76,9 @@ SongState.newNote = function(start, pitch, length) {
 SongState.newPart = function() {
   return {
     beats: 16,
-    notes: []
+    notes: [],
+    channel: 1,
+    output: 0
   }
 }
 
