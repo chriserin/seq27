@@ -4,6 +4,7 @@ Feature: Artist plays a song
   Scenario: Artist plays a song
     Given an artist on the new song page
     When   there is a midi output available
+    And   I type the ":set output=seq27-midi-output" command
     And   I set the tempo very high in order to shrink the test
     And   I type the "mecn" sequence
     And   I press the space bar
@@ -13,6 +14,7 @@ Feature: Artist plays a song
   Scenario: Artist plays a song with two notes
     Given an artist on the new song page
     When   there is a midi output available
+    And   I type the ":set output=seq27-midi-output" command
     And   I set the tempo very high in order to shrink the test
     And   I type the "mecnlcn" sequence
     And   I press the space bar
@@ -22,6 +24,7 @@ Feature: Artist plays a song
   Scenario: Artist plays a song and stops the song before it ends
     Given an artist on the new song page
     When  there is a midi output available
+    And   I type the ":set output=seq27-midi-output" command
     And   I type the "mecn" sequence
     And   I press the space bar
     Then  I hear the song interrupted by the space bar
@@ -30,6 +33,7 @@ Feature: Artist plays a song
   Scenario: Artist plays a song and the song loops
     Given an artist on the new song page
     When  there is a midi output available
+    And   I type the ":set output=seq27-midi-output" command
     And   I type the "mecn" sequence
     And   I type the ":set loop=2" command
     And   I type the ":get loop" command
@@ -45,10 +49,12 @@ Feature: Artist plays a song
   Scenario: Artist plays a song with two sections
     Given an artist on the new song page
     When  I type the ":set beats=4" command
+    And   I type the ":set output=seq27-midi-output" command
     And   I type the "mecn" sequence
     And   I type the ":section 1!" command
     And   I type the "mecn" sequence
     And   there is a midi output available
+    And   I type the ":set output=seq27-midi-output" command
     And   I set the tempo very high in order to shrink the test
     And   I press the space bar
     Then  I hear the song with both sections
@@ -60,11 +66,13 @@ Feature: Artist plays a song
     And  I type the "mecn" sequence
     And  I type the ":new" command
     And  I type the ":section 1!" command
+    And  I type the ":set output=seq27-midi-output" command
     Then I see that section "1" is active
     When I move to middle C and I create a note
     Then I see a new note with pitch "60"
     When I type the ":set loop=2" command
     And  I type the ":section 0" command
+    And  I type the ":set output=seq27-midi-output" command
     And  I type the ":set loop=1" command
     And  I move to middle A and I create a note
     And  I set the tempo very high in order to shrink the test
@@ -76,6 +84,7 @@ Feature: Artist plays a song
   Scenario: Artist plays a song and the song loops
     Given an artist on the new song page
     When  there is a midi output available
+    And  I type the ":set output=seq27-midi-output" command
     And   I type the "mecn" sequence
     And   I type the ":set loop=20" command
     And   I type the ":set beats=1" command
@@ -87,9 +96,11 @@ Feature: Artist plays a song
   Scenario: Artist plays a song with unequal part lengths for a section
     Given an artist on the new song page
     When I type the "mccn" sequence
+    And  I type the ":set output=seq27-midi-output" command
     And  I type the ":set beats=1" command
     And  I type the ":part 1!" command
     And  I type the ":set beats=4" command
+    And  I type the ":set output=seq27-midi-output" command
     And  I set the tempo very high in order to shrink the test
     And  I press the space bar
     Then I hear the first part repeated 4 times
