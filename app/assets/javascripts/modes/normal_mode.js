@@ -1,26 +1,29 @@
-window.NormalMode = {"sequence": '', "number": ''};
+window.NormalMode = {"sequence": '', "number": '', totalSequence: ''};
 
 NormalMode.push = function(character) {
-  isNumber = captureNumber(character);
+  var isNumber = captureNumber(character);
   if (isNumber) {return [NOOP, NOOP];}
 
-  commandNodes = currentNode();
-  node = commandNodes[character];
+  var commandNodes = currentNode();
+  var node = commandNodes[character];
 
   if (node === undefined) {
     //node does not exist
     NormalMode["sequence"] = '';
+    NormalMode["totalSequence"] = '';
     NormalMode["number"] = '';
     return [NOOP, NOOP];
   } else if (node.length === undefined) {
     //node contains nodes
     NormalMode["sequence"] += character;
+    NormalMode["totalSequence"] += character;
     return [NOOP, NOOP];
   } else {
     //node is an end node
     commandFns = addNumberArgument(node); //array of 2 functions or just 1 function
     NormalMode["sequence"] = '';
     NormalMode["number"] = '';
+    NormalMode["totalSequence"] = '';
     return commandFns;
   }
 }
@@ -47,6 +50,7 @@ function captureNumber(possibleNumber) {
     return false;
   } else {
     NormalMode["number"] += possibleNumber
+    NormalMode["totalSequence"] += possibleNumber
     return true;
   }
 }

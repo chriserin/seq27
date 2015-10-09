@@ -41,6 +41,15 @@ SeqCom.Report = React.createClass({
   }
 })
 
+SeqCom.PartialSequence = React.createClass({
+  render() {
+    if(NormalMode.sequence) {
+      return <partialSequence>{NormalMode.totalSequence}</partialSequence>
+    }
+    return <span/>
+  }
+})
+
 SeqCom.CommandLine = React.createClass({
   render() {
     return <commandLine>
@@ -48,6 +57,7 @@ SeqCom.CommandLine = React.createClass({
       <SeqCom.Command/>
       <SeqCom.Result/>
       <SeqCom.Report/>
+      <SeqCom.PartialSequence/>
     </commandLine>
   }
 })
