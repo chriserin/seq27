@@ -89,7 +89,7 @@ SeqCom.BeatGrid = React.createClass({
 SeqCom.CursorGrid = React.createClass({
   cursorPosition(cursor) {
     return {
-      top: (16 * (127 - cursor.pitch)),
+      top: (16 * (126 - cursor.pitch)),
       left: ((cursor.start / 96.0) * 75) + 60
     }
   },
