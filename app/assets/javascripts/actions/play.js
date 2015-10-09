@@ -91,7 +91,7 @@ Play.makeEventsMap = function(songState) {
     }
   }
 
-  return eventsMap;
+  return eventsMap.sort(function(a, b) { return a[0] - b[0]});
 }
 
 Play.play = function(songState) {
