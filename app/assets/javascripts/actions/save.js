@@ -7,6 +7,7 @@ Save.write = function(songState) {
     if (xhr.readyState == 4 && xhr.status == 200) {
       window.history.pushState({}, 'Song', `${this.responseText}`)
       VIEW_STATE.commandResult = 'written'
+      SONG_STATE.id = this.responseText
     }
   }
 
