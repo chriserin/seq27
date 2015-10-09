@@ -13,6 +13,7 @@ Play.playStop = function(songState) {
 
 Play.stop = function(songState) {
   for(var note of Play.PLAY_STATE.activeNotes) {
+    removeNote(note)
     Midi.sendOff(1, note.pitch, velocity = 80, 0);
   }
 
@@ -112,10 +113,12 @@ Play.play = function(songState) {
 }
 
 var removeNote = function(note) {
-  index = Play.PLAY_STATE.activeNotes.indexOf(note);
+  var index = Play.PLAY_STATE.activeNotes.indexOf(note);
+
   if (index > -1) {
     Play.PLAY_STATE.activeNotes.slice(index, 1);
   }
+
   return Play.PLAY_STATE.activeNotes;
 }
 
