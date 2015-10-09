@@ -1,8 +1,10 @@
 window.Song = {};
 
 Song.addNote = function(songState) {
-  cursor = ViewState.cursor
-  SongState.activePart().notes.push(SongState.newNote(cursor.start, cursor.pitch, 96))
+  var cursor = ViewState.cursor
+  var note = SongState.newNote(cursor.start, cursor.pitch, 96)
+  SongState.tagNotes([note])
+  SongState.activePart().notes.push(note)
   return songState;
 }
 
