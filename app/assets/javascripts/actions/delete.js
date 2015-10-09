@@ -22,5 +22,8 @@ Delete.deleteSelected = function(songState) {
     var index = SongState.indexOfNote(note, part)
     delete part.notes[index];
   }
+
+  part.notes = part.notes.filter(function(n) { return n;})
+
   return songState;
 }
