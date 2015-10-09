@@ -60,7 +60,7 @@ Play.makeEventsMap = function(songState) {
         var count = 0
 
         while((!sectionFilled) && (count < 5)) {
-          for(var note of part.notes) {
+          for(var note of part.notes.sort(function(a, b){ return a.start - b.start})) {
             var noteLengthInMillis = note.length * msPerTick;
 
             var startTicks = note.start + loopOffset + (fillOffset * 96.0)
