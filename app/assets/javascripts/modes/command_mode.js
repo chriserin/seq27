@@ -59,6 +59,7 @@ CommandMode.executionMethods = function() {
   }
 
   var viewStateFn = function (viewState) {
+    viewState.delayedAction = function(state) { state.commandResult = ''; return state}
     var state = commandFns[1](viewState, commandBuffer)
     state = Modes.transitionToNextMode(state)
     return clearCommandBuffer(state)
