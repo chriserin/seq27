@@ -169,7 +169,8 @@ function deleteNodes() {
 function createNodes() {
   nodes = {
     "n": [Song.addNote, NOOP],
-    "h": [Chord.major, NOOP]
+    "h": [Chord.major, NOOP],
+    "m": [Chord.minor, NOOP]
   }
   return nodes;
 }

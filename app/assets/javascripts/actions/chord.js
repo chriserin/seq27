@@ -1,18 +1,29 @@
 window.Chord = {}
 
 Chord.major = function(songState) {
-  cursor = ViewState.cursor
-  results = []
   var activePart = SongState.activePart()
-  var newNote = SongState.newNote(cursor.start, cursor.pitch, 96)
-  results.push(newNote)
-  activePart.notes.push(newNote)
-  newNote = SongState.newNote(cursor.start, cursor.pitch + 4, 96)
-  results.push(newNote)
-  activePart.notes.push(newNote)
-  newNote = SongState.newNote(cursor.start, cursor.pitch + 7, 96)
-  results.push(newNote)
-  activePart.notes.push(newNote)
-  SongState.tagNotes(results)
-  return songState;
+  var part = createChord([0,4,7], activePart)
+
+  return songState
+}
+
+Chord.minor = function(songState) {
+  var activePart = SongState.activePart()
+  var part = createChord([0,3,7], activePart)
+
+  return songState
+}
+
+var createChord = function(chordPattern, part) {
+  var cursor = ViewState.cursor
+
+  var newNotes = chordPattern.map(function(interval) {
+    return SongState.newNote(cursor.start, cursor.pitch + interval, 96)
+  })
+
+  SongState.tagNotes(newNotes)
+
+  Array.prototype.push.apply(part.notes, newNotes)
+
+  return part
 }
