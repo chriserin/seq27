@@ -128,11 +128,9 @@ var scheduleNotes = function(startOffset, eventsMap, songStart) {
     var data = eventsMap.shift();
     var eventTime = data[0];
 
-    songStart = songStart || function(){ return performance.now() + 50;}();
-    if (songStart + eventTime <= (performance.now() + 50) + eventLimit) {
+    var songStart = songStart || function(){ return performance.now() + 50;}();
+    if (songStart + eventTime <= (performance.now() + 50) + JUST_IN_TIME_INCREMENT) {
       scheduleTime = songStart + eventTime;
-      if (eventTime === 0) {
-      }
       data[1](songStart + eventTime);
     } else {
       eventsMap.unshift(data);
