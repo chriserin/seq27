@@ -94,6 +94,7 @@ Play.makeEventsMap = function(songState) {
   return eventsMap.sort(function(a, b) { return a[0] - b[0]});
 }
 
+var intervalTask = null
 Play.play = function(songState) {
   Play.PLAY_STATE.activeNotes = [];
   var eventsMap = Play.makeEventsMap(songState);
@@ -105,7 +106,7 @@ Play.play = function(songState) {
     }
   }
 
-  setInterval(callScheduleFn, JUST_IN_TIME_INCREMENT );
+  intervalTask = setInterval(callScheduleFn, JUST_IN_TIME_INCREMENT );
 
   return songState;
 }
@@ -117,7 +118,6 @@ var removeNote = function(note) {
   }
   return Play.PLAY_STATE.activeNotes;
 }
-
 
 var scheduleFnStack = [];
 var JUST_IN_TIME_INCREMENT = 10;
@@ -145,7 +145,7 @@ var scheduleNotes = function(startOffset, eventsMap, songStart) {
       scheduleFnStack.push(function() { scheduleNotes(startOffset + JUST_IN_TIME_INCREMENT, eventsMap, songStart); });
     }
   } else {
+    clearInterval(intervalTask)
     Play.PLAY_STATE = {isPlaying: false, activeNotes: []};
   }
 }
-
