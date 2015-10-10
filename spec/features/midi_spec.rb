@@ -40,6 +40,7 @@ describe "Midi", type: :feature do
 
   it 'should find midi output if passed an index' do
     @second_midi_destination = Test::MidiDestination.second_instance('secondIndex')
+    sleep 1
     visit '/js_spec'
     result = page.evaluate_script("Midi.connect();")
     sleep(0.05) #Allow the midi api to asychronously collect midi connections
