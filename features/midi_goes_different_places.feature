@@ -4,10 +4,12 @@ Feature: Midi goes different places
   Scenario: Song sends midi to different channels
     Given an artist on the new song page
     When  I type the "mccn" sequence
+    And   I type the ":set output=seq27-midi-output" command
     And   I type the ":set channel=2" command
     And   I type the ":part 1!" command
     Then  I see that part "1" is active
     When  I type the "mccn" sequence
+    And   I type the ":set output=seq27-midi-output" command
     And   I type the ":set channel=3" command
     And   I set the tempo very high in order to shrink the test
     And   I press the space bar
