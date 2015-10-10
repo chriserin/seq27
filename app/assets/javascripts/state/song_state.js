@@ -46,7 +46,7 @@ SongState.currentGroupNotes = function(songState) {
 
 SongState.latestTag = function(songState) {
   var activePart = SongState.activePart()
-  var sortedNotes = activePart.notes.sort(function(a, b) { return b.timestamp - a.timestamp;})
+  var sortedNotes = activePart.notes.map(function(n) {return n}).sort(function(a, b) { return b.timestamp - a.timestamp;})
 
   var tag = sortedNotes[0].timestamp
   return tag

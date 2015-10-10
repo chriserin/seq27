@@ -130,7 +130,7 @@ SeqCom.Part = React.createClass({
         data-pitch={note.pitch}
         data-length={note.length}
       />;
-    });
+    })
 
     return <part data-part-id={this.props.partId}>
       <notesGrid>{notes_html}</notesGrid>
