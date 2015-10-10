@@ -115,11 +115,17 @@ SeqCom.Part = React.createClass({
       width: ((note.length / 96.0) * 75)
     }
   },
+  classes(note) {
+    if(note.timestamp === SongState.latestTag()) {
+      return 'groupSelected'
+    }
+  },
   render: function() {
     var notes_html = this.props.data.notes.map((note, i)=> {
       return <note
         key={i}
         style={this.notePosition(note)}
+        className={this.classes(note)}
         data-start={note.start}
         data-pitch={note.pitch}
         data-length={note.length}

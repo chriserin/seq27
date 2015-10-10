@@ -4,7 +4,8 @@ Feature: Artist alters notes
   Scenario: Artist lengthens latest note
     Given an artist on the new song page
     When  I type the "cn" sequence
-    And   I type the ">>" sequence
+    Then  I see the note is part of the selected group
+    When  I type the ">>" sequence
     Then  I see a note with length "192"
 
   @javascript

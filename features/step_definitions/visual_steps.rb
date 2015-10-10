@@ -9,3 +9,7 @@ Then(/^I see a selected area from pitch '(\d+)' to '(\d+)'$/) do |top, bottom|
   expect(selection['data-top']).to eq top
   expect(selection['data-bottom']).to eq bottom
 end
+
+Then(/^I see the note is part of the selected group$/) do
+  expect(find('note.groupSelected')['data-pitch']).to eq '60'
+end
