@@ -38,7 +38,7 @@ SongState.activeArrangementIndex = function() {
 
 SongState.currentGroupNotes = function(songState) {
 
-  var tag = SongState.latestTag(songState)
+  var tag = ViewState.selectedTag()
   var results = SongState.activePart().notes.filter(function(note){ return note.timestamp === tag})
 
   return results;
@@ -50,6 +50,16 @@ SongState.latestTag = function(songState) {
 
   var tag = sortedNotes[0].timestamp
   return tag
+}
+
+SongState.activePartTags = function() {
+  var notes = SongState.activePart().notes
+
+  var uniqueSortedTags = notes.map(function(n) {return n.timestamp}).filter(function (e, i, arr) {
+      return arr.lastIndexOf(e) === i
+  }).sort(function(a, b) { return b.timestamp - a.timestamp;})
+
+  return uniqueSortedTags
 }
 
 SongState.currentPartNotes = function(songState) {

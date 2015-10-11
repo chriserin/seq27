@@ -17,6 +17,7 @@ VIEW_STATE = {
   error: null,
   activeSection: 0,
   activePart: 0,
+  sections: [{parts: [{selectedTag: null}]}],
   commandResult: '',
   commandBuffer: [],
   explorerDisplayParts: true,
@@ -90,4 +91,16 @@ ViewState.selection = function() {
     top: topPitch,
     bottom: bottomPitch
   }
+}
+
+ViewState.selectedTag = function() {
+  return ViewState.sections[ViewState.activeSection].parts[ViewState.activePart].selectedTag
+}
+
+ViewState.newPartState = function() {
+  return {selectedTag: null}
+}
+
+ViewState.newSectionState = function() {
+  return {parts: [{selectedTag: null}]}
 }

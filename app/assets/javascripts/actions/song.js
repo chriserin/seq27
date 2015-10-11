@@ -74,7 +74,12 @@ Song.setPart = function(songState, commandWithArgumets) {
 Song.setActiveSection = function(viewState, commandWithArgumets) {
   var sectionArgument = commandWithArgumets.split(" ")[1];
 
-  viewState["activeSection"] = parseInt(sectionArgument);
+  var newActiveSection = parseInt(sectionArgument)
+  viewState["activeSection"] = newActiveSection
+
+  if (viewState.sections[newActiveSection] === undefined) {
+    viewState.sections[newActiveSection] = ViewState.newSectionState()
+  }
 
   return viewState;
 }
@@ -82,7 +87,12 @@ Song.setActiveSection = function(viewState, commandWithArgumets) {
 Song.setActivePart = function(viewState, commandWithArgumets) {
   var partArgument = commandWithArgumets.split(" ")[1];
 
-  viewState["activePart"] = parseInt(partArgument);
+  var newActivePart = parseInt(partArgument)
+  viewState["activePart"] = newActivePart
+
+  if (viewState.sections[viewState.activeSection].parts[newActivePart] === undefined) {
+    viewState.sections[viewState.activeSection].parts[newActivePart] = ViewState.newPartState()
+  }
 
   return viewState;
 }

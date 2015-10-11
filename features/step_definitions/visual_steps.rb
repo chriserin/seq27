@@ -13,3 +13,7 @@ end
 Then(/^I see the note is part of the selected group$/) do
   expect(find('note.groupSelected')['data-pitch']).to eq '60'
 end
+
+Then(/^I see the note on pitch "(.*?)" is part of the selected group$/) do |pitch|
+  expect(find('note.groupSelected')['data-pitch']).to eq pitch
+end

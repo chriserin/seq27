@@ -87,6 +87,8 @@ function currentNode(character) {
   topNode["d"] = deleteNodes();
   topNode["c"] = createNodes();
   topNode["g"] = gotoNodes();
+  topNode["["] = cycleLeftNodes();
+  topNode["]"] = cycleRightNodes();
 
   //TODO: this doesn't work for a third level of nodes
   if (NormalMode["sequence"] === '') {
@@ -168,9 +170,9 @@ function deleteNodes() {
 
 function createNodes() {
   nodes = {
-    "n": [Song.addNote, NOOP],
-    "h": [Chord.major, NOOP],
-    "m": [Chord.minor, NOOP]
+    "n": [Song.addNote, Groups.setSelectedTag],
+    "h": [Chord.major, Groups.setSelectedTag],
+    "m": [Chord.minor, Groups.setSelectedTag]
   }
   return nodes;
 }
@@ -182,3 +184,16 @@ function gotoNodes() {
   return nodes;
 }
 
+function cycleLeftNodes() {
+  var nodes = {
+    "g": [NOOP, Groups.selectPreviousGroup]
+  }
+  return nodes
+}
+
+function cycleRightNodes() {
+  var nodes = {
+    "g": [NOOP, Groups.selectNextGroup]
+  }
+  return nodes
+}

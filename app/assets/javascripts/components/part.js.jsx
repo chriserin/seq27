@@ -116,7 +116,7 @@ SeqCom.Part = React.createClass({
     }
   },
   classes(note) {
-    if(note.timestamp === SongState.latestTag()) {
+    if(note.timestamp === ViewState.selectedTag()) {
       return 'groupSelected'
     }
   },
