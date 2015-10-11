@@ -57,3 +57,13 @@ Feature: Artist alters notes
     Then  I see the note on pitch "64" is part of the selected group
     When  I type the "]g" sequence
     Then  I see the note on pitch "69" is part of the selected group
+
+  @javascript
+  Scenario: Artist moves note group down
+    Given an artist on the new song page
+    When  I type the "mccn" sequence
+    Then  I see a note at beat 0 and pitch 60
+    When  I type the "J" sequence
+    Then  I see a note at beat 0 and pitch 59
+    When  I type the "K" sequence
+    Then  I see a note at beat 0 and pitch 60

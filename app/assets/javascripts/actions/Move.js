@@ -39,3 +39,36 @@ Move.downToNote = function(viewState, note) {
     viewState['cursor']['pitch'] += (noteDiff - currentNoteDiff);
   return viewState;
 }
+
+var getSelectedNotes = function(songState) {
+  var notes = null
+
+  if(ViewState.mode == 'visual') {
+     notes = ViewState.selectedNotes(songState)
+  } else {
+     notes = SongState.currentGroupNotes(songState)
+  }
+
+  return notes
+}
+
+Move.moveSelectionDown = function(songState) {
+
+  var notes = getSelectedNotes(songState)
+
+  for (var note of notes) {
+    note.pitch--
+  }
+
+  return songState
+}
+
+Move.moveSelectionUp = function(songState) {
+  var notes = getSelectedNotes(songState)
+
+  for (var note of notes) {
+    note.pitch++
+  }
+
+  return songState
+}
