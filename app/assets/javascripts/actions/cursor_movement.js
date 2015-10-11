@@ -34,8 +34,10 @@ CursorMovement.moveToNextNote = function(viewState) {
 
   var nextNote = notes.filter(filterFn)[0]
 
-  viewState['cursor']['start'] = nextNote.start;
-  viewState['cursor']['pitch'] = nextNote.pitch;
+  if(nextNote) {
+    viewState['cursor']['start'] = nextNote.start
+    viewState['cursor']['pitch'] = nextNote.pitch
+  }
   return viewState;
 }
 
@@ -51,8 +53,10 @@ CursorMovement.moveToPrevNote = function(viewState) {
 
   var nextNote = notesAfterCursor[notesAfterCursor.length - 1]
 
-  viewState['cursor']['start'] = nextNote.start;
-  viewState['cursor']['pitch'] = nextNote.pitch;
+  if(nextNote) {
+    viewState['cursor']['start'] = nextNote.start
+    viewState['cursor']['pitch'] = nextNote.pitch
+  }
   return viewState;
 }
 
