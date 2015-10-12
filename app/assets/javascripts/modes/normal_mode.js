@@ -68,7 +68,8 @@ function currentNode(character) {
     "G": [NOOP, CursorMovement.moveToBottom],
     "v": [NOOP, Modes.visualMode],
     "J": [Move.moveSelectionDown, NOOP],
-    "K": [Move.moveSelectionUp, NOOP]
+    "K": [Move.moveSelectionUp, NOOP],
+    "\r": [NOOP, Modes.normalMode]
   };
 
   middleOctaveMidiPitches = {
