@@ -48,8 +48,7 @@ SeqCom.Section = React.createClass({
     var parts_html = <SeqCom.Part data={part} partId={ViewState.activePart}/>;
 
     return <grids ref='grids' data-section-id={ViewState.activeSection}>
-      <SeqCom.PitchGrid/>
-      <SeqCom.BeatGrid beats={part.beats}/>
+      <SeqCom.PitchGrid beats={part.beats}/>
       <SeqCom.CursorGrid/>
       {parts_html}
     </grids>;
@@ -57,10 +56,21 @@ SeqCom.Section = React.createClass({
 });
 
 SeqCom.PitchGrid = React.createClass({
+  renderBeats(beats, cNote) {
+    var beatsArray = Array.from(Array(parseInt(beats)).keys()).map((_, i)=> {
+      var beatNumber = ''
+      if(cNote) {
+        beatNumber = ((i + 1) % 4 === 1 ? i + 1 : '')
+      }
+      return <beat key={i}>{beatNumber}</beat>
+    })
+    return beatsArray
+  },
   renderPitches() {
     return Array.from(Array(128).keys()).reverse().map((i)=>{
       return <pitch key={i} className={this.classes(i)}>
         <pianoKey className={this.classes(i)}>{Piano.cOctave(i)}</pianoKey>
+        {this.renderBeats(this.props.beats, Piano.cOctave(i))}
       </pitch>
     })
   },
@@ -71,18 +81,6 @@ SeqCom.PitchGrid = React.createClass({
     return <pitchGrid>
       {this.renderPitches()}
     </pitchGrid>
-  }
-})
-
-SeqCom.BeatGrid = React.createClass({
-  renderBeats(beats) {
-    var beatsArray = Array.from(Array(parseInt(beats)).keys()).map((_, i)=> {return <beat key={i}/>})
-    return beatsArray
-  },
-  render() {
-    return <beatGrid>
-      {this.renderBeats(this.props.beats)}
-    </beatGrid>
   }
 })
 

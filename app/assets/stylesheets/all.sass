@@ -49,12 +49,13 @@ song
       pitch
         $c-color: rgba(200,200,250, 0.8)
         $sharp-color: rgb(100,100,100)
-        height: 16px
-        min-height: 16px
-        width: 100%
+        height: 15px
+        min-height: 15px
+        max-height: 15px
+        width: auto
         border-top: 1px solid transparentize(rgb(250,250,250), 0.5)
         box-sizing: border-box
-        display: block
+        display: table
 
         &.sharp
           border-top: 1px solid transparentize(rgb(250,250,250), 0.5)
@@ -65,11 +66,13 @@ song
 
         pianoKey
           background-color: white
+          min-width: 60px
+          max-width: 60px
           width: 60px
-          height: 16px
-          display: block
+          height: 15px
           border-right: 1px solid black
           box-shadow: 1px 0px 1px 1px rgba(0, 0, 0, 0.2)
+          display: block
           box-sizing: border-box
 
           &.sharp
@@ -80,6 +83,20 @@ song
             font-size: 10px
             text-align: center
             border-top: 1px solid transparentize(rgb(250,250,250), 0.5)
+
+        beat
+          width: 75px
+          min-width: 75px
+          height: 100%
+          border-right: 1px dashed black
+          line-height: 8px
+          box-sizing: border-box
+          display: table-cell
+
+        &.c
+          beat
+            color: lighten(grey, 15%)
+            font-size: 10px
 
         $octave-color: rgb(225,225,225)
         &.octave10
@@ -160,21 +177,6 @@ song
           &.cdisable
             background-color: transparentize(adjust-color($octave-color, $blue: 200), $trans-amount)
 
-    beatGrid
-      position: fixed
-      top: 0
-      left: 0
-      padding-left: 60px
-      height: 100%
-      width: calc(100% - 60px)
-      display: flex
-      z-index: 10
-
-      beat
-        width: 100px
-        min-width: 75px
-        border-right: 1px dashed black
-        box-sizing: border-box
 
     cursorGrid
       position: absolute

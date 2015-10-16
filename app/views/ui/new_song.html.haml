@@ -5,12 +5,8 @@
         %pitch{class: [sharpForNumber(pitch), cPitch(pitch), octave(pitch)].join(' ')}
           %pianoKey{class: [sharpForNumber(pitch), cPitch(pitch), octave(pitch)].join(' ')}
             = cOctave(pitch)
-    %beatGrid{data: {stage: 'beats', scene: 'sixteen'}}
-      - 16.times.each do
-        %beat
-    %beatGrid{data: {stage: 'beats', scene: 'overflow'}}
-      - 32.times.each do
-        %beat
+          - 32.times.each do
+            %beat
     %cursorGrid{data: {stage: 'selection', scene: 'none'}}
       %cursor{style: "top: #{16 * 60}px; left: 60px;"}
     %cursorGrid{data: {stage: 'selection', scene: 'selected'}}
