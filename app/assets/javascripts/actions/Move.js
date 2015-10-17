@@ -53,7 +53,6 @@ var getSelectedNotes = function(songState) {
 }
 
 Move.moveSelectionDown = function(songState) {
-
   var notes = getSelectedNotes(songState)
 
   for (var note of notes) {
@@ -68,6 +67,26 @@ Move.moveSelectionUp = function(songState) {
 
   for (var note of notes) {
     note.pitch++
+  }
+
+  return songState
+}
+
+Move.moveSelectionLeft = function(songState) {
+  var notes = getSelectedNotes(songState)
+
+  for (var note of notes) {
+    note.start -= 96
+  }
+
+  return songState
+}
+
+Move.moveSelectionRight = function(songState) {
+  var notes = getSelectedNotes(songState)
+
+  for (var note of notes) {
+    note.start += 96
   }
 
   return songState

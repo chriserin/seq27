@@ -69,6 +69,8 @@ function currentNode(character) {
     "v": [NOOP, Modes.visualMode],
     "J": [Move.moveSelectionDown, NOOP],
     "K": [Move.moveSelectionUp, NOOP],
+    "H": [Move.moveSelectionLeft, NOOP],
+    "L": [Move.moveSelectionRight, NOOP],
     "\r": [NOOP, Modes.normalMode]
   };
 
