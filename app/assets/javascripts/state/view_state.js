@@ -50,8 +50,8 @@ ViewState.setCursorPitch = function(state, pitch) {
 }
 
 ViewState.setCursorStart = function(state, start) {
-  if(start > SongState.activePart().beats * 96) {
-    state.cursor['start'] = SongState.activePart().beats * 96
+  if(start >= SongState.activePart().beats * 96) {
+    state.cursor['start'] = Math.max((SongState.activePart().beats * 96) - 96, state.cursor.start)
   } else if (start < 0) {
     state.cursor['start'] = 0
   } else {
