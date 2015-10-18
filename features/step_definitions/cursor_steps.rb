@@ -52,7 +52,7 @@ Then(/^I see the cursor at beat (\d*) and pitch (\d*)$/) do |beat, pitch|
 end
 
 Then(/^I see a note with length "(.*?)"$/) do |length|
-  note = page.find('note')
+  note = page.find("note[data-length='#{length}']")
   expect(note['data-length']).to eq length
 end
 
