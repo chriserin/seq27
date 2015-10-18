@@ -27,7 +27,13 @@ When(/^I set the tempo very high in order to shrink the test$/) do
   page.execute_script("EVENT_TRIGGERS.downKey('\\r')")
 end
 
-When(/^I type the "(.*)" (command|sequence)$/) do |command, _|
+When(/^I type the "(.*)" (sequence)$/) do |command, _|
+  command.chars.each do |char|
+    page.execute_script("EVENT_TRIGGERS.downKey('#{char}')")
+  end
+end
+
+When(/^I type the "(.*)" (command)$/) do |command, _|
   command.chars.each do |char|
     page.execute_script("EVENT_TRIGGERS.downKey('#{char}')")
   end

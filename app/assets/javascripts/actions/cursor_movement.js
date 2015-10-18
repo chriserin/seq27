@@ -1,26 +1,34 @@
 window.CursorMovement = {}
 
+function moveCursor(state, attrs) {
+  var state = ViewState.setCursor(state, attrs)
+  if (state.mode === 'visual') {
+    state.visuallySelectedNotes = ViewState.selectedNotes(SONG_STATE)
+  }
+  return state
+}
+
 CursorMovement.moveDown = function(state, number) {
   var pitches = number || 1
-  state = ViewState.setCursorPitch(state, state['cursor']['pitch'] - pitches);
+  moveCursor(state, {pitch: state['cursor']['pitch'] - pitches})
   return state;
 }
 
 CursorMovement.moveUp = function(state, number) {
   var pitches = number || 1
-  state = ViewState.setCursorPitch(state, state['cursor']['pitch'] + pitches);
+  moveCursor(state, {pitch: state['cursor']['pitch'] + pitches})
   return state;
 }
 
 CursorMovement.moveRight = function(state, number) {
   var beats = number || 1
-  state = ViewState.setCursorStart(state, state['cursor']['start'] + (96 * beats));
+  moveCursor(state, {start: state['cursor']['start'] + (96 * beats)})
   return state;
 }
 
 CursorMovement.moveLeft = function(state, number) {
   var beats = number || 1
-  state = ViewState.setCursorStart(state, state['cursor']['start'] - (96 * beats));
+  moveCursor(state, {start: state['cursor']['start'] - (96 * beats)})
   return state;
 }
 

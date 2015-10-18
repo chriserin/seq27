@@ -114,8 +114,12 @@ SeqCom.Part = React.createClass({
     }
   },
   classes(note) {
-    if(note.timestamp === ViewState.selectedTag()) {
+    if(!ViewState.visuallySelectedNotes && note.timestamp === ViewState.selectedTag()) {
       return 'groupSelected'
+    }
+
+    if(ViewState.visuallySelectedNotes && ViewState.visuallySelectedNotes.indexOf(note) > -1) {
+      return 'visualSelected'
     }
   },
   render: function() {

@@ -26,3 +26,14 @@ Feature: Artist selects notes visually
     And   I type the "5j5l" sequence
     Then  I see a selected area from beat '0' to '6'
     And   I see a selected area from pitch '60' to '55'
+
+  @javascript
+  Scenario: Artist sees visually selected area
+    Given an artist on the new song page
+    And   I type the "mccn" sequence
+    When  I press 'v'
+    Then  I see a visually selected note at beat 0 and pitch 60
+    When  I type the "K" sequence
+    Then  I see a visually selected note at beat 0 and pitch 61
+    When  I type the "KK" sequence
+    Then  I see a visually selected note at beat 0 and pitch 63

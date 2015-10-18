@@ -24,7 +24,8 @@ VIEW_STATE = {
   explorerMode: 'normal',
   selectedArrangementIndexes: [],
   reportItems: null,
-  reportTitle: ''
+  reportTitle: '',
+  visuallySelectedNotes: null
 };
 
 window.ViewState = {}
@@ -36,6 +37,17 @@ ViewState.init = function() {
 
 function defineProp(stateKey) {
   Object.defineProperty(ViewState, stateKey, { get: function() {return VIEW_STATE[stateKey]}})
+}
+
+ViewState.setCursor = function(state, attrs) {
+  var state
+  if(attrs['pitch']) {
+    state = ViewState.setCursorPitch(state, attrs['pitch'])
+  }
+  if (attrs['start']){
+    state = ViewState.setCursorStart(state, attrs['start'])
+  }
+  return state
 }
 
 ViewState.setCursorPitch = function(state, pitch) {

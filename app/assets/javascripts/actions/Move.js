@@ -43,8 +43,8 @@ Move.downToNote = function(viewState, note) {
 var getSelectedNotes = function(songState) {
   var notes = null
 
-  if(ViewState.mode == 'visual') {
-     notes = ViewState.selectedNotes(songState)
+  if(ViewState.visuallySelectedNotes) {
+     notes = ViewState.visuallySelectedNotes
   } else {
      notes = SongState.currentGroupNotes(songState)
   }
