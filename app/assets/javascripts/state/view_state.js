@@ -40,11 +40,10 @@ function defineProp(stateKey) {
 }
 
 ViewState.setCursor = function(state, attrs) {
-  var state
-  if(attrs['pitch']) {
+  if(attrs.hasOwnProperty('pitch') && attrs.pitch !== null) {
     state = ViewState.setCursorPitch(state, attrs['pitch'])
   }
-  if (attrs['start']){
+  if(attrs.hasOwnProperty('start') && attrs.start !== null){
     state = ViewState.setCursorStart(state, attrs['start'])
   }
   return state
