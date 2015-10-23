@@ -1,0 +1,3 @@
+---
+postgres_user: "{{ secrets_postgres_user }}"
+postgres_password: "{{ secrets_postgres_password }}"

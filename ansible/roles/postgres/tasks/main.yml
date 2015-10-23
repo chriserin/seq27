@@ -1,0 +1,18 @@
+---
+- name: postgres
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - postgresql-9.4
+    - libpq-dev
+    - python-psycopg2
+  sudo: yes
+
+- name: add user
+  postgresql_user:
+    name:  "{{ postgres_user }}_1"
+    password: "{{ postgres_password }}"
+    role_attr_flags: CREATEDB,NOSUPERUSER
+  become: yes
+  become_user: postgres

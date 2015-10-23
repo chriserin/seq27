@@ -1,0 +1,21 @@
+---
+- name: upgrade packages
+  hosts: all
+  user: chriserin
+  roles:
+    - role: common
+      sudo: yes
+
+- name: configure db
+  hosts: db
+  user: chriserin
+  roles:
+    - role: postgres
+
+- name: configure web
+  hosts: web
+  user: chriserin
+  roles:
+    - role: web-dependencies
+      sudo: yes
+
