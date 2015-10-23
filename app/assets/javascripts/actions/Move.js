@@ -40,27 +40,30 @@ Move.downToNote = function(viewState, note) {
   return viewState;
 }
 
-Move.moveSelectionDown = function(songState) {
+Move.moveSelectionDown = function(songState, number) {
+  var pitches = number || 1
   var notes = Selection.getSelectedNotes(songState)
 
   for (var note of notes) {
-    note.pitch--
+    note.pitch -= pitches
   }
 
   return songState
 }
 
-Move.moveSelectionUp = function(songState) {
+Move.moveSelectionUp = function(songState, number) {
+  var pitches = number || 1
   var notes = Selection.getSelectedNotes(songState)
 
   for (var note of notes) {
-    note.pitch++
+    note.pitch += pitches
   }
 
   return songState
 }
 
-Move.moveSelectionLeft = function(songState) {
+Move.moveSelectionLeft = function(songState, number) {
+  var ticks = (number * 96) || 96
   var notes = Selection.getSelectedNotes(songState)
 
   for (var note of notes) {
@@ -70,11 +73,12 @@ Move.moveSelectionLeft = function(songState) {
   return songState
 }
 
-Move.moveSelectionRight = function(songState) {
+Move.moveSelectionRight = function(songState, number) {
+  var ticks = (number * 96) || 96
   var notes = Selection.getSelectedNotes(songState)
 
   for (var note of notes) {
-    note.start += 96
+    note.start += ticks
   }
 
   return songState
