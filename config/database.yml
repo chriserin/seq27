@@ -14,6 +14,8 @@ test: &test
 production:
   <<: *default
   database: seq27_prod
+  user: <%= ENV.fetch("PG_USER") %>
+  password: <%= ENV.fetch("PG_PASSWORD") %>
 
 cucumber:
   <<: *test

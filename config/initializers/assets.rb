@@ -8,4 +8,8 @@ Rails.application.config.assets.version = '1.0'
 
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
-Rails.application.config.assets.precompile += %w( all.css stagehand.css ui_application.js stagehand.js)
+if Rails.env.development?
+  Rails.application.config.assets.precompile += %w( all.css stagehand.css ui_application.js stagehand.js )
+else
+  Rails.application.config.assets.precompile += %w( all.css )
+end
