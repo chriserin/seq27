@@ -2,6 +2,9 @@ source 'https://rubygems.org'
 
 ruby '2.2.3'
 
+#DEPENDENCIES
+gem 'nokogiri', '1.6.7.rc3'
+
 #FRAMEWORK
 gem 'rails', '4.2.0'
 gem 'authem'
