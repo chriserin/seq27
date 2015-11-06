@@ -19,6 +19,9 @@ gem 'haml'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 
+#SERVER
+gem 'passenger'
+
 group :development do
   gem 'jquery-rails'
   gem 'spicerack', github: 'hashrocket/spicerack'
