@@ -6,3 +6,4 @@
 db/schema.rb
 db/structure.sql
 .ansible_key
+config/application.yml
