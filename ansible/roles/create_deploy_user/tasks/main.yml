@@ -1,0 +1,8 @@
+- name: create chriserin user
+  user: name=chriserin comment="deploy user" generate_ssh_key=yes state=present password=trialpass shell=/bin/bash
+
+- name: authorize my SSH key to access chriserin
+  authorized_key: user=chriserin key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+
+- name: add chriserin to sudoers
+  lineinfile: "dest=/etc/sudoers state=present line='chriserin ALL=(ALL:ALL) NOPASSWD: ALL'"

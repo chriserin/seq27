@@ -1,0 +1,7 @@
+---
+- name: create deploy user
+  hosts: all
+  user: root
+  roles:
+    - role: create_deploy_user
+      sudo: yes
