@@ -1,4 +1,16 @@
 ---
+- name: Add PostgreSQL repository
+  apt_repository: repo='deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main' state=present
+  sudo: yes
+
+- name: Add PostgreSQL repository key
+  apt_key: url=https://www.postgresql.org/media/keys/ACCC4CF8.asc state=present
+  sudo: yes
+
+- name: Update apt cache
+  apt: update_cache=yes
+  sudo: yes
+
 - name: postgres
   apt:
     name: "{{ item }}"
@@ -11,7 +23,7 @@
 
 - name: add user
   postgresql_user:
-    name:  "{{ postgres_user }}_1"
+    name:  "{{ postgres_user }}"
     password: "{{ postgres_password }}"
     role_attr_flags: CREATEDB,NOSUPERUSER
   become: yes

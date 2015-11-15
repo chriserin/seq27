@@ -1,0 +1,2 @@
+---
+rails_secret_key_base: "{{ secrets_rails_secret_key_base }}"

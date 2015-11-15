@@ -1,0 +1,55 @@
+# Adapted from official Passenger/nginx documentation:
+# http://www.modrails.com/documentation/Users%20guide%20Nginx.html
+
+
+# NOTE: Currently using the Phusion Passenger repo for nginx.
+# Was previously using official nginx/stable PPA.
+
+# Can't seem to use keyserver= apt_key feature here
+# See https://groups.google.com/forum/#!topic/ansible-project/8SEZWEQGTsg
+- name: Add Phusion Passenger repo key
+  apt_key: url=https://keyserver.ubuntu.com/pks/lookup?op=get&fingerprint=on&search=0x561F9B9CAC40B2F7 state=present
+  sudo: yes
+
+- name: Install packages to enable apt over HTTPS
+  action: apt pkg={{item}} state=installed
+  sudo: yes
+  with_items:
+    - apt-transport-https
+    - ca-certificates
+
+- name: Add Phusion Passenger repo
+  apt_repository: repo='deb https://oss-binaries.phusionpassenger.com/apt/passenger trusty main'
+  sudo: yes
+
+- name: Install nginx-extras and passenger
+  action: apt pkg={{item}} state=installed
+  sudo: yes
+  with_items:
+    # note: Passenger repo has it's own nginx-extras package.
+    - nginx-extras
+    - passenger
+
+- name: Remove the default nginx app's config
+  file: path=/etc/nginx/sites-available/default state=absent
+  sudo: yes
+
+- name: Remove the default nginx app's symlink if it exists
+  file: path=/etc/nginx/sites-enabled/default state=absent
+  sudo: yes
+
+# Note: Will do this in Capistrano, for now.
+
+#- name: Configure nginx for the app
+#  template: src={{ app_name }}.j2 dest=/etc/nginx/sites-available/{{ app_name }} group={{ deploy }} owner={{ deploy }} force=yes
+
+#- name: Enable the app
+#  file: src=/etc/nginx/sites-available/{{ app_name }} dest=/etc/nginx/sites-enabled/{{ app_name }} state=link owner={{ deploy }} group={{ deploy }}
+
+- name: Copy nginx.conf
+  template: src=nginx.conf.j2 dest=/etc/nginx/nginx.conf
+  sudo: yes
+
+- name: Start nginx
+  service: name=nginx state=started
+  sudo: yes

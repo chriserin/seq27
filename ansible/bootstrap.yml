@@ -7,15 +7,33 @@
       sudo: yes
 
 - name: configure db
-  hosts: db
+  hosts: all
+  tags:
+    - db
   user: chriserin
   roles:
     - role: postgres
 
+- name: ruby
+  hosts: all
+  user: chriserin
+  sudo: Yes
+  tags:
+    - ruby
+  roles:
+    - role: ruby
+
 - name: configure web
-  hosts: web
+  hosts: all
   user: chriserin
   roles:
     - role: web-dependencies
       sudo: yes
 
+- name: passenger
+  hosts: all
+  user: chriserin
+  tags:
+    - passenger
+  roles:
+    - role: nginx-passenger

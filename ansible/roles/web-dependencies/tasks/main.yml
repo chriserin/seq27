@@ -20,3 +20,6 @@
     - libxslt1-dev
     - libsqlite3-dev
     - git
+    - nodejs
+    - libcurl4-gnutls-dev
+    - nginx

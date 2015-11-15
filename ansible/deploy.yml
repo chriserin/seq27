@@ -1,0 +1,125 @@
+---
+- hosts: all
+  tasks:
+    - set_fact: this_release_ts={{ lookup('pipe', 'date +%Y%m%d%H%M%S') }}
+      tags:
+        - active
+    - set_fact: this_release_path={{ releases_path }}/{{ this_release_ts }}
+      tags:
+        - active
+
+    - debug:
+        msg: 'New release path {{ this_release_path }}'
+
+    - name: Create app path
+      sudo: Yes
+      file: 
+        path: '{{ app_path }}'
+        owner: chriserin
+        group: chriserin
+        state: directory
+
+    - name: Create new release dir
+      file: 
+        path: '{{ this_release_path }}'
+        state: directory
+
+    - name: Update code
+      git:
+        repo: https://github.com/chriserin/seq27.git
+        dest: '{{ this_release_path }}'
+        version: '{{ git_version }}'
+        accept_hostkey: yes
+      register: git
+
+    - debug: msg="Updated repo from {{ git.before }} to {{ git.after }}"
+
+    - name: Create rails shared directories
+      file: "path={{ shared_path }}/{{ item }} recurse=yes state=directory"
+      with_items:
+        - log
+        - config
+        - tmp
+        - vendor/bundle
+
+    - name: Add things to application.yml
+      template:
+        src: 'templates/application.yml'
+        dest: "{{ shared_path }}/config/application.yml"
+
+    - name: Copy over secrets.yml
+      template:
+        src: 'templates/secrets.yml.j2'
+        dest: "{{ shared_path }}/config/secrets.yml"
+
+    - name: Remove future symlink dirs
+      file: "src={{ shared_path }}/{{ item }} dest={{ this_release_path }}/{{ item }} state=absent force=yes"
+      with_items:
+        - log
+
+    - name: Symlink shared files
+      file: src={{ shared_path }}/{{ item }} dest={{ this_release_path }}/{{ item }} state=link force=yes
+      with_items:
+        - config/application.yml
+        - config/secrets.yml
+        - log
+        - tmp
+        - vendor/bundle
+
+    - name: install bundler
+      command: gem install bundler
+      sudo: Yes
+
+    - name: bundler install
+      command: 'bundle install --deployment --without="development test"'
+      args:
+        chdir: '{{ this_release_path }}'
+
+    - name: Precompile assets
+      command: rake assets:precompile chdir={{ this_release_path }}
+      environment:
+        RAILS_ENV: '{{ rails_env }}'
+
+    - name: add line to pg_hba.conf
+      lineinfile:
+        dest: /etc/postgresql/9.4/main/pg_hba.conf
+        regexp: "seq27"
+        insertafter: 'domain socket connections'
+        line: "local   all             seq27                                   md5"
+        state: present
+      sudo: Yes
+      tags:
+        - line
+
+    - name: postgres restart
+      command: service postgresql restart
+      sudo: Yes
+
+    - name: create db
+      postgresql_db:
+        name: seq27_prod
+        login_user: '{{ postgres_user }}'
+        login_password: '{{ postgres_password }}'
+      tags:
+        - active
+
+    - name: Migrate database
+      command: rake db:migrate chdir={{ this_release_path }}
+      environment:
+        RAILS_ENV: '{{ rails_env }}'
+
+    - name: Symlink new release
+      file: src={{ this_release_path }} dest={{ current_release_path }} state=link force=yes
+
+    - name: Deploy seq27 nginx config to sites-available
+      sudo: yes
+      template: src=templates/seq27.nginx.j2 dest=/etc/nginx/sites-enabled/seq27
+
+    - name: restart passenger
+      command: service nginx restart
+      sudo: Yes
+
+    - name: Cleanup
+      shell: "ls -1t {{ releases_path }}|tail -n +{{ keep_releases + 1 }}|xargs rm -rf"
+      args:
+        chdir: '{{ releases_path }}'

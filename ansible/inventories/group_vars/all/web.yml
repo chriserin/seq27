@@ -1,0 +1,18 @@
+---
+deploy: seq27
+app_name: seq27
+rails_env: production
+
+git_url: git@github.com:chriserin/seq27.git
+git_version: master
+
+app_path: '/var/www/{{ app_name }}'
+shared_path: '{{ app_path }}/shared'
+releases_path: '{{ app_path }}/releases'
+current_release_path: '{{ app_path }}/current'
+app_public_path: "{{ current_release_path }}/public"
+app_config_path: "{{ current_release_path }}/config"
+app_temp_path: "{{ current_release_path }}/tmp"
+app_logs_path: "{{ current_release_path }}/log"
+
+keep_releases: 5
