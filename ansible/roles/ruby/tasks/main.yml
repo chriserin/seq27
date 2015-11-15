@@ -1,0 +1,26 @@
+---
+- name: add ruby ppa
+  apt_repository:
+    repo: ppa:brightbox/ruby-ng
+    state: present
+
+- name: install ruby
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+    - ruby2.2
+    - ruby2.2-dev
+
+# - name: Transfer the script
+#   copy:
+#     src: install_ruby_alternative.sh
+#     dest: /home/chriserin
+#     mode: 0777
+#   sudo: Yes
+
+# - name: Execute the script
+#   command: sh /home/chriserin/install_ruby_alternative.sh
+#   sudo: Yes
