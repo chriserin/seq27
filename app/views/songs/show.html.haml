@@ -4,4 +4,4 @@
   ViewState.init()
   window.SONG_STATE = #{song_json.to_json};
   var view = React.createElement(SeqCom.Song, null)
-  window.SONG_VIEW = React.render(view, window.song)
+  window.SONG_VIEW = ReactDOM.render(view, window.song)

@@ -19,10 +19,10 @@ SeqCom.Section = React.createClass({
     return (16 * (127 - ViewState.cursor.pitch))
   },
   componentDidMount() {
-    React.findDOMNode(this.refs.grids).scrollTop = (16 * (127 - (60 + 15)))
+    ReactDOM.findDOMNode(this.refs.grids).scrollTop = (16 * (127 - (60 + 15)))
   },
   componentDidUpdate() {
-    var elem = React.findDOMNode(this.refs.grids)
+    var elem = ReactDOM.findDOMNode(this.refs.grids)
 
     var lowerDiff = this.cursorTop() - (elem.scrollTop + elem.clientHeight - (16 * 2))
 
