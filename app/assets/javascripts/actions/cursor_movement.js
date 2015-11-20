@@ -82,6 +82,10 @@ CursorMovement.moveToSelection = function(viewState) {
   var notes = Selection.getSelectedNotes(SONG_STATE)
   var sortedNotes = notes.concat().sort(function(a, b) { return a.pitch - b.pitch })
   var noteToEmulate = sortedNotes[0]
-  viewState = ViewState.setCursor(viewState, noteToEmulate);
+
+  if (noteToEmulate) {
+    viewState = ViewState.setCursor(viewState, noteToEmulate);
+  }
+
   return viewState
 }
