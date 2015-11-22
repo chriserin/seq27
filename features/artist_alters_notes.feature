@@ -114,3 +114,17 @@ Feature: Artist alters notes
     Then  I see a note at tick 64 and pitch 60
     When  I type the "2rH" sequence
     Then  I see a note at tick 0 and pitch 60
+
+  @javascript
+  Scenario: Artist moves note group right by thirds
+    Given an artist on the new song page
+    When  I type the "mccn" sequence
+    Then  I see a note at tick 0 and pitch 60
+    When  I type the "rL" sequence
+    Then  I see a note at tick 32 and pitch 60
+    When  I type the "sL" sequence
+    Then  I see a note at tick 96 and pitch 60
+    When  I type the "2rH" sequence
+    Then  I see a note at tick 32 and pitch 60
+    When  I type the "sH" sequence
+    Then  I see a note at tick 0 and pitch 60

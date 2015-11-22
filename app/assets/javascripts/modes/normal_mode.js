@@ -97,6 +97,7 @@ function currentNode(character) {
   topNode["a"] = adjustMovementNodes();
   topNode["q"] = quarterMovementNodes();
   topNode["r"] = thirdMovementNodes();
+  topNode["s"] = snapToBeatNodes();
 
   //TODO: this doesn't work for a third level of nodes
   if (NormalMode["sequence"] === '') {
@@ -186,6 +187,15 @@ function thirdMovementNodes() {
   var nodes = {
     "H": [function (songState, number){ return Move.moveSelectionLeft(songState, number, 32) }, Modes.endSelectingMode],
     "L": [function (songState, number){ return Move.moveSelectionRight(songState, number, 32) }, Modes.endSelectingMode]
+  }
+
+  return nodes;
+}
+
+function snapToBeatNodes() {
+  var nodes = {
+    "H": [Move.moveSelectionToLeftBeat, Modes.endSelectingMode],
+    "L": [Move.moveSelectionToRightBeat, Modes.endSelectingMode]
   }
 
   return nodes;

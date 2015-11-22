@@ -107,3 +107,27 @@ Move.moveSelectionSlightlyRight = function(songState, number) {
 
   return songState
 }
+
+Move.moveSelectionToRightBeat = function(songState) {
+  var notes = Selection.getSelectedNotes(songState)
+
+  for (var note of notes) {
+    var currentStart = note.start
+    var rightBeat = (96 - (currentStart % 96)) + currentStart
+    note.start = rightBeat
+  }
+
+  return songState
+}
+
+Move.moveSelectionToLeftBeat = function(songState) {
+  var notes = Selection.getSelectedNotes(songState)
+
+  for (var note of notes) {
+    var currentStart = note.start
+    var leftBeat = currentStart - (currentStart % 96)
+    note.start = leftBeat
+  }
+
+  return songState
+}
