@@ -96,6 +96,7 @@ function currentNode(character) {
   topNode["]"] = cycleRightNodes();
   topNode["s"] = slightMovementNodes();
   topNode["q"] = quarterMovementNodes();
+  topNode["r"] = thirdMovementNodes();
 
   //TODO: this doesn't work for a third level of nodes
   if (NormalMode["sequence"] === '') {
@@ -176,6 +177,15 @@ function quarterMovementNodes() {
   var nodes = {
     "H": [function (songState, number){ return Move.moveSelectionLeft(songState, number, 24) }, Modes.endSelectingMode],
     "L": [function (songState, number){ return Move.moveSelectionRight(songState, number, 24) }, Modes.endSelectingMode]
+  }
+
+  return nodes;
+}
+
+function thirdMovementNodes() {
+  var nodes = {
+    "H": [function (songState, number){ return Move.moveSelectionLeft(songState, number, 32) }, Modes.endSelectingMode],
+    "L": [function (songState, number){ return Move.moveSelectionRight(songState, number, 32) }, Modes.endSelectingMode]
   }
 
   return nodes;
