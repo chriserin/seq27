@@ -94,6 +94,8 @@ function currentNode(character) {
   topNode["g"] = gotoNodes();
   topNode["["] = cycleLeftNodes();
   topNode["]"] = cycleRightNodes();
+  topNode["s"] = slightMovementNodes();
+  topNode["q"] = quarterMovementNodes();
 
   //TODO: this doesn't work for a third level of nodes
   if (NormalMode["sequence"] === '') {
@@ -158,6 +160,24 @@ function shortenNodes() {
   nodes = {
     "<": [Note.halveLength, NOOP]
   }
+  return nodes;
+}
+
+function slightMovementNodes() {
+  var nodes = {
+    "H": [Move.moveSelectionSlightlyLeft, Modes.endSelectingMode],
+    "L": [Move.moveSelectionSlightlyRight, Modes.endSelectingMode]
+  }
+
+  return nodes;
+}
+
+function quarterMovementNodes() {
+  var nodes = {
+    "H": [function (songState, number){ return Move.moveSelectionLeft(songState, number, 24) }, Modes.endSelectingMode],
+    "L": [function (songState, number){ return Move.moveSelectionRight(songState, number, 24) }, Modes.endSelectingMode]
+  }
+
   return nodes;
 }
 

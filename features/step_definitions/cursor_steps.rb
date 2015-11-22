@@ -41,6 +41,12 @@ Then(/^I see a note at beat (\d*) and pitch (\d*)$/) do |beat, pitch|
   expect(notes).to include({beat: beat.to_i * 96, pitch: pitch.to_i})
 end
 
+Then(/^I see a note at tick (\d*) and pitch (\d*)$/) do |tick, pitch|
+  notes = all('note').map {|n| {tick: n['data-start'].to_i, pitch: n['data-pitch'].to_i}}
+
+  expect(notes).to include({tick: tick.to_i, pitch: pitch.to_i})
+end
+
 Then(/^I see a visually selected note at beat (\d*) and pitch (\d*)$/) do |beat, pitch|
   notes = all('note.visualSelected').map {|n| {beat: n['data-start'].to_i, pitch: n['data-pitch'].to_i}}
 

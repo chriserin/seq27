@@ -62,19 +62,43 @@ Move.moveSelectionUp = function(songState, number) {
   return songState
 }
 
-Move.moveSelectionLeft = function(songState, number) {
-  var ticks = (number * 96) || 96
+Move.moveSelectionLeft = function(songState, number, tickUnitLength) {
+  var tickUnitLength = tickUnitLength || 96
+  var ticks = (number * tickUnitLength) || tickUnitLength
   var notes = Selection.getSelectedNotes(songState)
 
   for (var note of notes) {
-    note.start -= 96
+    note.start -= ticks
   }
 
   return songState
 }
 
-Move.moveSelectionRight = function(songState, number) {
-  var ticks = (number * 96) || 96
+Move.moveSelectionRight = function(songState, number, tickUnitLength) {
+  var tickUnitLength = tickUnitLength || 96
+  var ticks = (number * tickUnitLength) || tickUnitLength
+  var notes = Selection.getSelectedNotes(songState)
+
+  for (var note of notes) {
+    note.start += ticks
+  }
+
+  return songState
+}
+
+Move.moveSelectionSlightlyLeft = function(songState, number) {
+  var ticks = (number) || 48
+  var notes = Selection.getSelectedNotes(songState)
+
+  for (var note of notes) {
+    note.start -= ticks
+  }
+
+  return songState
+}
+
+Move.moveSelectionSlightlyRight = function(songState, number) {
+  var ticks = (number) || 48
   var notes = Selection.getSelectedNotes(songState)
 
   for (var note of notes) {

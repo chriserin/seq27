@@ -72,3 +72,31 @@ Feature: Artist alters notes
     Then  I see a note at beat 0 and pitch 59
     When  I type the "K" sequence
     Then  I see a note at beat 0 and pitch 60
+
+  @javascript
+  Scenario: Artist moves note group slightly right
+    Given an artist on the new song page
+    When  I type the "mccn" sequence
+    Then  I see a note at tick 0 and pitch 60
+    When  I type the "sL" sequence
+    Then  I see a note at tick 48 and pitch 60
+    When  I type the "sH" sequence
+    Then  I see a note at tick 0 and pitch 60
+    When  I type the "37sL" sequence
+    Then  I see a note at tick 37 and pitch 60
+    When  I type the "31sH" sequence
+    Then  I see a note at tick 6 and pitch 60
+
+  @javascript
+  Scenario: Artist moves note group right by quarters
+    Given an artist on the new song page
+    When  I type the "mccn" sequence
+    Then  I see a note at tick 0 and pitch 60
+    When  I type the "qL" sequence
+    Then  I see a note at tick 24 and pitch 60
+    When  I type the "qH" sequence
+    Then  I see a note at tick 0 and pitch 60
+    When  I type the "3qL" sequence
+    Then  I see a note at tick 72 and pitch 60
+    When  I type the "3qH" sequence
+    Then  I see a note at tick 0 and pitch 60
