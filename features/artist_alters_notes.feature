@@ -74,17 +74,17 @@ Feature: Artist alters notes
     Then  I see a note at beat 0 and pitch 60
 
   @javascript
-  Scenario: Artist moves note group slightly right
+  Scenario: Artist adjusts note group right
     Given an artist on the new song page
     When  I type the "mccn" sequence
     Then  I see a note at tick 0 and pitch 60
-    When  I type the "sL" sequence
+    When  I type the "aL" sequence
     Then  I see a note at tick 48 and pitch 60
-    When  I type the "sH" sequence
+    When  I type the "aH" sequence
     Then  I see a note at tick 0 and pitch 60
-    When  I type the "37sL" sequence
+    When  I type the "37aL" sequence
     Then  I see a note at tick 37 and pitch 60
-    When  I type the "31sH" sequence
+    When  I type the "31aH" sequence
     Then  I see a note at tick 6 and pitch 60
 
   @javascript

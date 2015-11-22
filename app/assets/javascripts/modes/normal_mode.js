@@ -94,7 +94,7 @@ function currentNode(character) {
   topNode["g"] = gotoNodes();
   topNode["["] = cycleLeftNodes();
   topNode["]"] = cycleRightNodes();
-  topNode["s"] = slightMovementNodes();
+  topNode["a"] = adjustMovementNodes();
   topNode["q"] = quarterMovementNodes();
   topNode["r"] = thirdMovementNodes();
 
@@ -164,7 +164,7 @@ function shortenNodes() {
   return nodes;
 }
 
-function slightMovementNodes() {
+function adjustMovementNodes() {
   var nodes = {
     "H": [Move.moveSelectionSlightlyLeft, Modes.endSelectingMode],
     "L": [Move.moveSelectionSlightlyRight, Modes.endSelectingMode]
