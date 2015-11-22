@@ -67,10 +67,10 @@ function currentNode(character) {
     "N": [NOOP, CursorMovement.moveToPrevNote],
     "G": [NOOP, CursorMovement.moveToBottom],
     "v": [NOOP, Modes.visualMode],
-    "J": [Move.moveSelectionDown, CursorMovement.moveToSelection],
-    "K": [Move.moveSelectionUp, CursorMovement.moveToSelection],
-    "H": [Move.moveSelectionLeft, CursorMovement.moveToSelection],
-    "L": [Move.moveSelectionRight, CursorMovement.moveToSelection],
+    "J": [Move.moveSelectionDown, Modes.endSelectingMode],
+    "K": [Move.moveSelectionUp, Modes.endSelectingMode],
+    "H": [Move.moveSelectionLeft, Modes.endSelectingMode],
+    "L": [Move.moveSelectionRight, Modes.endSelectingMode],
     "\r": [NOOP, Modes.endVisualMode]
   };
 

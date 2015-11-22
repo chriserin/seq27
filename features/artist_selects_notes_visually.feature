@@ -26,6 +26,8 @@ Feature: Artist selects notes visually
     And   I type the "5j5l" sequence
     Then  I see a selected area from beat '0' to '6'
     And   I see a selected area from pitch '60' to '55'
+    When  I hit enter
+    Then  I dont see a selected area
 
   @javascript
   Scenario: Artist sees visually selected area
@@ -35,5 +37,6 @@ Feature: Artist selects notes visually
     Then  I see a visually selected note at beat 0 and pitch 60
     When  I type the "K" sequence
     Then  I see a visually selected note at beat 0 and pitch 61
+    Then  I dont see a selected area
     When  I type the "KK" sequence
     Then  I see a visually selected note at beat 0 and pitch 63

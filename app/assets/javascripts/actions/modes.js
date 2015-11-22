@@ -16,6 +16,11 @@ Modes.endVisualMode = function (viewState) {
   return viewState;
 };
 
+Modes.endSelectingMode = function (viewState) {
+  viewState["mode"] = 'normal';
+  return viewState;
+};
+
 Modes.visualMode = function (viewState) {
   viewState['anchorCursor'] = JSON.parse(JSON.stringify(viewState['cursor']))
   viewState["mode"] = 'visual';

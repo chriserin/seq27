@@ -17,3 +17,7 @@ end
 Then(/^I see the note on pitch "(.*?)" is part of the selected group$/) do |pitch|
   expect(find('note.groupSelected')['data-pitch']).to eq pitch
 end
+
+Then(/^I dont see a selected area$/) do
+  expect(page).to_not have_selector('visualSelection')
+end
