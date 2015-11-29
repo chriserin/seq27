@@ -29,6 +29,11 @@ VIEW_STATE = {
 };
 
 window.ViewState = {}
+
+function defineProp(stateKey) {
+  Object.defineProperty(ViewState, stateKey, { get: function() {return VIEW_STATE[stateKey]}})
+}
+
 ViewState.init = function(songState) {
   for (var stateKey in VIEW_STATE) {
     defineProp(stateKey)
@@ -48,8 +53,19 @@ ViewState.initPartStacksForSection = function(sectionNumber) {
   return VIEW_STATE
 }
 
-function defineProp(stateKey) {
-  Object.defineProperty(ViewState, stateKey, { get: function() {return VIEW_STATE[stateKey]}})
+ViewState.activePartView = function() {
+  var as = ViewState.activeSection
+  var ap = ViewState.activePart
+
+  return ViewState.sections[as].parts[ap]
+}
+
+ViewState.activePointer = function() {
+  return ViewState.activePartView().stackPointer
+}
+
+ViewState.activeStack = function() {
+  return ViewState.activePartView().stack
 }
 
 ViewState.setCursor = function(state, attrs) {

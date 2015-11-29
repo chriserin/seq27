@@ -26,6 +26,10 @@ SongState.activePart = function() {
   return SongState.activeSection()["parts"][ViewState.activePart]
 }
 
+SongState.replaceActivePart = function(newPart) {
+  return SongState.activeSection()["parts"][ViewState.activePart] = newPart
+}
+
 SongState.arrangedSections = function() {
   return SONG_STATE['arrangement'].map(function(sectionIndex) { return [sectionIndex, SONG_STATE['sections'][sectionIndex]] })
 }

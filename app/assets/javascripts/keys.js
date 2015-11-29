@@ -53,14 +53,14 @@ function savePartState(songFn, songState) {
   var as = VIEW_STATE.activeSection
 
   var newSongState = songFn(songState)
-  var newState = Immutable.fromJS(newSongState.sections[as].parts[ap])
-  var pointer = VIEW_STATE.sections[as].parts[ap].stackPointer
-  var currentState = VIEW_STATE.sections[as].parts[ap].stack[pointer]
+  var newState = Immutable.fromJS(SongState.activePart())
+  var pointer = ViewState.activePointer()
+  var currentState = ViewState.activeStack()[pointer]
 
   if (!Immutable.fromJS(newState).equals(currentState)) {
-    var stack = VIEW_STATE.sections[as].parts[ap].stack
+    var stack = ViewState.activeStack()
     stack.splice(pointer + 1, stack.length - 1, newState)
-    VIEW_STATE.sections[as].parts[ap].stackPointer = ++pointer
+    ViewState.activePartView().stackPointer = ++pointer
   }
 
   return newSongState
