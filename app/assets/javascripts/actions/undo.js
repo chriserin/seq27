@@ -20,11 +20,12 @@ Undo.undo = function(songState, number) {
 
 Undo.redo = function(songState) {
   var pointer = ViewState.activePointer() + 1
-  var version = ViewState.activeStack()[pointer]
 
-  SongState.replaceActivePart(version.toJS())
-
-  ViewState.activePartView().stackPointer = pointer
+  if (pointer < ViewState.activeStack().length) {
+    var version = ViewState.activeStack()[pointer]
+    SongState.replaceActivePart(version.toJS())
+    ViewState.activePartView().stackPointer = pointer
+  }
 
   return songState
 }
