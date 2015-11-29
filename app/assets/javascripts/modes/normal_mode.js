@@ -69,6 +69,7 @@ function currentNode(character) {
     "k": [NOOP, CursorMovement.moveUp],
     "h": [NOOP, CursorMovement.moveLeft],
     "l": [NOOP, CursorMovement.moveRight],
+    "w": [NOOP, function(viewState) { return CursorMovement.moveRight(viewState, 4)}],
     " ": [ Play.playStop, NOOP ],
     "n": [NOOP, CursorMovement.moveToNextNote],
     "N": [NOOP, CursorMovement.moveToPrevNote],
