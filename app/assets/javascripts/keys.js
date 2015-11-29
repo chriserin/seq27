@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
           var songFn = fnArray[0];
           var viewFn = fnArray[1];
 
-          SONG_STATE = songFn(SONG_STATE);
+          SONG_STATE = savePartState(songFn, SONG_STATE);
           VIEW_STATE = viewFn(delayedAction(VIEW_STATE));
 
           window.SONG_VIEW.forceUpdate();
@@ -39,6 +39,32 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 )
+
+function savePartState(songFn, songState) {
+  if (songFn === NOOP) {
+    return songState;
+  }
+
+  if (songFn.prototype.isUndoFunction) {
+    return songFn(songState)
+  }
+
+  var ap = VIEW_STATE.activePart
+  var as = VIEW_STATE.activeSection
+
+  var newSongState = songFn(songState)
+  var newState = Immutable.fromJS(newSongState.sections[as].parts[ap])
+  var pointer = VIEW_STATE.sections[as].parts[ap].stackPointer
+  var currentState = VIEW_STATE.sections[as].parts[ap].stack[pointer]
+
+  if (!Immutable.fromJS(newState).equals(currentState)) {
+    var stack = VIEW_STATE.sections[as].parts[ap].stack
+    stack.splice(pointer + 1, stack.length - 1, newState)
+    VIEW_STATE.sections[as].parts[ap].stackPointer = ++pointer
+  }
+
+  return newSongState
+}
 
 function delayedAction(viewState) {
   if (viewState.delayedAction) {

@@ -1,7 +1,7 @@
 %section#song
 :javascript
   Midi.connect();
-  ViewState.init()
   window.SONG_STATE = #{song_json.to_json};
+  ViewState.init(SONG_STATE)
   var view = React.createElement(SeqCom.Song, null)
   window.SONG_VIEW = ReactDOM.render(view, window.song)

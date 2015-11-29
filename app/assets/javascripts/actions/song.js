@@ -78,7 +78,8 @@ Song.setActiveSection = function(viewState, commandWithArgumets) {
   viewState["activeSection"] = newActiveSection
 
   if (viewState.sections[newActiveSection] === undefined) {
-    viewState.sections[newActiveSection] = ViewState.newSectionState()
+    viewState.sections[newActiveSection] = ViewState.newSectionState(SONG_STATE.sections[0].parts.length)
+    viewState = ViewState.initPartStacksForSection(newActiveSection)
   }
 
   return viewState;
@@ -92,6 +93,7 @@ Song.setActivePart = function(viewState, commandWithArgumets) {
 
   if (viewState.sections[viewState.activeSection].parts[newActivePart] === undefined) {
     viewState.sections[viewState.activeSection].parts[newActivePart] = ViewState.newPartState()
+    viewState = Undo.initActiveStack(viewState)
   }
 
   return viewState;

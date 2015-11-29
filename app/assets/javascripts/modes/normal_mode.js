@@ -39,7 +39,12 @@ function addNumberArgument(node) {
     numberedNode = function(state) {return node(state, number); }
     return numberedNode;
   } else {
-    return [function(state) {return node[0](state, number); }, function(state) {return node[1](state, number); }]
+    var songFn = function(state) {return node[0](state, number); };
+    var viewFn = function(state) {return node[1](state, number); };
+    songFn.prototype = node[0].prototype
+    viewFn.prototype = node[1].prototype
+
+    return [songFn, viewFn]
   }
 }
 
@@ -57,6 +62,8 @@ function captureNumber(possibleNumber) {
 
 function currentNode(character) {
   topNode = {
+    "U": [Undo.redo, NOOP],
+    "u": [Undo.undo, NOOP],
     ":": [NOOP, Modes.commandMode],
     "j": [NOOP, CursorMovement.moveDown],
     "k": [NOOP, CursorMovement.moveUp],

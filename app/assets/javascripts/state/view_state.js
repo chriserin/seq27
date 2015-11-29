@@ -17,7 +17,7 @@ VIEW_STATE = {
   error: null,
   activeSection: 0,
   activePart: 0,
-  sections: [{parts: [{selectedTag: null}]}],
+  sections: [{parts: [{selectedTag: null, stack: [], stackPointer: 0}]}],
   commandResult: '',
   commandBuffer: [],
   explorerDisplayParts: true,
@@ -29,10 +29,23 @@ VIEW_STATE = {
 };
 
 window.ViewState = {}
-ViewState.init = function() {
+ViewState.init = function(songState) {
   for (var stateKey in VIEW_STATE) {
     defineProp(stateKey)
   }
+
+  for(var i = 0; i < songState.sections.length; i++) {
+    ViewState.initPartStacksForSection(i)
+  }
+}
+
+ViewState.initPartStacksForSection = function(sectionNumber) {
+  for(var j = 0; j < SONG_STATE.sections[sectionNumber].parts.length; j++) {
+    var part = SONG_STATE.sections[sectionNumber].parts[j]
+    VIEW_STATE.sections[sectionNumber].parts[j].stack.push(Immutable.fromJS(part))
+  }
+
+  return VIEW_STATE
 }
 
 function defineProp(stateKey) {
@@ -109,9 +122,11 @@ ViewState.selectedTag = function() {
 }
 
 ViewState.newPartState = function() {
-  return {selectedTag: null}
+  var newPartViewState = {selectedTag: null, stack: [], stackPointer: 0}
+  return newPartViewState
 }
 
-ViewState.newSectionState = function() {
-  return {parts: [{selectedTag: null}]}
+ViewState.newSectionState = function(partsNumber) {
+  var newPartsState = Array.from(Array(partsNumber)).map(function(){ return ViewState.newPartState(); })
+  return {parts: newPartsState}
 }
