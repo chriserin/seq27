@@ -53,15 +53,18 @@ function captureNumber(possibleNumber) {
 
   if(isNaN(parsedNumber)) {
     return false;
-  } else {
+  } else if (parseInt(NormalMode["number"] + possibleNumber) > 0) {
     NormalMode["number"] += possibleNumber
     NormalMode["totalSequence"] += possibleNumber
     return true;
   }
+
+  return false
 }
 
 function currentNode(character) {
   topNode = {
+    "0": [NOOP, CursorMovement.moveToZero],
     "U": [Undo.redo, NOOP],
     "u": [Undo.undo, NOOP],
     ":": [NOOP, Modes.commandMode],

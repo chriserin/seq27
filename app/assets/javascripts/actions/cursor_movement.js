@@ -78,6 +78,11 @@ CursorMovement.moveToBottom = function(viewState) {
   return viewState
 }
 
+CursorMovement.moveToZero = function(viewState) {
+  viewState = ViewState.setCursorStart(viewState, 0);
+  return viewState
+}
+
 CursorMovement.moveToSelection = function(viewState) {
   var notes = Selection.getSelectedNotes(SONG_STATE)
   var sortedNotes = notes.concat().sort(function(a, b) { return a.pitch - b.pitch })

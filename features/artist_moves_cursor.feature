@@ -3,6 +3,14 @@ Feature: Artist moves cursor
   @javascript
   Scenario: Artist goes to top with gg
     Given an artist on the new song page
+    When I type the "10l" sequence
+    Then I see the cursor at beat 10 and pitch 60
+    When I type the "0" sequence
+    Then I see the cursor at beat 0 and pitch 60
+
+  @javascript
+  Scenario: Artist goes to top with gg
+    Given an artist on the new song page
     When I type the "gg" sequence
     Then I see the cursor at beat 0 and pitch 127
     When I type the "G" sequence
