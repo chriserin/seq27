@@ -1,10 +1,22 @@
 window.Song = {};
 
-Song.addNote = function(songState) {
+Song.addNote = function(songState, number) {
+  var notesToAdd = number || 1
+
   var cursor = ViewState.cursor
-  var note = SongState.newNote(cursor.start, cursor.pitch, 96)
-  SongState.tagNotes([note])
-  SongState.activePart().notes.push(note)
+
+  var noteStart = cursor.start
+  var newNotes = Array.from(Array(notesToAdd).keys()).map(function() {
+    var note = SongState.newNote(noteStart, cursor.pitch, 96)
+    noteStart += 96
+    return note
+  })
+
+  SongState.tagNotes(newNotes)
+
+  var existingNotes = SongState.activePart().notes
+  Array.prototype.splice.apply(existingNotes, [existingNotes.length, existingNotes.length].concat(newNotes))
+
   return songState;
 }
 
