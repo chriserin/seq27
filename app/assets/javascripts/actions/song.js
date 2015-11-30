@@ -65,7 +65,10 @@ Song.setPart = function(songState, commandWithArgumets) {
   var partArgument = commandWithArgumets.split(" ")[1];
 
   if (partArgument.indexOf('!') > 0) {
-    SongState.activeSection().parts.push(SongState.newPart())
+    var sections = songState.sections
+    for(var i = 0; i < sections.length; i++) {
+      sections[i].parts.push(SongState.newPart())
+    }
   }
 
   return songState;
