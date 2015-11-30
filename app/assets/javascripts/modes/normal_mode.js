@@ -64,6 +64,8 @@ function captureNumber(possibleNumber) {
 
 function currentNode(character) {
   topNode = {
+    "o": [NOOP, Move.upOctave],
+    "O": [NOOP, Move.downOctave],
     "0": [NOOP, CursorMovement.moveToZero],
     "U": [Undo.redo, NOOP],
     "u": [Undo.undo, NOOP],
@@ -142,7 +144,6 @@ function toUpNodes() {
     var midiPitch = middleOctaveMidiPitches[note];
     nodes[note] = [NOOP, createToNoteFn(midiPitch)];
   }
-  nodes["o"] = [NOOP, Move.upOctave];
 
   return nodes;
 }
@@ -157,7 +158,6 @@ function toDownNodes() {
     var midiPitch = middleOctaveMidiPitches[note];
     nodes[note] = [NOOP, createToNoteFn(midiPitch)];
   }
-  nodes["o"] = [NOOP, Move.downOctave];
 
   return nodes;
 }

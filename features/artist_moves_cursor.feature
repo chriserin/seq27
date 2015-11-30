@@ -211,8 +211,8 @@ Feature: Artist moves cursor
     When  I type a sequence then I see the cursor at the right pitch:
       | sequence | midipitch |
       | mb       | 71        |
-      | to       | 83        |
-      | To       | 71        |
+      | o        | 83        |
+      | O        | 71        |
       | ta       | 81        |
       | Tc       | 72        |
       | ta       | 81        |
