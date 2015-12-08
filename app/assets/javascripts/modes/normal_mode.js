@@ -113,6 +113,7 @@ function currentNode(character) {
   topNode["q"] = quarterMovementNodes();
   topNode["r"] = thirdMovementNodes();
   topNode["s"] = snapToBeatNodes();
+  topNode["z"] = playNodes();
 
   //TODO: this doesn't work for a third level of nodes
   if (NormalMode["sequence"] === '') {
@@ -227,7 +228,7 @@ function deleteNodes() {
 }
 
 function createNodes() {
-  nodes = {
+  var nodes = {
     "n": [Song.addNote, Groups.setSelectedTag],
     "h": [Chord.major, Groups.setSelectedTag],
     "m": [Chord.minor, Groups.setSelectedTag]
@@ -252,6 +253,13 @@ function cycleLeftNodes() {
 function cycleRightNodes() {
   var nodes = {
     "g": [NOOP, Groups.selectNextGroup]
+  }
+  return nodes
+}
+
+function playNodes() {
+  var nodes = {
+    "z": [Play.play, NOOP]
   }
   return nodes
 }
