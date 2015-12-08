@@ -64,6 +64,8 @@ function captureNumber(possibleNumber) {
 
 function currentNode(character) {
   topNode = {
+    "y": [NOOP, Copy.yank],
+    "p": [Copy.paste, Groups.setSelectedTag],
     "o": [NOOP, Move.upOctave],
     "O": [NOOP, Move.downOctave],
     "0": [NOOP, CursorMovement.moveToZero],

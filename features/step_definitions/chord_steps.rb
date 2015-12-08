@@ -6,7 +6,7 @@ def expect_note_at(pitch)
 end
 
 Then(/^I see a major chord at middle "(.*?)"$/) do |root_pitch|
-  pitch_map = {"c" => 60}
+  pitch_map = {"c" => 60, "a" => 69}
   root_number = pitch_map[root_pitch]
   expect_note_at(root_number)
   expect_note_at(root_number + 4)

@@ -1,5 +1,6 @@
 //= require react
 //= require react_ujs
+//= require lodash
 //= require immutability
 //= require_directory ./state
 //= require_directory ./components

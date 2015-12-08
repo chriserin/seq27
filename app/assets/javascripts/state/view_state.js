@@ -1,5 +1,6 @@
 VIEW_STATE = {
   mode: 'normal',
+  yankedNotes: [],
   cursor: {
     pitch: 60,
     start: 0,
