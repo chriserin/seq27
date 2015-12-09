@@ -55,17 +55,18 @@ Play.makeEventsMap = function(songState) {
     var maxBeats = Play.maxBeatsForSection(section)
 
     for(var loop = 0; loop < section.loop; loop++) {
+      var maxTicks = loopOffset + (maxBeats * 96.0)
       for(var partIndex = 0; part = section.parts[partIndex]; partIndex++) {
         var sectionFilled = false
         var fillOffset = 0
-        var count = 0
 
-        while((!sectionFilled) && (count < 5)) {
-          for(var note of part.notes.sort(function(a, b){ return a.start - b.start})) {
+        var sortedNotes = part.notes.sort(function(a, b){ return a.start - b.start})
+        sectionFilled = sortedNotes.length === 0
+        while(!sectionFilled) {
+          for(var note of sortedNotes) {
             var noteLengthInMillis = note.length * msPerTick;
 
             var startTicks = note.start + loopOffset + (fillOffset * 96.0)
-            var maxTicks = loopOffset + (maxBeats * 96.0)
 
             if (startTicks < maxTicks) {
               var start = startTicks * msPerTick
@@ -84,7 +85,6 @@ Play.makeEventsMap = function(songState) {
               break;
             }
           }
-          count++
           fillOffset += parseInt(part.beats || maxBeats)
         }
       }
