@@ -59,7 +59,7 @@ Play.makeEventsMap = function(songState) {
       var maxTicks = loopOffset + (maxBeats * 96.0)
 
       for(var partIndex = 0; part = section.parts[partIndex]; partIndex++) {
-        eventsMap = eventsMap.concat(Play.playPart(part, msPerTick, loopOffset, maxTicks))
+        eventsMap = eventsMap.concat(Play.createPartMap(part, msPerTick, loopOffset, maxTicks))
       }
 
       loopOffset = loopOffset + (maxBeats * 96.0);
@@ -69,7 +69,7 @@ Play.makeEventsMap = function(songState) {
   return eventsMap.sort(function(a, b) { return a[0] - b[0]});
 }
 
-Play.playPart = function(part, msPerTick, loopOffset, maxTicks) {
+Play.createPartMap = function(part, msPerTick, loopOffset, maxTicks) {
   var sectionFilled = false
   var fillOffset = 0
   var resultMap = []
