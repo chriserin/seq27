@@ -30,21 +30,22 @@ Play.maxBeatsForSection = function(section) {
   })[0]
 }
 
+Play.createOnFn = function(channel, pitch, velocity, output) {
+  return function(onTime) {
+    Midi.sendOn(channel, pitch, velocity = 80, onTime, output)
+  }
+}
+
+Play.createOffFn = function(channel, pitch, velocity, output) {
+  return function(offTime) { Midi.sendOff(channel, pitch, velocity = 80, offTime, output) }
+}
+
+
 Play.makeEventsMap = function(songState) {
   var bpm = songState.tempo;
   var secondsPerTick = 60 / (96.0 * bpm);
   var msPerTick = secondsPerTick * 1000;
   var eventsMap = new Array();
-
-  var createOnFn = function(channel, pitch, velocity, output) {
-    return function(onTime) {
-      Midi.sendOn(channel, pitch, velocity = 80, onTime, output);
-    };
-  }
-
-  var createOffFn = function(channel, pitch, velocity, output) {
-    return function(offTime) { Midi.sendOff(channel, pitch, velocity = 80, offTime, output); };
-  }
 
   var loopOffset = 0;
   var sections = songState.sections
@@ -56,43 +57,53 @@ Play.makeEventsMap = function(songState) {
 
     for(var loop = 0; loop < section.loop; loop++) {
       var maxTicks = loopOffset + (maxBeats * 96.0)
+
       for(var partIndex = 0; part = section.parts[partIndex]; partIndex++) {
-        var sectionFilled = false
-        var fillOffset = 0
-
-        var sortedNotes = part.notes.sort(function(a, b){ return a.start - b.start})
-        sectionFilled = sortedNotes.length === 0
-        while(!sectionFilled) {
-          for(var note of sortedNotes) {
-            var noteLengthInMillis = note.length * msPerTick;
-
-            var startTicks = note.start + loopOffset + (fillOffset * 96.0)
-
-            if (startTicks < maxTicks) {
-              var start = startTicks * msPerTick
-              Play.PLAY_STATE.activeNotes.push(note);
-
-              var onTime = start;
-              var offTime = start + noteLengthInMillis;
-
-              var channel = part.channel || 1
-              var output =  part.output
-              eventsMap.push([onTime, createOnFn(channel, note.pitch, velocity = 80, output) ]);
-              eventsMap.push([offTime, createOffFn(channel, note.pitch, velocity = 80, output) ]);
-
-            } else {
-              sectionFilled = true
-              break;
-            }
-          }
-          fillOffset += parseInt(part.beats || maxBeats)
-        }
+        eventsMap = eventsMap.concat(Play.playPart(part, msPerTick, loopOffset, maxTicks))
       }
+
       loopOffset = loopOffset + (maxBeats * 96.0);
     }
   }
 
   return eventsMap.sort(function(a, b) { return a[0] - b[0]});
+}
+
+Play.playPart = function(part, msPerTick, loopOffset, maxTicks) {
+  var sectionFilled = false
+  var fillOffset = 0
+  var resultMap = []
+
+  var sortedNotes = part.notes.sort(function(a, b){ return a.start - b.start})
+  sectionFilled = sortedNotes.length === 0
+
+  while(!sectionFilled) {
+    for(var note of sortedNotes) {
+      var noteLengthInMillis = note.length * msPerTick
+
+      var startTicks = note.start + loopOffset + (fillOffset * 96.0)
+
+      if (startTicks < maxTicks) {
+        var start = startTicks * msPerTick
+        Play.PLAY_STATE.activeNotes.push(note)
+
+        var onTime = start
+        var offTime = start + noteLengthInMillis
+
+        var channel = part.channel || 1
+        var output =  part.output
+
+        resultMap.push([onTime, Play.createOnFn(channel, note.pitch, velocity = 80, output) ])
+        resultMap.push([offTime, Play.createOffFn(channel, note.pitch, velocity = 80, output) ])
+      } else {
+        sectionFilled = true
+        break;
+      }
+    }
+    fillOffset += parseInt(part.beats || maxBeats)
+  }
+
+  return resultMap
 }
 
 var intervalTask = null
