@@ -100,6 +100,12 @@ Play.play = function(songState) {
   Play.PLAY_STATE.activeNotes = [];
   var eventsMap = Play.makeEventsMap(songState);
 
+  Play.playEvents(eventsMap)
+
+  return songState;
+}
+
+Play.playEvents = function(eventsMap) {
   scheduleNotes(JUST_IN_TIME_INCREMENT, eventsMap);
   var callScheduleFn = function() {
     if (scheduleFnStack.length > 0) {
@@ -108,8 +114,6 @@ Play.play = function(songState) {
   }
 
   intervalTask = setInterval(callScheduleFn, JUST_IN_TIME_INCREMENT );
-
-  return songState;
 }
 
 var removeNote = function(note) {
