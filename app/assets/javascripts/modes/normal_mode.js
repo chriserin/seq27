@@ -259,7 +259,8 @@ function cycleRightNodes() {
 
 function playNodes() {
   var nodes = {
-    "z": [Play.play, NOOP]
+    "z": [Play.play, NOOP],
+    "p": [Play.playPart, NOOP]
   }
   return nodes
 }

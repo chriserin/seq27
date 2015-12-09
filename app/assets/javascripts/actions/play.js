@@ -40,17 +40,27 @@ Play.createOffFn = function(channel, pitch, velocity, output) {
   return function(offTime) { Midi.sendOff(channel, pitch, velocity = 80, offTime, output) }
 }
 
+Play.makeEventsMapForActivePart = function(songState) {
+  var bpm = songState.tempo
+  var secondsPerTick = 60 / (96.0 * bpm)
+  var msPerTick = secondsPerTick * 1000
+  var part = SongState.activePart()
+  var maxTicks = part.beats * 96.0
+
+  var eventsMap = Play.createPartMap(SongState.activePart(), msPerTick, 0, maxTicks)
+  return eventsMap
+}
 
 Play.makeEventsMap = function(songState) {
-  var bpm = songState.tempo;
-  var secondsPerTick = 60 / (96.0 * bpm);
-  var msPerTick = secondsPerTick * 1000;
-  var eventsMap = new Array();
+  var bpm = songState.tempo
+  var secondsPerTick = 60 / (96.0 * bpm)
+  var msPerTick = secondsPerTick * 1000
+  var eventsMap = new Array()
 
   var loopOffset = 0;
   var sections = songState.sections
   var arrangement = songState.arrangement
-  var section = null, part = null;
+  var section = null, part = null
 
   for(var arrangementIndex = 0; section = sections[arrangement[arrangementIndex]]; arrangementIndex++) {
     var maxBeats = Play.maxBeatsForSection(section)
@@ -110,6 +120,16 @@ var intervalTask = null
 Play.play = function(songState) {
   Play.PLAY_STATE.activeNotes = [];
   var eventsMap = Play.makeEventsMap(songState);
+
+  Play.playEvents(eventsMap)
+
+  return songState;
+}
+
+Play.playPart = function(songState) {
+  Play.PLAY_STATE.activeNotes = [];
+
+  var eventsMap = Play.makeEventsMapForActivePart(songState)
 
   Play.playEvents(eventsMap)
 
