@@ -54,6 +54,18 @@ Feature: Artist moves cursor
     Then  I see a cursor in the top left corner
 
   @javascript
+  Scenario: Artist sets beats below cursor position
+    Given an artist on the new song page
+    When  I type the "4l" sequence
+    Then  I see the cursor at beat 4 and pitch 60
+    When  I type the ":set beats=4" command
+    Then  I see the cursor at beat 3 and pitch 60
+    When  I press 'h'
+    Then  I see the cursor at beat 2 and pitch 60
+    When  I press 'l'
+    Then  I see the cursor at beat 3 and pitch 60
+
+  @javascript
   Scenario: Artist creates note at cursor
     Given an artist on the new song page
     Then  I see a cursor in the top left corner
