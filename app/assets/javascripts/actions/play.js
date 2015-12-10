@@ -1,4 +1,6 @@
 window.Play = {};
+Play.ON = 'ON'
+Play.OFF = 'OFF'
 Play.PLAY_STATE = {isPlaying: false, activeNotes: []};
 
 Play.playStop = function(songState) {
@@ -13,8 +15,7 @@ Play.playStop = function(songState) {
 
 Play.stop = function(songState) {
   for(var note of Play.PLAY_STATE.activeNotes) {
-    removeNote(note)
-    Midi.sendOff(1, note.pitch, velocity = 80, 0);
+    note()
   }
 
   Play.PLAY_STATE = {isPlaying: false, activeNotes: []};
@@ -30,14 +31,26 @@ Play.maxBeatsForSection = function(section) {
   })[0]
 }
 
-Play.createOnFn = function(channel, pitch, velocity, output) {
+Play.createOnFn = function(channel, pitch, velocity, output, offFn) {
   return function(onTime) {
+    Play.PLAY_STATE.activeNotes.push(offFn)
     Midi.sendOn(channel, pitch, velocity = 80, onTime, output)
   }
 }
 
 Play.createOffFn = function(channel, pitch, velocity, output) {
-  return function(offTime) { Midi.sendOff(channel, pitch, velocity = 80, offTime, output) }
+  var offFn = null
+
+  var removeOffFunctionFn = function() {
+    removeNote(offFn)
+  }
+
+  offFn = function(offTime) {
+    Midi.sendOff(channel, pitch, velocity = 80, offTime, output)
+    removeOffFunctionFn()
+  }
+
+  return offFn
 }
 
 Play.makeEventsMapForActivePart = function(songState) {
@@ -48,7 +61,18 @@ Play.makeEventsMapForActivePart = function(songState) {
   var maxTicks = part.beats * 96.0
 
   var eventsMap = Play.createPartMap(SongState.activePart(), msPerTick, 0, maxTicks)
-  return eventsMap
+  return eventsMap.sort(function(a, b) { return a[0] - b[0]});
+}
+
+Play.makeEventsMapForSelection = function(songState) {
+  var bpm = songState.tempo
+  var secondsPerTick = 60 / (96.0 * bpm)
+  var msPerTick = secondsPerTick * 1000
+  var part = SongState.activePart()
+  var maxTicks = part.beats * 96.0
+
+  var eventsMap = Play.createSelectionMap(SongState.activePart(), msPerTick, 0, maxTicks)
+  return eventsMap.sort(function(a, b) { return a[0] - b[0]});
 }
 
 Play.makeEventsMap = function(songState) {
@@ -80,37 +104,55 @@ Play.makeEventsMap = function(songState) {
 }
 
 Play.createPartMap = function(part, msPerTick, loopOffset, maxTicks) {
-  var sectionFilled = false
   var fillOffset = 0
   var resultMap = []
 
   var sortedNotes = part.notes.sort(function(a, b){ return a.start - b.start})
+  if (sortedNotes.length === 0) {
+    return []
+  }
+
   sectionFilled = sortedNotes.length === 0
 
-  while(!sectionFilled) {
-    for(var note of sortedNotes) {
-      var noteLengthInMillis = note.length * msPerTick
+  var startGreaterThanMaxTicksFn = function(event) {
+    return event[2] > maxTicks
+  }
 
-      var startTicks = note.start + loopOffset + (fillOffset * 96.0)
+  var startLessThanMaxTicksFn = function(event) {
+    return event[2] < maxTicks
+  }
 
-      if (startTicks < maxTicks) {
-        var start = startTicks * msPerTick
-        Play.PLAY_STATE.activeNotes.push(note)
-
-        var onTime = start
-        var offTime = start + noteLengthInMillis
-
-        var channel = part.channel || 1
-        var output =  part.output
-
-        resultMap.push([onTime, Play.createOnFn(channel, note.pitch, velocity = 80, output) ])
-        resultMap.push([offTime, Play.createOffFn(channel, note.pitch, velocity = 80, output) ])
-      } else {
-        sectionFilled = true
-        break;
-      }
-    }
+  while(!resultMap.some(startGreaterThanMaxTicksFn)) {
+    resultMap = resultMap.concat(Play.createNotesMap(sortedNotes, msPerTick, loopOffset, fillOffset, part.channel || 1, part.output))
     fillOffset += parseInt(part.beats || maxBeats)
+  }
+
+  var nodes = resultMap.filter(startLessThanMaxTicksFn)
+  return nodes
+}
+
+Play.createSelectionMap = function(part, msPerTick, loopOffset, maxTicks) {
+  var notes = Selection.getSelectedNotes(SONG_STATE)
+  notes.sort(function(a, b) {return a.start - b.start})
+  return Play.createNotesMap(notes, msPerTick, 0, -notes[0].start / 96.0, part.channel || 1, part.output)
+}
+
+Play.createNotesMap = function(notes, msPerTick, loopOffset, fillOffset, channel, output) {
+  var resultMap = []
+
+  for(var note of notes) {
+    var noteLengthInMillis = note.length * msPerTick
+
+    var startTicks = note.start + loopOffset + (fillOffset * 96.0)
+
+    var start = startTicks * msPerTick
+
+    var onTime = start
+    var offTime = start + noteLengthInMillis
+
+    var offFn = Play.createOffFn(channel, note.pitch, velocity = 80, output)
+    resultMap.push([onTime, Play.createOnFn(channel, note.pitch, velocity = 80, output, offFn), startTicks])
+    resultMap.push([offTime, offFn, startTicks])
   }
 
   return resultMap
@@ -127,9 +169,19 @@ Play.play = function(songState) {
 }
 
 Play.playPart = function(songState) {
-  Play.PLAY_STATE.activeNotes = [];
+  Play.PLAY_STATE = {isPlaying: true, activeNotes: []};
 
   var eventsMap = Play.makeEventsMapForActivePart(songState)
+
+  Play.playEvents(eventsMap)
+
+  return songState;
+}
+
+Play.playSelection = function(songState) {
+  Play.PLAY_STATE = {isPlaying: true, activeNotes: []};
+
+  var eventsMap = Play.makeEventsMapForSelection(songState)
 
   Play.playEvents(eventsMap)
 
@@ -151,7 +203,8 @@ var removeNote = function(note) {
   var index = Play.PLAY_STATE.activeNotes.indexOf(note);
 
   if (index > -1) {
-    Play.PLAY_STATE.activeNotes.slice(index, 1);
+    delete Play.PLAY_STATE.activeNotes[index]
+    Play.PLAY_STATE.activeNotes = Play.PLAY_STATE.activeNotes.filter(Boolean)
   }
 
   return Play.PLAY_STATE.activeNotes;

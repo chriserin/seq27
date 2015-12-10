@@ -1,5 +1,5 @@
 
-Then /^I hear only the current part$/ do
+Then /^I hear only the current (part|selection)$/ do |_|
   @midi_destination.collect()
   @midi_destination.expect(2)
   packets = @midi_destination.finish()
