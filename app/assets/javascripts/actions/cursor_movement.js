@@ -33,9 +33,7 @@ CursorMovement.moveLeft = function(state, number) {
 }
 
 CursorMovement.ensureCursorInBounds = function(viewState) {
-
   var cursor = viewState.cursor
-
   var numberOfBeatsInPart = SongState.activePart().beats * 96
 
   if (cursor.start >= numberOfBeatsInPart) {

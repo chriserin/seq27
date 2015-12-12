@@ -26,6 +26,13 @@ SongState.activePart = function() {
   return SongState.activeSection()["parts"][ViewState.activePart]
 }
 
+SongState.notesForActivePart = function() {
+  var part = SongState.activePart()
+  return part.notes.filter(function(note) {
+    return note.start < part.beats * 96
+  })
+}
+
 SongState.replaceActivePart = function(newPart) {
   return SongState.activeSection()["parts"][ViewState.activePart] = newPart
 }

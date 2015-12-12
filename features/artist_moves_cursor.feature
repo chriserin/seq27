@@ -66,6 +66,17 @@ Feature: Artist moves cursor
     Then  I see the cursor at beat 3 and pitch 60
 
   @javascript
+  Scenario: Artist sets beats and only sees notes within bounds
+    Given an artist on the new song page
+    Then  I see a cursor in the top left corner
+    When  I type the "16cn" sequence
+    Then  I see 16 notes
+    When  I type the ":set beats=4" command
+    Then  I see 4 notes
+    When  I type the ":set beats=8" command
+    Then  I see 8 notes
+
+  @javascript
   Scenario: Artist creates note at cursor
     Given an artist on the new song page
     Then  I see a cursor in the top left corner

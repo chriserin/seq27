@@ -44,8 +44,9 @@ SeqCom.Section = React.createClass({
     }
   },
   render: function() {
+    var notes = SongState.notesForActivePart()
     var part = SongState.activePart()
-    var parts_html = <SeqCom.Part data={part} partId={ViewState.activePart}/>;
+    var parts_html = <SeqCom.Part notes={notes} partId={ViewState.activePart}/>;
 
     return <grids ref='grids' data-section-id={ViewState.activeSection}>
       <SeqCom.PitchGrid beats={part.beats}/>
@@ -123,7 +124,9 @@ SeqCom.Part = React.createClass({
     }
   },
   render: function() {
-    var notes_html = this.props.data.notes.map((note, i)=> {
+    var notes = this.props.notes
+
+    var notes_html = notes.map((note, i)=> {
       return <note
         key={i}
         style={this.notePosition(note)}
