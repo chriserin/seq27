@@ -8,6 +8,8 @@ function moveCursor(state, attrs) {
   return state
 }
 
+CursorMovement.moveCursor = moveCursor;
+
 CursorMovement.moveDown = function(state, number) {
   var pitches = number || 1
   moveCursor(state, {pitch: state['cursor']['pitch'] - pitches})
@@ -54,8 +56,7 @@ CursorMovement.moveToNextNote = function(viewState) {
   var nextNote = notes.filter(filterFn)[0]
 
   if(nextNote) {
-    viewState['cursor']['start'] = nextNote.start
-    viewState['cursor']['pitch'] = nextNote.pitch
+    return moveCursor(viewState, nextNote)
   }
   return viewState;
 }
@@ -73,24 +74,23 @@ CursorMovement.moveToPrevNote = function(viewState) {
   var nextNote = notesAfterCursor[notesAfterCursor.length - 1]
 
   if(nextNote) {
-    viewState['cursor']['start'] = nextNote.start
-    viewState['cursor']['pitch'] = nextNote.pitch
+    return moveCursor(viewState, nextNote)
   }
   return viewState;
 }
 
 CursorMovement.moveToTop = function(viewState) {
-  viewState = ViewState.setCursorPitch(viewState, 127);
+  viewState = moveCursor(viewState, {pitch: 127});
   return viewState
 }
 
 CursorMovement.moveToBottom = function(viewState) {
-  viewState = ViewState.setCursorPitch(viewState, 0);
+  viewState = moveCursor(viewState, {pitch: 0});
   return viewState
 }
 
 CursorMovement.moveToZero = function(viewState) {
-  viewState = ViewState.setCursorStart(viewState, 0);
+  viewState = moveCursor(viewState, {start: 0});
   return viewState
 }
 
@@ -100,7 +100,7 @@ CursorMovement.moveToSelection = function(viewState) {
   var noteToEmulate = sortedNotes[0]
 
   if (noteToEmulate) {
-    viewState = ViewState.setCursor(viewState, noteToEmulate);
+    viewState = moveCursor(viewState, noteToEmulate);
   }
 
   return viewState

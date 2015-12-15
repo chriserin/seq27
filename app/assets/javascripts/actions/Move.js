@@ -3,41 +3,49 @@ window.Move = {}
 Move.toMiddleNote = function(viewState, note, octave) {
   octave = octave || 5;
   convertedNote = note % 12 + octave * 12;
-  viewState['cursor']['pitch'] = convertedNote;
-  return viewState;
+  return CursorMovement.moveCursor(viewState, {pitch: convertedNote});
 }
 
 Move.upOctave = function(viewState) {
   var tmpPitch = viewState['cursor']['pitch'] + 12;
-  viewState = ViewState.setCursorPitch(viewState, tmpPitch);
+  viewState = CursorMovement.moveCursor(viewState, {pitch: tmpPitch});
   return viewState;
 }
 
 Move.downOctave = function(viewState) {
   var tmpPitch = viewState['cursor']['pitch'] - 12;
-  viewState = ViewState.setCursorPitch(viewState, tmpPitch);
+  viewState = CursorMovement.moveCursor(viewState, {pitch: tmpPitch});
   return viewState;
 }
 
 Move.upToNote = function(viewState, note) {
   noteDiff = note % 12;
   currentNoteDiff = viewState['cursor']['pitch'] % 12;
-  if (noteDiff > currentNoteDiff)
-    viewState['cursor']['pitch'] += noteDiff - currentNoteDiff;
-  else
-    viewState['cursor']['pitch'] += (noteDiff - currentNoteDiff) + 12;
 
-  return viewState;
+  var newPitch
+  if (noteDiff > currentNoteDiff)
+    newPitch = viewState['cursor']['pitch'] + noteDiff - currentNoteDiff
+  else
+    newPitch = viewState['cursor']['pitch'] + (noteDiff - currentNoteDiff) + 12
+
+  var cursorAttrs = {pitch: newPitch}
+
+  return CursorMovement.moveCursor(viewState, cursorAttrs)
 }
 
 Move.downToNote = function(viewState, note) {
   noteDiff = note % 12;
-  currentNoteDiff = viewState['cursor']['pitch'] % 12;
+  currentNoteDiff = viewState['cursor']['pitch'] % 12
+
+  var newPitch
   if (noteDiff > currentNoteDiff)
-    viewState['cursor']['pitch'] += (noteDiff - currentNoteDiff) - 12;
+    newPitch = viewState['cursor']['pitch'] + (noteDiff - currentNoteDiff) - 12
   else
-    viewState['cursor']['pitch'] += (noteDiff - currentNoteDiff);
-  return viewState;
+    newPitch = viewState['cursor']['pitch'] + (noteDiff - currentNoteDiff)
+
+  cursorAttrs = {pitch: newPitch}
+
+  return CursorMovement.moveCursor(viewState, cursorAttrs)
 }
 
 Move.moveSelectionDown = function(songState, number) {
