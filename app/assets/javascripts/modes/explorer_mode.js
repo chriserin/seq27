@@ -5,6 +5,10 @@ ExplorerMode.push = function(character) {
 
   var commandFns = commandNodes[character]
 
+  if (commandFns === undefined) {
+    return [NOOP, NOOP]
+  }
+
   return commandFns
 }
 
