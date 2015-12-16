@@ -49,7 +49,7 @@ SeqCom.Explorer.Section = React.createClass({
               data-arrangement-index={arrangementIndex}>
                 <span className={this.classes()}>section {sectionId}</span>
                 {this.renderParts(arrangementIndex)}
-           </songSection>;
+           </songSection>
   }
 });
 

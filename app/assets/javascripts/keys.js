@@ -16,12 +16,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.addEventListener("DOMContentLoaded", function () {
     if(window.song) {
+      //TODO: Replace this thing with ELM
       document.addEventListener('keypress',
         function(keyboardEvent) {
           keyboardEvent.preventDefault()
           var key = String.fromCharCode(keyboardEvent.charCode);
 
           if (keyboardEvent.keyCode == '27') {
+            console.log('Pressing ESC')
             key = 'ESC'
           }
 

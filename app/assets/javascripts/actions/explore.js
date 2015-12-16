@@ -26,6 +26,7 @@ Explore.moveCursorUp = function(viewState) {
   return viewState
 }
 
+//TODO: Replace this whole file with ELM-LANG
 Explore.moveCursorDown = function(viewState) {
   var explorerCursor = viewState['explorerCursor']
   var maxParts = SongState.activeSection().parts.length - 1
