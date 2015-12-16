@@ -102,7 +102,7 @@ Song.setActiveSection = function(viewState, commandWithArgumets) {
     viewState = ViewState.initPartStacksForSection(newActiveSection)
   }
 
-  return viewState;
+  return CursorMovement.ensureCursorInBounds(viewState)
 }
 
 Song.setActivePart = function(viewState, commandWithArgumets) {
