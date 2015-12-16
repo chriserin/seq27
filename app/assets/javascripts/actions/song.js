@@ -90,6 +90,11 @@ Song.setActiveSection = function(viewState, commandWithArgumets) {
   var sectionArgument = commandWithArgumets.split(" ")[1];
 
   var newActiveSection = parseInt(sectionArgument)
+
+  if (!SongState.hasSection(newActiveSection)) {
+    return SeqError.setError(viewState, 'E2: This song does not have section ' + sectionArgument)
+  }
+
   viewState["activeSection"] = newActiveSection
 
   if (viewState.sections[newActiveSection] === undefined) {

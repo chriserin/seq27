@@ -123,3 +123,7 @@ SongState.tagNotes = function(notes) {
 SongState.sectionsLength = function() {
   return SONG_STATE['sections'].length
 }
+
+SongState.hasSection = function(sectionIndex) {
+  return SONG_STATE.sections[sectionIndex] !== undefined
+}
