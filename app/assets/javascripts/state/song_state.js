@@ -48,7 +48,6 @@ SongState.activeArrangementIndex = function() {
 }
 
 SongState.currentGroupNotes = function(songState) {
-
   var tag = ViewState.selectedTag()
   var results = SongState.activePart().notes.filter(function(note){ return note.timestamp === tag})
 

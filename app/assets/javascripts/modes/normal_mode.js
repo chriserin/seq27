@@ -115,6 +115,11 @@ function currentNode(character) {
   topNode["s"] = snapToBeatNodes();
   topNode["z"] = playNodes();
 
+  //TODO: This should happen more explicitly
+  if (ViewState.mode === 'visual' || ViewState.visuallySelectedNotes) {
+    delete topNode['c']
+  }
+
   //TODO: this doesn't work for a third level of nodes
   if (NormalMode["sequence"] === '') {
     return topNode;
