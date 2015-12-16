@@ -17,6 +17,7 @@ Feature: Artist undos and redos changes
     Then  I see a note at beat 0 and pitch 59
     When  I type the "U" sequence
     Then  I see a note at beat 0 and pitch 58
+    And   I see the cursor at beat 0 and pitch 58
     When  I type the "2u" sequence
     Then  I see a note at beat 0 and pitch 60
     When  I type the "v2L" sequence
@@ -47,3 +48,11 @@ Feature: Artist undos and redos changes
     Then  I see a note at beat 0 and pitch 59
     When  I type the "u" sequence
     Then  I see a note at beat 0 and pitch 60
+
+  @javascript
+  Scenario: Artist sees cursor on latest note added after undo
+    Given an artist on the new song page
+    When  I type the "mccnjcn" sequence
+    Then  I see the note on pitch "59" is part of the selected group
+    When  I press 'u'
+    Then  I see the note on pitch "60" is part of the selected group

@@ -39,6 +39,19 @@ Undo.initActiveStack = function(songState) {
   return songState
 }
 
+Undo.normalizeView = function(viewState) {
+  viewState = Modes.endVisualMode(viewState)
+
+  viewState = Groups.setSelectedTag(viewState)
+
+  var notes = Selection.getSelectedNotes(SONG_STATE)
+
+  if (notes && notes.length > 0)
+    return CursorMovement.moveCursor(viewState, notes[0])
+  else
+    return viewState
+}
+
 var metaAttributes = {isUndoFunction: true}
 
 Undo.redo.prototype = metaAttributes
