@@ -1,23 +1,17 @@
 module Explorer where
 
-import Graphics.Element exposing (..)
-import Keyboard
-import Char
-import Effects exposing (Never)
-import Html exposing (..)
-import Html.Attributes exposing (..)
-import Html.Events exposing (..)
-import Signal exposing (Address)
-import StartApp
+type ArrangementNode = SectionNode MusicalSection | PartNode Part
 
--- MODEL
-type alias Part = Int
-
-type alias MusicalSection =
+type alias Part =
   { id: Int
   , name: String
   }
 
+type alias MusicalSection =
+  { id: Int
+  , name: String
+  , parts: List Part
+  }
 
 type alias Model =
   { sections: List MusicalSection
@@ -25,67 +19,29 @@ type alias Model =
   , cursorPosition: Int
   }
 
-initialModel : Model
-initialModel =
-    { sections = [{name = "intro", id = 10}, {name = "middle", id = 100}, {name = "end", id = 1000}]
-    , arrangement = []
-    , cursorPosition = 0
-    }
+flattenArrangement : Model -> List ArrangementNode
+flattenArrangement arrangement = 
+  arrangement.sections
+    |> List.map (\musicalSection -> ([SectionNode musicalSection] ++ (flattenParts musicalSection)))
+    |> List.concat
 
-init = 
-    (initialModel, Effects.none)
+flattenParts : MusicalSection -> List ArrangementNode
+flattenParts section =
+  section
+    |> .parts
+    |> List.map PartNode
 
--- UPDATE
-type Action =
-  NoOp | CursorUp | CursorDown
-
-update action model =
-  case action of
-    NoOp ->
-      (model, Effects.none)
-
-    CursorUp ->
-      Debug.log "cursor up"
-      ({ model | cursorPosition = model.cursorPosition + 1 }, Effects.none)
-
-    CursorDown ->
-      ({ model | cursorPosition = model.cursorPosition - 1 }, Effects.none)
-
--- VIEW
--- isSectionSelected cursorPosition sections
-
-renderSection : (Int, MusicalSection) -> Html
-renderSection (index, musicalSection) =
-  li [] [
-      text ("MuscialSection [" ++ musicalSection.name ++ "]" ++ index)
-    ]
-
-sectionList : List MusicalSection -> Html
-sectionList sections =
+indexOfArrangementNode : List ArrangementNode -> ArrangementNode -> Maybe Int
+indexOfArrangementNode flattenedArrangement arrangementNode =
   let
-    renderedSections = List.indexedMap renderSection sections
+    listTupleElement = flattenedArrangement
+                        |> List.indexedMap (,)
+                        |> List.filter (\node -> (snd node) == arrangementNode) 
+                        |> List.head
   in
-    ul [] renderedSections
-
-
-view : Signal.Address Action -> Model -> Html
-view address model =
-  div [ class "explorer" ] [ (sectionList model.sections) ]
-    -- [ text (toString model.cursorPosition) ]
-
-hjklToAction keyCode =
-  case (Char.fromCode keyCode) of
-    'k' -> CursorUp
-    'j' -> CursorDown
-    _ -> NoOp
-
-app = 
-  StartApp.start 
-    { init = init
-    , inputs = [ Signal.map hjklToAction Keyboard.presses ]
-    , update = update
-    , view = view
-    }
-
-main = 
-  app.html
+    case listTupleElement of
+      Just value ->
+        Just (fst value)
+      
+      Nothing ->
+        Nothing

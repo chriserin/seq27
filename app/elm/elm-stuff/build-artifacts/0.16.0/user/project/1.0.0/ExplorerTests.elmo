@@ -1,0 +1,27 @@
+Elm.ExplorerTests = Elm.ExplorerTests || {};
+Elm.ExplorerTests.make = function (_elm) {
+   "use strict";
+   _elm.ExplorerTests = _elm.ExplorerTests || {};
+   if (_elm.ExplorerTests.values) return _elm.ExplorerTests.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $ElmTest = Elm.ElmTest.make(_elm),
+   $Explorer = Elm.Explorer.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var _op = {};
+   var arrangement = {sections: _U.list([{name: "intro",id: 10,parts: _U.list([1,2,3])},{name: "middle",id: 100,parts: _U.list([])}])
+                     ,arrangement: _U.list([])
+                     ,cursorPosition: 0};
+   var flattenedArrangement = $Explorer.flattenArrangement(arrangement);
+   var all = A2($ElmTest.suite,
+   "Explorer Test Suite",
+   _U.list([A2($ElmTest.test,"Flattening the arrangement",A2($ElmTest.assertEqual,5,$List.length($Explorer.flattenArrangement(arrangement))))
+           ,A2($ElmTest.test,
+           "Find arrangement in flattened arrangements",
+           A2($ElmTest.assertEqual,$Maybe.Just(3),A2($Explorer.indexOfArrangementNode,flattenedArrangement,$Explorer.PartNode(3))))]));
+   return _elm.ExplorerTests.values = {_op: _op,arrangement: arrangement,flattenedArrangement: flattenedArrangement,all: all};
+};

@@ -1,0 +1,96 @@
+Elm.ExplorerView = Elm.ExplorerView || {};
+Elm.ExplorerView.make = function (_elm) {
+   "use strict";
+   _elm.ExplorerView = _elm.ExplorerView || {};
+   if (_elm.ExplorerView.values) return _elm.ExplorerView.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Char = Elm.Char.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Effects = Elm.Effects.make(_elm),
+   $Explorer = Elm.Explorer.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $Html$Attributes = Elm.Html.Attributes.make(_elm),
+   $Keyboard = Elm.Keyboard.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $StartApp = Elm.StartApp.make(_elm);
+   var _op = {};
+   var classForSelectedNode = F3(function (node,flattenedArrangement,cursorPosition) {
+      var nodeIndex = A2($Explorer.indexOfArrangementNode,flattenedArrangement,node);
+      var _p0 = nodeIndex;
+      if (_p0.ctor === "Just") {
+            return _U.eq(_p0._0,cursorPosition) ? "selected" : "";
+         } else {
+            return "";
+         }
+   });
+   var renderPart = F2(function (model,part) {
+      var flattenedArrangement = $Explorer.flattenArrangement(model);
+      var partClass = A3(classForSelectedNode,$Explorer.PartNode(part),flattenedArrangement,model.cursorPosition);
+      return A2($Html.li,_U.list([$Html$Attributes.$class(partClass)]),_U.list([$Html.text(part.name)]));
+   });
+   var renderPartList = F2(function (model,parts) {
+      var renderedParts = A2($List.map,renderPart(model),parts);
+      return A2($Html.ul,_U.list([]),renderedParts);
+   });
+   var renderSection = F2(function (model,musicalSection) {
+      var flattenedArrangement = $Explorer.flattenArrangement(model);
+      var sectionClass = A3(classForSelectedNode,$Explorer.SectionNode(musicalSection),flattenedArrangement,model.cursorPosition);
+      var renderedPartList = _U.cmp($List.length(musicalSection.parts),0) > 0 ? A2(renderPartList,model,musicalSection.parts) : $Html.text("");
+      return A2($Html.li,
+      _U.list([$Html$Attributes.$class(sectionClass)]),
+      _U.list([$Html.text(A2($Basics._op["++"],"MuscialSection [",A2($Basics._op["++"],musicalSection.name,"]"))),renderedPartList]));
+   });
+   var renderSectionList = function (model) {
+      var renderedSections = A2($List.map,renderSection(model),model.sections);
+      return A2($Html.ul,_U.list([]),renderedSections);
+   };
+   var view = F2(function (address,model) {    return A2($Html.div,_U.list([$Html$Attributes.$class("explorer")]),_U.list([renderSectionList(model)]));});
+   var update = F2(function (action,model) {
+      var _p1 = action;
+      switch (_p1.ctor)
+      {case "NoOp": return {ctor: "_Tuple2",_0: model,_1: $Effects.none};
+         case "CursorUp": var newCursorPosition = A2($Basics.max,0,model.cursorPosition - 1);
+           return {ctor: "_Tuple2",_0: _U.update(model,{cursorPosition: newCursorPosition}),_1: $Effects.none};
+         default: var upperBound = $List.length($Explorer.flattenArrangement(model)) - 1;
+           var newCursorPosition = A2($Basics.min,upperBound,model.cursorPosition + 1);
+           return {ctor: "_Tuple2",_0: _U.update(model,{cursorPosition: newCursorPosition}),_1: $Effects.none};}
+   });
+   var CursorDown = {ctor: "CursorDown"};
+   var CursorUp = {ctor: "CursorUp"};
+   var NoOp = {ctor: "NoOp"};
+   var hjklToAction = function (keyCode) {
+      var _p2 = $Char.fromCode(keyCode);
+      switch (_p2.valueOf())
+      {case "k": return CursorUp;
+         case "j": return CursorDown;
+         default: return NoOp;}
+   };
+   var initialModel = {sections: _U.list([{name: "intro",id: 10,parts: _U.list([{id: 1,name: "intro part 1"},{id: 2,name: "intro part 2"}])}
+                                         ,{name: "middle",id: 100,parts: _U.list([])}
+                                         ,{name: "end",id: 1000,parts: _U.list([{id: 3,name: "end part 1"},{id: 4,name: "end part 2"}])}])
+                      ,arrangement: _U.list([])
+                      ,cursorPosition: 0};
+   var init = {ctor: "_Tuple2",_0: initialModel,_1: $Effects.none};
+   var app = $StartApp.start({init: init,inputs: _U.list([A2($Signal.map,hjklToAction,$Keyboard.presses)]),update: update,view: view});
+   var main = app.html;
+   return _elm.ExplorerView.values = {_op: _op
+                                     ,initialModel: initialModel
+                                     ,init: init
+                                     ,NoOp: NoOp
+                                     ,CursorUp: CursorUp
+                                     ,CursorDown: CursorDown
+                                     ,update: update
+                                     ,classForSelectedNode: classForSelectedNode
+                                     ,renderPartList: renderPartList
+                                     ,renderPart: renderPart
+                                     ,renderSection: renderSection
+                                     ,renderSectionList: renderSectionList
+                                     ,view: view
+                                     ,hjklToAction: hjklToAction
+                                     ,app: app
+                                     ,main: main};
+};
