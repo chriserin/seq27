@@ -6,6 +6,7 @@
 //= require_directory ./components
 //= require_directory ./modes
 //= require_directory ./actions
+//= require_directory ./elm
 //= require application
 //= require keys
 //= require midi

@@ -16,7 +16,8 @@ Elm.ExplorerView.make = function (_elm) {
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
-   $StartApp = Elm.StartApp.make(_elm);
+   $StartApp = Elm.StartApp.make(_elm),
+   $Task = Elm.Task.make(_elm);
    var _op = {};
    var classForSelectedNode = F3(function (node,flattenedArrangement,cursorPosition) {
       var nodeIndex = A2($Explorer.indexOfArrangementNode,flattenedArrangement,node);
@@ -28,61 +29,127 @@ Elm.ExplorerView.make = function (_elm) {
          }
    });
    var renderPart = F2(function (model,part) {
-      var flattenedArrangement = $Explorer.flattenArrangement(model);
+      var flattenedArrangement = $Explorer.flattenArrangementFromModel(model);
       var partClass = A3(classForSelectedNode,$Explorer.PartNode(part),flattenedArrangement,model.cursorPosition);
-      return A2($Html.li,_U.list([$Html$Attributes.$class(partClass)]),_U.list([$Html.text(part.name)]));
+      return A2($Html.li,
+      _U.list([$Html$Attributes.$class(A2($Basics._op["++"],partClass," part"))]),
+      _U.list([$Html.text(A2($Basics._op["++"],part.name,A2($Basics._op["++"]," Notes: ",$Basics.toString($List.length(part.notes)))))]));
    });
    var renderPartList = F2(function (model,parts) {
       var renderedParts = A2($List.map,renderPart(model),parts);
       return A2($Html.ul,_U.list([]),renderedParts);
    });
    var renderSection = F2(function (model,musicalSection) {
-      var flattenedArrangement = $Explorer.flattenArrangement(model);
+      var flattenedArrangement = $Explorer.flattenArrangementFromModel(model);
       var sectionClass = A3(classForSelectedNode,$Explorer.SectionNode(musicalSection),flattenedArrangement,model.cursorPosition);
       var renderedPartList = _U.cmp($List.length(musicalSection.parts),0) > 0 ? A2(renderPartList,model,musicalSection.parts) : $Html.text("");
       return A2($Html.li,
-      _U.list([$Html$Attributes.$class(sectionClass)]),
+      _U.list([$Html$Attributes.$class(A2($Basics._op["++"],sectionClass," section"))]),
       _U.list([$Html.text(A2($Basics._op["++"],"MuscialSection [",A2($Basics._op["++"],musicalSection.name,"]"))),renderedPartList]));
    });
    var renderSectionList = function (model) {
-      var renderedSections = A2($List.map,renderSection(model),model.sections);
+      var renderedSections = A2($List.map,renderSection(model),model.songState.sections);
       return A2($Html.ul,_U.list([]),renderedSections);
    };
    var view = F2(function (address,model) {    return A2($Html.div,_U.list([$Html$Attributes.$class("explorer")]),_U.list([renderSectionList(model)]));});
+   var NoOp = function (a) {    return {ctor: "NoOp",_0: a};};
+   var SelectPart = {ctor: "SelectPart"};
+   var CursorDown = {ctor: "CursorDown"};
+   var CursorUp = {ctor: "CursorUp"};
+   var hjklToAction = function (keyCode) {
+      var _p1 = $Char.fromCode(keyCode);
+      switch (_p1.valueOf())
+      {case "l": return SelectPart;
+         case "k": return CursorUp;
+         case "j": return CursorDown;
+         default: return NoOp({ctor: "_Tuple0"});}
+   };
+   var inbox = $Signal.mailbox({ctor: "_Tuple2",_0: -1,_1: -1});
    var update = F2(function (action,model) {
-      var _p1 = action;
-      switch (_p1.ctor)
+      var _p2 = action;
+      switch (_p2.ctor)
       {case "NoOp": return {ctor: "_Tuple2",_0: model,_1: $Effects.none};
          case "CursorUp": var newCursorPosition = A2($Basics.max,0,model.cursorPosition - 1);
            return {ctor: "_Tuple2",_0: _U.update(model,{cursorPosition: newCursorPosition}),_1: $Effects.none};
-         default: var upperBound = $List.length($Explorer.flattenArrangement(model)) - 1;
+         case "CursorDown": var upperBound = $List.length($Explorer.flattenArrangementFromModel(model)) - 1;
            var newCursorPosition = A2($Basics.min,upperBound,model.cursorPosition + 1);
-           return {ctor: "_Tuple2",_0: _U.update(model,{cursorPosition: newCursorPosition}),_1: $Effects.none};}
+           return {ctor: "_Tuple2",_0: _U.update(model,{cursorPosition: newCursorPosition}),_1: $Effects.none};
+         default: var coordinates = A2($Explorer.currentPartCoordinates,model.cursorPosition,$Explorer.flattenArrangementFromModel(model));
+           var sendSignal = A2($Signal.send,inbox.address,coordinates);
+           return {ctor: "_Tuple2",_0: model,_1: $Effects.task(A2($Task.map,NoOp,sendSignal))};}
    });
-   var CursorDown = {ctor: "CursorDown"};
-   var CursorUp = {ctor: "CursorUp"};
-   var NoOp = {ctor: "NoOp"};
-   var hjklToAction = function (keyCode) {
-      var _p2 = $Char.fromCode(keyCode);
-      switch (_p2.valueOf())
-      {case "k": return CursorUp;
-         case "j": return CursorDown;
-         default: return NoOp;}
-   };
-   var initialModel = {sections: _U.list([{name: "intro",id: 10,parts: _U.list([{id: 1,name: "intro part 1"},{id: 2,name: "intro part 2"}])}
-                                         ,{name: "middle",id: 100,parts: _U.list([])}
-                                         ,{name: "end",id: 1000,parts: _U.list([{id: 3,name: "end part 1"},{id: 4,name: "end part 2"}])}])
-                      ,arrangement: _U.list([])
-                      ,cursorPosition: 0};
-   var init = {ctor: "_Tuple2",_0: initialModel,_1: $Effects.none};
+   var activePart = Elm.Native.Port.make(_elm).outboundSignal("activePart",function (v) {    return [v._0,v._1];},inbox.signal);
+   var coordinates = Elm.Native.Port.make(_elm).inbound("coordinates",
+   "( Int, Int )",
+   function (v) {
+      return typeof v === "object" && v instanceof Array ? {ctor: "_Tuple2"
+                                                           ,_0: typeof v[0] === "number" && isFinite(v[0]) && Math.floor(v[0]) === v[0] ? v[0] : _U.badPort("an integer",
+                                                           v[0])
+                                                           ,_1: typeof v[1] === "number" && isFinite(v[1]) && Math.floor(v[1]) === v[1] ? v[1] : _U.badPort("an integer",
+                                                           v[1])} : _U.badPort("an array",v);
+   });
+   var initState = Elm.Native.Port.make(_elm).inbound("initState",
+   "Explorer.SongState",
+   function (v) {
+      return typeof v === "object" && "sections" in v && "arrangement" in v && "tempo" in v && "arrangement" in v ? {_: {}
+                                                                                                                    ,sections: typeof v.sections === "object" && v.sections instanceof Array ? Elm.Native.List.make(_elm).fromArray(v.sections.map(function (v) {
+                                                                                                                       return typeof v === "object" && "id" in v && "loop" in v && "name" in v && "parts" in v ? {_: {}
+                                                                                                                                                                                                                 ,id: typeof v.id === "number" && isFinite(v.id) && Math.floor(v.id) === v.id ? v.id : _U.badPort("an integer",
+                                                                                                                                                                                                                 v.id)
+                                                                                                                                                                                                                 ,loop: typeof v.loop === "number" && isFinite(v.loop) && Math.floor(v.loop) === v.loop ? v.loop : _U.badPort("an integer",
+                                                                                                                                                                                                                 v.loop)
+                                                                                                                                                                                                                 ,name: typeof v.name === "string" || typeof v.name === "object" && v.name instanceof String ? v.name : _U.badPort("a string",
+                                                                                                                                                                                                                 v.name)
+                                                                                                                                                                                                                 ,parts: typeof v.parts === "object" && v.parts instanceof Array ? Elm.Native.List.make(_elm).fromArray(v.parts.map(function (v) {
+                                                                                                                                                                                                                    return typeof v === "object" && "id" in v && "sectionId" in v && "name" in v && "beats" in v && "notes" in v && "channel" in v && "output" in v ? {_: {}
+                                                                                                                                                                                                                                                                                                                                                                      ,id: typeof v.id === "number" && isFinite(v.id) && Math.floor(v.id) === v.id ? v.id : _U.badPort("an integer",
+                                                                                                                                                                                                                                                                                                                                                                      v.id)
+                                                                                                                                                                                                                                                                                                                                                                      ,sectionId: typeof v.sectionId === "number" && isFinite(v.sectionId) && Math.floor(v.sectionId) === v.sectionId ? v.sectionId : _U.badPort("an integer",
+                                                                                                                                                                                                                                                                                                                                                                      v.sectionId)
+                                                                                                                                                                                                                                                                                                                                                                      ,name: typeof v.name === "string" || typeof v.name === "object" && v.name instanceof String ? v.name : _U.badPort("a string",
+                                                                                                                                                                                                                                                                                                                                                                      v.name)
+                                                                                                                                                                                                                                                                                                                                                                      ,beats: typeof v.beats === "number" && isFinite(v.beats) && Math.floor(v.beats) === v.beats ? v.beats : _U.badPort("an integer",
+                                                                                                                                                                                                                                                                                                                                                                      v.beats)
+                                                                                                                                                                                                                                                                                                                                                                      ,notes: typeof v.notes === "object" && v.notes instanceof Array ? Elm.Native.List.make(_elm).fromArray(v.notes.map(function (v) {
+                                                                                                                                                                                                                                                                                                                                                                         return typeof v === "object" ? {_: {}} : _U.badPort("an object with fields ``",
+                                                                                                                                                                                                                                                                                                                                                                         v);
+                                                                                                                                                                                                                                                                                                                                                                      })) : _U.badPort("an array",
+                                                                                                                                                                                                                                                                                                                                                                      v.notes)
+                                                                                                                                                                                                                                                                                                                                                                      ,channel: typeof v.channel === "number" && isFinite(v.channel) && Math.floor(v.channel) === v.channel ? v.channel : _U.badPort("an integer",
+                                                                                                                                                                                                                                                                                                                                                                      v.channel)
+                                                                                                                                                                                                                                                                                                                                                                      ,output: typeof v.output === "number" && isFinite(v.output) && Math.floor(v.output) === v.output ? v.output : _U.badPort("an integer",
+                                                                                                                                                                                                                                                                                                                                                                      v.output)} : _U.badPort("an object with fields `id`, `sectionId`, `name`, `beats`, `notes`, `channel`, `output`",
+                                                                                                                                                                                                                    v);
+                                                                                                                                                                                                                 })) : _U.badPort("an array",
+                                                                                                                                                                                                                 v.parts)} : _U.badPort("an object with fields `id`, `loop`, `name`, `parts`",
+                                                                                                                       v);
+                                                                                                                    })) : _U.badPort("an array",v.sections)
+                                                                                                                    ,arrangement: typeof v.arrangement === "object" && v.arrangement instanceof Array ? Elm.Native.List.make(_elm).fromArray(v.arrangement.map(function (v) {
+                                                                                                                       return typeof v === "number" && isFinite(v) && Math.floor(v) === v ? v : _U.badPort("an integer",
+                                                                                                                       v);
+                                                                                                                    })) : _U.badPort("an array",v.arrangement)
+                                                                                                                    ,tempo: typeof v.tempo === "number" && isFinite(v.tempo) && Math.floor(v.tempo) === v.tempo ? v.tempo : _U.badPort("an integer",
+                                                                                                                    v.tempo)
+                                                                                                                    ,arrangement: typeof v.arrangement === "object" && v.arrangement instanceof Array ? Elm.Native.List.make(_elm).fromArray(v.arrangement.map(function (v) {
+                                                                                                                       return typeof v === "number" && isFinite(v) && Math.floor(v) === v ? v : _U.badPort("an integer",
+                                                                                                                       v);
+                                                                                                                    })) : _U.badPort("an array",
+                                                                                                                    v.arrangement)} : _U.badPort("an object with fields `sections`, `arrangement`, `tempo`, `arrangement`",
+      v);
+   });
+   var init = {ctor: "_Tuple2"
+              ,_0: {songState: initState,cursorPosition: A2($Explorer.currentCursorPosition,coordinates,$Explorer.flattenArrangement(initState.sections))}
+              ,_1: $Effects.none};
    var app = $StartApp.start({init: init,inputs: _U.list([A2($Signal.map,hjklToAction,$Keyboard.presses)]),update: update,view: view});
+   var tasks = Elm.Native.Task.make(_elm).performSignal("tasks",app.tasks);
    var main = app.html;
    return _elm.ExplorerView.values = {_op: _op
-                                     ,initialModel: initialModel
+                                     ,inbox: inbox
                                      ,init: init
-                                     ,NoOp: NoOp
                                      ,CursorUp: CursorUp
                                      ,CursorDown: CursorDown
+                                     ,SelectPart: SelectPart
+                                     ,NoOp: NoOp
                                      ,update: update
                                      ,classForSelectedNode: classForSelectedNode
                                      ,renderPartList: renderPartList

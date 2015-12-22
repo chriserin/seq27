@@ -46,17 +46,19 @@ Explore.moveCursorDown = function(viewState) {
   return viewState
 }
 
-Explore.goToPartOrSection = function(viewState) {
-  var explorerCursor = viewState['explorerCursor']
-
-  if (explorerCursor.partId === -1) {
+Explore.goToPartOrSection = function(viewState, coordinates) {
+  if (coordinates[1] === -1) {
     viewState.activePart = 0
   } else {
-    viewState.activePart = explorerCursor.partId
+    viewState.activePart = coordinates[1]
   }
-  viewState.activeSection = SONG_STATE.arrangement[explorerCursor.arrangementIndex]
+  viewState.activeSection = coordinates[0]
 
   return Modes.normalMode(viewState)
+}
+
+Explore.currentCoordinates = function() {
+  return [ViewState.activeSection, ViewState.activePart]
 }
 
 Explore.hideParts = function(viewState) {

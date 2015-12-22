@@ -10,37 +10,35 @@ import Html.Events exposing (..)
 import Signal exposing (Address)
 import StartApp
 import Explorer
+import Task
 
+-- PORTS
+port initState : Explorer.SongState
+port coordinates : (Int, Int)
 
-initialModel : Explorer.Model
-initialModel =
-    { sections = [ { name = "intro"
-                   , id = 10
-                   , parts = [{ id = 1, name = "intro part 1" }, { id = 2, name = "intro part 2" }]
-                   }
-                 , { name = "middle"
-                   , id = 100
-                   , parts = []
-                   }
-                 , { name = "end"
-                   , id = 1000
-                   , parts = [{ id = 3, name = "end part 1" }, { id = 4, name = "end part 2" }]
-                   }
-                 ]
-    , arrangement = []
-    , cursorPosition = 0
-    }
+port activePart : Signal (Int, Int)
+port activePart =
+  inbox.signal
+
+port tasks : Signal (Task.Task Never ())
+port tasks =
+    app.tasks
+
+-- MAILBOX
+inbox : Signal.Mailbox (Int, Int)
+inbox =
+    Signal.mailbox (-1, -1)
 
 init = 
-    (initialModel, Effects.none)
+    ({ songState = initState, cursorPosition = (Explorer.currentCursorPosition coordinates (Explorer.flattenArrangement initState.sections))}, Effects.none)
 
 -- UPDATE
 type Action =
-  NoOp | CursorUp | CursorDown
+  CursorUp | CursorDown | SelectPart | NoOp ()
 
 update action model =
   case action of
-    NoOp ->
+    NoOp () ->
       (model, Effects.none)
 
     CursorUp ->
@@ -51,11 +49,17 @@ update action model =
 
     CursorDown ->
       let
-        upperBound = List.length (Explorer.flattenArrangement model) - 1
+        upperBound = List.length (Explorer.flattenArrangementFromModel model) - 1
         newCursorPosition = Basics.min upperBound (model.cursorPosition + 1)
       in
         ({ model | cursorPosition = newCursorPosition }, Effects.none)
 
+    SelectPart ->
+      let
+        coordinates = (Explorer.currentPartCoordinates model.cursorPosition (Explorer.flattenArrangementFromModel model))
+        sendSignal = Signal.send inbox.address coordinates
+      in
+        (model, Effects.task (Task.map NoOp sendSignal))
 
 -- VIEW
 classForSelectedNode : Explorer.ArrangementNode -> List Explorer.ArrangementNode -> Int -> String
@@ -72,7 +76,6 @@ classForSelectedNode node flattenedArrangement cursorPosition =
 
       Nothing -> ""
 
-
 renderPartList : Explorer.Model -> List Explorer.Part -> Html
 renderPartList model parts =
   let 
@@ -83,10 +86,10 @@ renderPartList model parts =
 renderPart : Explorer.Model -> Explorer.Part -> Html
 renderPart model part =
   let
-    flattenedArrangement = Explorer.flattenArrangement model
+    flattenedArrangement = Explorer.flattenArrangementFromModel model
     partClass = classForSelectedNode (Explorer.PartNode part) flattenedArrangement model.cursorPosition
   in
-    li [ class partClass ] [ text part.name ]
+    li [ class <| partClass ++ " part"] [ text <| part.name ++ " Notes: " ++ (toString <| List.length part.notes)]
 
 renderSection : Explorer.Model -> Explorer.MusicalSection -> Html
 renderSection model musicalSection =
@@ -96,11 +99,10 @@ renderSection model musicalSection =
         renderPartList model musicalSection.parts 
       else
         text ""
-    flattenedArrangement = Explorer.flattenArrangement model
+    flattenedArrangement = Explorer.flattenArrangementFromModel model
     sectionClass = classForSelectedNode (Explorer.SectionNode musicalSection) flattenedArrangement model.cursorPosition
   in
-    -- TODO: add class if selected
-    li [ class sectionClass ] 
+    li [ class <| sectionClass ++ " section"] 
       [ text ("MuscialSection [" ++ musicalSection.name ++ "]")
       , renderedPartList
       ]
@@ -108,10 +110,9 @@ renderSection model musicalSection =
 renderSectionList : Explorer.Model -> Html
 renderSectionList model =
   let
-    renderedSections = List.map (renderSection model) model.sections
+    renderedSections = List.map (renderSection model) model.songState.sections
   in
     ul [] renderedSections
-
 
 view : Signal.Address Action -> Explorer.Model -> Html
 view address model =
@@ -119,9 +120,10 @@ view address model =
 
 hjklToAction keyCode =
   case (Char.fromCode keyCode) of
+    'l' -> SelectPart
     'k' -> CursorUp
     'j' -> CursorDown
-    _ -> NoOp
+    _ -> NoOp ()
 
 app = 
   StartApp.start 

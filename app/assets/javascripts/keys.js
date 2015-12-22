@@ -29,18 +29,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
           var fnArray = getFunctionsFor(key);
 
-          var songFn = fnArray[0];
-          var viewFn = fnArray[1];
-
-          SONG_STATE = savePartState(songFn, SONG_STATE);
-          VIEW_STATE = viewFn(delayedAction(VIEW_STATE));
-
-          window.SONG_VIEW.forceUpdate();
+          Controller.execute(fnArray)
         }
       );
     }
   }
 )
+
+window.Controller = {}
+
+Controller.execute = function(fnArray) {
+  var songFn = fnArray[0];
+  var viewFn = fnArray[1];
+
+  SONG_STATE = savePartState(songFn, SONG_STATE);
+  VIEW_STATE = viewFn(delayedAction(VIEW_STATE));
+
+  window.SONG_VIEW.forceUpdate();
+}
 
 function savePartState(songFn, songState) {
   if (songFn === NOOP) {

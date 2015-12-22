@@ -63,7 +63,7 @@ Song.setSection = function(songState, commandWithArgumets) {
     var section = {parts: [], loop: 1}
 
     songState.sections[0].parts.forEach(function(){
-      section['parts'].push({beats: 4, notes: []})
+      section['parts'].push({beats: 4, notes: [], channel: 0, output: 0})
     });
 
     var sectionsLength = songState["sections"].push(section);

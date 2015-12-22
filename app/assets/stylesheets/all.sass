@@ -9,7 +9,7 @@ song
   background-color: white
   align-content: stretch
 
-  explorer
+  .explorer
     display: flex
     position: relative
     flex-direction: column
@@ -18,14 +18,15 @@ song
     height: 100vh
     padding: 100px
 
-    songSection
+    .selected
+      background-color: lightgreen
+
+    li.section
       display: block
       margin-top: 10px
 
-      .cursor
-        background-color: lightgreen
 
-      part, > span
+      li.part, > span
         display: block
 
         span.label

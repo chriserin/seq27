@@ -4,6 +4,7 @@ Elm.Explorer.make = function (_elm) {
    _elm.Explorer = _elm.Explorer || {};
    if (_elm.Explorer.values) return _elm.Explorer.values;
    var _U = Elm.Native.Utils.make(_elm),
+   $Array = Elm.Array.make(_elm),
    $Basics = Elm.Basics.make(_elm),
    $Debug = Elm.Debug.make(_elm),
    $List = Elm.List.make(_elm),
@@ -11,39 +12,83 @@ Elm.Explorer.make = function (_elm) {
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
    var _op = {};
+   var toCoordinates = function (node) {
+      var _p0 = node;
+      if (_p0.ctor === "Just") {
+            if (_p0._0.ctor === "SectionNode") {
+                  return {ctor: "_Tuple2",_0: _p0._0._0.id,_1: -1};
+               } else {
+                  var _p1 = _p0._0._0;
+                  return {ctor: "_Tuple2",_0: _p1.sectionId,_1: _p1.id};
+               }
+         } else {
+            return {ctor: "_Tuple2",_0: -1,_1: -1};
+         }
+   };
+   var currentPartCoordinates = F2(function (cursorPosition,flattenedArrangement) {
+      return toCoordinates(A2($Array.get,cursorPosition,$Array.fromList(flattenedArrangement)));
+   });
+   var currentCursorPosition = F2(function (coordinates,flattenedArrangement) {
+      var indexedTuple = $List.head(A2($List.filter,
+      function (node) {
+         return _U.eq($Basics.snd(node),coordinates);
+      },
+      A2($List.indexedMap,
+      F2(function (v0,v1) {    return {ctor: "_Tuple2",_0: v0,_1: v1};}),
+      A2($List.map,toCoordinates,A2($List.map,$Maybe.Just,flattenedArrangement)))));
+      var _p2 = indexedTuple;
+      if (_p2.ctor === "Just") {
+            return $Basics.fst(_p2._0);
+         } else {
+            return 0;
+         }
+   });
    var indexOfArrangementNode = F2(function (flattenedArrangement,arrangementNode) {
       var listTupleElement = $List.head(A2($List.filter,
       function (node) {
          return _U.eq($Basics.snd(node),arrangementNode);
       },
       A2($List.indexedMap,F2(function (v0,v1) {    return {ctor: "_Tuple2",_0: v0,_1: v1};}),flattenedArrangement)));
-      var _p0 = listTupleElement;
-      if (_p0.ctor === "Just") {
-            return $Maybe.Just($Basics.fst(_p0._0));
+      var _p3 = listTupleElement;
+      if (_p3.ctor === "Just") {
+            return $Maybe.Just($Basics.fst(_p3._0));
          } else {
             return $Maybe.Nothing;
          }
    });
-   var Model = F3(function (a,b,c) {    return {sections: a,arrangement: b,cursorPosition: c};});
-   var MusicalSection = F3(function (a,b,c) {    return {id: a,name: b,parts: c};});
-   var Part = F2(function (a,b) {    return {id: a,name: b};});
+   var Model = F2(function (a,b) {    return {cursorPosition: a,songState: b};});
+   var SongState = F4(function (a,b,c,d) {    return {sections: a,arrangement: b,tempo: c,arrangement: d};});
+   var MusicalSection = F4(function (a,b,c,d) {    return {id: a,loop: b,name: c,parts: d};});
+   var Part = F7(function (a,b,c,d,e,f,g) {    return {id: a,sectionId: b,name: c,beats: d,notes: e,channel: f,output: g};});
    var PartNode = function (a) {    return {ctor: "PartNode",_0: a};};
    var flattenParts = function (section) {    return A2($List.map,PartNode,function (_) {    return _.parts;}(section));};
    var SectionNode = function (a) {    return {ctor: "SectionNode",_0: a};};
-   var flattenArrangement = function (arrangement) {
+   var flattenArrangementFromModel = function (arrangement) {
       return $List.concat(A2($List.map,
       function (musicalSection) {
          return A2($Basics._op["++"],_U.list([SectionNode(musicalSection)]),flattenParts(musicalSection));
       },
-      arrangement.sections));
+      arrangement.songState.sections));
+   };
+   var flattenArrangement = function (sections) {
+      return $List.concat(A2($List.map,
+      function (musicalSection) {
+         return A2($Basics._op["++"],_U.list([SectionNode(musicalSection)]),flattenParts(musicalSection));
+      },
+      sections));
    };
    return _elm.Explorer.values = {_op: _op
                                  ,SectionNode: SectionNode
                                  ,PartNode: PartNode
                                  ,Part: Part
                                  ,MusicalSection: MusicalSection
+                                 ,SongState: SongState
                                  ,Model: Model
+                                 ,flattenArrangementFromModel: flattenArrangementFromModel
                                  ,flattenArrangement: flattenArrangement
                                  ,flattenParts: flattenParts
-                                 ,indexOfArrangementNode: indexOfArrangementNode};
+                                 ,indexOfArrangementNode: indexOfArrangementNode
+                                 ,toCoordinates: toCoordinates
+                                 ,currentPartCoordinates: currentPartCoordinates
+                                 ,currentCursorPosition: currentCursorPosition};
 };

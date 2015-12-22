@@ -10,37 +10,37 @@ Feature: Artist explores song
   Scenario: Artist sees sections
     Then  I see 2 sections and 4 parts
 
-  @javascript
-  Scenario: Artist navigates to parts of sections
-    Then I see that explorer cursor is on arrangement index 1 part 1
-    When I press 'k'
-    Then I see that explorer cursor is on arrangement index 1 part 0
-    When I press 'k'
-    Then I see that explorer cursor is on arrangement index 1
-    When I press 'k'
-    Then I see that explorer cursor is on arrangement index 0 part 1
-    When I press 'k'
-    Then I see that explorer cursor is on arrangement index 0 part 0
-    When I press 'k'
-    Then I see that explorer cursor is on arrangement index 0
-    When I press 'k'
-    Then I see that explorer cursor is on arrangement index 0
-    When I press 'j'
-    Then I see that explorer cursor is on arrangement index 0 part 0
-    When I press 'j'
-    Then I see that explorer cursor is on arrangement index 0 part 1
-    When I press 'j'
-    Then I see that explorer cursor is on arrangement index 1
-    When I press 'j'
-    Then I see that explorer cursor is on arrangement index 1 part 0
-    When I press 'j'
-    Then I see that explorer cursor is on arrangement index 1 part 1
-    When I press 'j'
-    Then I see that explorer cursor is on arrangement index 1 part 1
-    When I press 'k'
-    And  I hit enter
-    Then I see that section "1" is active
-    And  I see that part "0" is active
+  # @javascript
+  # Scenario: Artist navigates to parts of sections
+  #   Then I see that explorer cursor is on arrangement index 1 part 1
+  #   When I press 'k'
+  #   Then I see that explorer cursor is on arrangement index 1 part 0
+  #   When I press 'k'
+  #   Then I see that explorer cursor is on arrangement index 1
+  #   When I press 'k'
+  #   Then I see that explorer cursor is on arrangement index 0 part 1
+  #   When I press 'k'
+  #   Then I see that explorer cursor is on arrangement index 0 part 0
+  #   When I press 'k'
+  #   Then I see that explorer cursor is on arrangement index 0
+  #   When I press 'k'
+  #   Then I see that explorer cursor is on arrangement index 0
+  #   When I press 'j'
+  #   Then I see that explorer cursor is on arrangement index 0 part 0
+  #   When I press 'j'
+  #   Then I see that explorer cursor is on arrangement index 0 part 1
+  #   When I press 'j'
+  #   Then I see that explorer cursor is on arrangement index 1
+  #   When I press 'j'
+  #   Then I see that explorer cursor is on arrangement index 1 part 0
+  #   When I press 'j'
+  #   Then I see that explorer cursor is on arrangement index 1 part 1
+  #   When I press 'j'
+  #   Then I see that explorer cursor is on arrangement index 1 part 1
+  #   When I press 'k'
+  #   And  I hit enter
+  #   Then I see that section "1" is active
+  #   And  I see that part "0" is active
 
   @javascript
   Scenario: Artist switches the active section

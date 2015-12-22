@@ -1,65 +1,31 @@
 window.SeqCom = window.SeqCom || {}
 
 SeqCom.Explorer = React.createClass({
-  render: function() {
-    var sections_html = SongState.arrangedSections().map(function(sectionValues, i) {
-      sectionIndex = sectionValues[0]
-      section = sectionValues[1]
-      return <SeqCom.Explorer.Section key={i} arrangementIndex={i} section={section} sectionId={sectionIndex+1} />
-    });
-    return <explorer>
-      <h1>Explorer</h1>
-      {sections_html}
-    </explorer>;
-  }
-});
+  componentWillUnmount() {
+    var view = this.explorerView
+    setTimeout(function() {view.dispose()}, 1)
+  },
+  componentDidMount() {
+    this.explorerView = Elm.embed(Elm.ExplorerView, ReactDOM.findDOMNode(this.refs.explorerEmbed), { initState: this.addIds(SONG_STATE), coordinates: Explore.currentCoordinates() })
 
-SeqCom.Explorer.Section = React.createClass({
-  isCursorOnSection: function(arrangementIndex) {
-    var explorerCursor = ViewState.explorerCursor
-    return (explorerCursor['arrangementIndex'] === arrangementIndex && explorerCursor['partId'] < 0);
+    this.explorerView.ports.activePart.subscribe((coordinates) => {
+      Controller.execute([NOOP, function(viewState) { return Explore.goToPartOrSection(viewState, coordinates)}])
+    })
   },
-  isCursorOnPart: function(arrangementIndex, partId) {
-    var explorerCursor = ViewState.explorerCursor
-    return (explorerCursor['arrangementIndex'] === arrangementIndex && explorerCursor['partId'] === partId);
-  },
-  classes: function() {
-    if(this.isCursorOnSection(this.props.arrangementIndex)) {
-      return "cursor"
-    }
-  },
-  renderParts(arrangementIndex) {
-    var parts_html = ''
-
-    if (ViewState.explorerDisplayParts) {
-      parts_html = this.props.section.parts.map((part, i)=> {
-        return <SeqCom.Explorer.Part key={i} id={i} isCursorOnPart={this.isCursorOnPart(arrangementIndex, i)}/>;
+  addIds(songState) {
+    var newState = JSON.parse(JSON.stringify(songState))
+    newState.sections.forEach((section, index) => {
+      section.id = index
+      section.name = index.toString()
+      section.parts.forEach((part, pindex) => {
+        part.id = pindex
+        part.sectionId = index
+        part.name = pindex.toString()
       })
-    }
-
-    return parts_html
+    })
+    return newState
   },
   render: function() {
-    var sectionId = this.props.sectionId
-    var arrangementIndex = this.props.arrangementIndex
-
-    return <songSection
-              className={this.classes()}
-              data-section-id={sectionId}
-              data-arrangement-index={arrangementIndex}>
-                <span className={this.classes()}>section {sectionId}</span>
-                {this.renderParts(arrangementIndex)}
-           </songSection>
-  }
-});
-
-SeqCom.Explorer.Part = React.createClass({
-  classes: function() {
-    if(this.props.isCursorOnPart) {
-      return "cursor"
-    }
-  },
-  render: function() {
-    return <part data-id={this.props.id} className={this.classes()}>part {this.props.id}</part>
+    return <div ref="explorerEmbed"> </div>;
   }
 });

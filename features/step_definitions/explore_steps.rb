@@ -1,7 +1,7 @@
 Then(/^I see (\d+) sections and (\d+) parts$/) do |s, p|
-  within 'explorer' do
-    expect(page).to have_selector('songSection', count: s.to_i)
-    expect(page).to have_selector('songSection part', count: p.to_i)
+  within 'div.explorer' do
+    expect(page).to have_selector('li.section', count: s.to_i)
+    expect(page).to have_selector('li.section li.part', count: p.to_i)
   end
 end
 
@@ -12,9 +12,11 @@ Then(/^I see that explorer cursor is on arrangement index (\d+) part (\d+)$/) do
 end
 
 Then(/^I see that explorer cursor is on arrangement index (\d+)$/) do |arrangementIndex|
-  selector = "songSection[data-arrangement-index='#{arrangementIndex}']"
-  sectionNode = find(selector)
-  expect(sectionNode['class']).to include "cursor"
+  within 'div.explorer' do
+    selector = "li.section:nth-child(1) li.part:nth-child(2)"
+    sectionNode = find(selector)
+    expect(sectionNode['class']).to include "selected"
+  end
 end
 
 Then(/^I do not see parts displayed in the explorer$/) do
