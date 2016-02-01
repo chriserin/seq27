@@ -14,8 +14,9 @@ Play.playStop = function(songState) {
 }
 
 Play.stop = function(songState) {
+
   for(var note of Play.PLAY_STATE.activeNotes) {
-    note()
+    note(0);
   }
 
   Play.PLAY_STATE = {isPlaying: false, activeNotes: []};
@@ -38,7 +39,7 @@ Play.createOnFn = function(channel, pitch, velocity, output, offFn) {
   }
 }
 
-Play.createOffFn = function(channel, pitch, velocity, output) {
+Play.createOffFn = function(channel, pitch, velocity, output, noteStartTime) {
   var offFn = null
 
   var removeOffFunctionFn = function() {
@@ -46,11 +47,23 @@ Play.createOffFn = function(channel, pitch, velocity, output) {
   }
 
   offFn = function(offTime) {
-    Midi.sendOff(channel, pitch, velocity = 80, offTime, output)
+    var elapsed = performance.now() - Play.PLAY_STATE.songStart
+
+    if (Play.PLAY_STATE.activeNotes.indexOf(offFn) < 0) {
+      return;
+    }
+
+    if (offTime === 0) {
+      offTime = Play.PLAY_STATE.songStart + noteStartTime + 1;
+    }
+
+    Midi.sendOff(channel, pitch, velocity, offTime, output)
     removeOffFunctionFn()
   }
 
-  return offFn
+  offFn.fnName = `offFn for pitch ${pitch}`;
+
+  return offFn;
 }
 
 Play.makeEventsMapForActivePart = function(songState) {
@@ -148,9 +161,9 @@ Play.createNotesMap = function(notes, msPerTick, loopOffset, fillOffset, channel
     var start = startTicks * msPerTick
 
     var onTime = start
-    var offTime = start + noteLengthInMillis
+    var offTime = start + noteLengthInMillis - 1
 
-    var offFn = Play.createOffFn(channel, note.pitch, velocity = 80, output)
+    var offFn = Play.createOffFn(channel, note.pitch, velocity = 80, output, onTime)
     resultMap.push([onTime, Play.createOnFn(channel, note.pitch, velocity = 80, output, offFn), startTicks])
     resultMap.push([offTime, offFn, startTicks])
   }
@@ -219,10 +232,11 @@ var scheduleNotes = function(startOffset, eventsMap, songStart) {
     var data = eventsMap.shift();
     var eventTime = data[0];
 
-    var songStart = songStart || function(){ return performance.now() + 50;}();
+    var songStart = Play.PLAY_STATE.songStart = songStart || function(){ return performance.now() + 50;}();
     if (songStart + eventTime <= (performance.now() + 50) + JUST_IN_TIME_INCREMENT) {
-      scheduleTime = songStart + eventTime;
-      data[1](songStart + eventTime);
+      if (Play.PLAY_STATE.isPlaying) {
+        data[1](songStart + eventTime);
+      }
     } else {
       eventsMap.unshift(data);
       break;
