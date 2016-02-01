@@ -12,7 +12,7 @@ Then /^I hear only the current (part|selection)$/ do |_|
   off_message = packets.second
   note_length = off_message[:timestamp] - on_message[:timestamp]
 
-  expect(note_length.round).to eq 10
+  expect(note_length.round).to eq 9
 
   expect_midi_message(on_message, on = 9, 1, 60, 80)
   expect_midi_message(off_message, off = 8, 1, 60, 80)
