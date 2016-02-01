@@ -5,7 +5,6 @@ Play.PLAY_STATE = {isPlaying: false, activeNotes: []};
 
 Play.playStop = function(songState) {
   if (!Play.PLAY_STATE.isPlaying) {
-    Play.PLAY_STATE = {isPlaying: true, activeNotes: []};
     return Play.play(songState);
   } else {
     Play.stop(songState);
@@ -173,7 +172,7 @@ Play.createNotesMap = function(notes, msPerTick, loopOffset, fillOffset, channel
 
 var intervalTask = null
 Play.play = function(songState) {
-  Play.PLAY_STATE.activeNotes = [];
+  Play.PLAY_STATE = {isPlaying: true, activeNotes: []};
   var eventsMap = Play.makeEventsMap(songState);
 
   Play.playEvents(eventsMap)
