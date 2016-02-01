@@ -25,7 +25,8 @@ CommandMode.commandMapping = function() {
     "map": [NOOP, Report.nodeMap],
     "write": [Save.write, NOOP],
     "update": [Save.update, NOOP],
-    "throw": [Testing.throwError, NOOP]
+    "throw": [Testing.throwError, NOOP],
+    "panic": [NOOP, Panic.panic]
   };
 }
 
