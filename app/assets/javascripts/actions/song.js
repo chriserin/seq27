@@ -104,7 +104,12 @@ Song.setActivePart = function(viewState, commandWithArgumets) {
   var partArgument = commandWithArgumets.split(" ")[1];
 
   var newActivePart = parseInt(partArgument)
-  viewState["activePart"] = newActivePart
+
+  if (SongState.activeSection().parts[newActivePart]) {
+    viewState["activePart"] = newActivePart
+  } else {
+    return SeqError.partDoesNotExist(viewState)
+  }
 
   if (viewState.sections[viewState.activeSection].parts[newActivePart] === undefined) {
     viewState.sections[viewState.activeSection].parts[newActivePart] = ViewState.newPartState()
