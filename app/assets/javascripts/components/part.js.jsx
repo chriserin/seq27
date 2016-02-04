@@ -18,6 +18,9 @@ SeqCom.Section = React.createClass({
   cursorTop() {
     return (16 * (127 - ViewState.cursor.pitch))
   },
+  cursorLeft() {
+    return ((ViewState.cursor.start / 96.0) * 75) + 60
+  },
   componentDidMount() {
     ReactDOM.findDOMNode(this.refs.grids).scrollTop = (16 * (127 - (60 + 15)))
   },
@@ -41,6 +44,25 @@ SeqCom.Section = React.createClass({
         elem.scrollTop = this.cursorTop() - (16)
       else
         elem.scrollTop = this.cursorTop() - (elem.clientHeight / 2)
+    }
+
+    var leftDiff = this.cursorLeft() - (elem.scrollLeft + elem.clientWidth - (75 * 2))
+
+    if (leftDiff > 0) {
+      if (leftDiff <= 75) {
+        elem.scrollLeft = this.cursorLeft() - (elem.clientWidth - (75 * 2))
+      } else {
+        elem.scrollLeft = this.cursorLeft() - (elem.clientWidth / 2)
+      }
+    }
+
+    var rightDiff = (elem.scrollLeft + 75) - this.cursorLeft()
+
+    if (rightDiff > 0) {
+      if (rightDiff <= 75)
+        elem.scrollLeft = this.cursorLeft() - (75)
+      else
+        elem.scrollLeft = this.cursorLeft() - (elem.clientWidth / 2)
     }
   },
   render: function() {
