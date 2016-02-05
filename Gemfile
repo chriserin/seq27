@@ -1,12 +1,12 @@
 source 'https://rubygems.org'
 
-ruby '2.2.3'
+ruby '2.3.0'
 
 #DEPENDENCIES
 gem 'nokogiri', '1.6.7.rc3'
 
 #FRAMEWORK
-gem 'rails', '4.2.0'
+gem 'rails', '4.2.5'
 gem 'authem'
 
 #DB
@@ -26,13 +26,13 @@ gem 'passenger'
 group :development do
   gem 'jquery-rails'
   gem 'spicerack', github: 'hashrocket/spicerack'
+  gem 'web-console', '~> 2.0'
 end
 
 group :development, :test do
   gem 'jasmine-rails'
   gem 'pry-rails'
   gem 'pry-byebug'
-  gem 'web-console', '~> 2.0'
 end
 
 group :test do
