@@ -46,6 +46,16 @@ Feature: Artist alters notes
     Then  I do not see a note
 
   @javascript
+  Scenario: Artist deletes latest note and previous group is selected
+    Given an artist on the new song page
+    When  I type the "mccn" sequence
+    Then  I see the note on pitch "60" is part of the selected group
+    When  I type the "mecn" sequence
+    Then  I see the note on pitch "64" is part of the selected group
+    When  I type the "dd" sequence
+    Then  I see the note on pitch "60" is part of the selected group
+
+  @javascript
   Scenario: Artist selects note group
     Given an artist on the new song page
     When  I type the "mccn" sequence

@@ -217,11 +217,11 @@ function snapToBeatNodes() {
 
 function deleteNodes() {
   var nodes = {
-    "d": [Delete.deleteLatest, NOOP]
+    "d": [Delete.deleteLatest, Groups.selectPreviousGroup]
   }
 
   if (ViewState.mode === 'visual') {
-    nodes = [Delete.deleteSelected, NOOP]
+    nodes = [Delete.deleteSelected, Groups.selectPreviousGroup]
   }
 
   return nodes;

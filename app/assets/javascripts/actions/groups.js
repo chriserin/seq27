@@ -26,7 +26,11 @@ Groups.selectPreviousGroup = function(viewState) {
   var currentTagIndex = tags.indexOf(currentTag)
 
   var nextTagIndex = currentTagIndex
-  if (currentTagIndex - 1 > -1) {
+  if (currentTagIndex === -1) {
+    var tagsBeforeCurrentTag = tags.filter(function(tag) { return tag < currentTag; })
+    nextTag = tagsBeforeCurrentTag[tagsBeforeCurrentTag.length - 1]
+    nextTagIndex = nextTag ? tags.indexOf(nextTag) : 0
+  } else if (currentTagIndex - 1 > -1) {
     nextTagIndex = currentTagIndex - 1
   }
 
