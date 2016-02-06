@@ -18,15 +18,14 @@ VIEW_STATE = {
   error: null,
   activeSection: 0,
   activePart: 0,
-  sections: [{parts: [{selectedTag: null, stack: [], stackPointer: 0}]}],
+  sections: [{parts: [{selectedTag: null, stack: [], stackPointer: 0, visuallySelectedNotes: null}]}],
   commandResult: '',
   commandBuffer: [],
   explorerDisplayParts: true,
   explorerMode: 'normal',
   selectedArrangementIndexes: [],
   reportItems: null,
-  reportTitle: '',
-  visuallySelectedNotes: null
+  reportTitle: ''
 };
 
 window.ViewState = {}

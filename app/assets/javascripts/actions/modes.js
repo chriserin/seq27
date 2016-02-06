@@ -12,7 +12,7 @@ Modes.normalMode = function (viewState) {
 
 Modes.endVisualMode = function (viewState) {
   viewState["mode"] = 'normal';
-  viewState.visuallySelectedNotes = null
+  ViewState.activePartView().visuallySelectedNotes = null
   return viewState;
 };
 
@@ -24,7 +24,7 @@ Modes.endSelectingMode = function (viewState) {
 Modes.visualMode = function (viewState) {
   viewState['anchorCursor'] = JSON.parse(JSON.stringify(viewState['cursor']))
   viewState["mode"] = 'visual';
-  viewState.visuallySelectedNotes = ViewState.selectedNotes(SONG_STATE)
+  ViewState.activePartView().visuallySelectedNotes = ViewState.selectedNotes(SONG_STATE)
   return viewState;
 };
 

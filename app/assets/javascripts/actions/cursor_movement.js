@@ -3,7 +3,7 @@ window.CursorMovement = {}
 function moveCursor(state, attrs) {
   var state = ViewState.setCursor(state, attrs)
   if (state.mode === 'visual') {
-    state.visuallySelectedNotes = ViewState.selectedNotes(SONG_STATE)
+    ViewState.activePartView().visuallySelectedNotes = ViewState.selectedNotes(SONG_STATE)
   }
   return state
 }
