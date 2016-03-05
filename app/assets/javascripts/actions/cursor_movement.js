@@ -105,3 +105,9 @@ CursorMovement.moveToSelection = function(viewState) {
 
   return viewState
 }
+
+CursorMovement.moveToEnd = function(viewState) {
+  var part = SongState.activePart();
+  viewState = ViewState.setCursorStart(viewState, part.beats * 96);
+  return viewState;
+}

@@ -254,3 +254,10 @@ Feature: Artist moves cursor
       | tg       | 79        |
       | te       | 88        |
 
+  @javascript
+  Scenario: Artist moves cursor to end of part
+    Given an artist on the new song page
+    When  I type the "mc" sequence
+    Then I see the cursor at beat 0 and pitch 60
+    When  I type the "$" sequence
+    Then I see the cursor at beat 15 and pitch 60
