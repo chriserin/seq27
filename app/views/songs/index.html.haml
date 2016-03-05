@@ -1,6 +1,6 @@
 %section#songs
   %h1 Songs
-  - songs.each do |song|
+  - saved_songs.each do |song|
     %article.song
       %h1
         = link_to "Song #{song.id}", song_path(song), id: "song#{song.id}"

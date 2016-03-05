@@ -1,5 +1,6 @@
 class SongsController < ApplicationController
-  helper_method :songs, :song, :song_json
+  helper_method :saved_songs, :song, :song_json
+  layout 'sequencer'
 
   def create
     song = current_user.songs.create(definition: params[:song])
@@ -24,7 +25,11 @@ class SongsController < ApplicationController
     current_user.songs.find params[:id]
   end
 
-  def songs
-    current_user.songs
+  def saved_songs
+    if current_user
+      current_user.songs
+    else
+      []
+    end
   end
 end

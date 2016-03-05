@@ -8,10 +8,10 @@ Rails.application.config.assets.version = '1.0'
 
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
+Rails.application.config.assets.precompile += %w( all.css sequencer.js home.css)
+
 if Rails.env.development?
-  Rails.application.config.assets.precompile += %w( all.css stagehand.css ui_application.js stagehand.js )
+  Rails.application.config.assets.precompile += %w(ui_application.js stagehand.js )
 elsif Rails.env.test?
-  Rails.application.config.assets.precompile += %w( event_triggers.js )
-else
-  Rails.application.config.assets.precompile += %w( all.css )
+  Rails.application.config.assets.precompile += %w( event_triggers.js)
 end

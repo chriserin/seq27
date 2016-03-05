@@ -1,0 +1,36 @@
+= render 'title'
+
+.inspiration
+  %h2
+    Inspired by
+  %ul
+    %li seq25
+    %li seq24
+    %li seqseq
+
+.perspiration
+  %h2
+    Buzzzzzz
+  %ul
+    %li
+      = link_to 'Get Started', new_song_path
+    %li
+      - if current_user
+        = link_to 'Sign Out', signout_path, method: 'delete'
+      -else
+        = link_to 'Sign In', signin_path
+
+.body_of_work
+  %h2
+    In Progress
+  .local
+    %h3 Locally Saved
+    %ul
+      %li local saving isn't working yet
+  - if current_user
+    .server
+      %h3 Saved on Server
+      %ul
+        - saved_songs.each do |song|
+          %li.song
+            = link_to "Song #{song.id}", song_path(song), id: "song#{song.id}"

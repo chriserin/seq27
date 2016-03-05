@@ -4,12 +4,13 @@ Rails.application.routes.draw do
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
   get 'signin' => 'sessions#new'
   post 'signin' => 'sessions#create'
+  delete 'signout' => 'sessions#destroy'
 
-  root 'songs#index'
+  root 'home#show'
 
   resources :songs, only: [:index, :show, :new, :create, :update]
 
-  if Rails.env.test?
+  if Rails.env.test? or Rails.env.development?
     get 'js_spec' => 'test#js_spec'
   end
 end

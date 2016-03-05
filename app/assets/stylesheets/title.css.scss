@@ -1,0 +1,243 @@
+$size: 8px;
+
+$transparent: transparent;
+$col11: rgba(200, 0, 0, 0.8);
+
+@mixin border-sizes($t, $r, $b, $l){
+  border-top-width: ($t * $size);
+  border-right-width: ($r * $size);
+  border-bottom-width: ($b * $size);
+  border-left-width: ($l * $size);
+}
+
+@mixin border-colors($t, $r, $b, $l){
+  border-top-color: $t;
+  border-right-color: $r;
+  border-bottom-color: $b;
+  border-left-color: $l;
+}
+
+@mixin size($h, $w){
+  height: ($h * $size);
+  width: ($w * $size);
+}
+
+@mixin position($t, $l){
+  position: absolute;
+  top: ($t * $size);
+  left: ($l * $size);
+}
+
+@mixin radius($tl, $tr, $br, $bl){
+  @if $tl == 0 and $tr == 0 and $br == 0 and $bl == 0 {
+  } @else {
+    -moz-border-radius-topleft: ($tl * $size);
+    -moz-border-radius-topright: ($tr * $size);
+    -moz-border-radius-bottomright: ($br * $size);
+    -moz-border-radius-bottomleft: ($bl * $size);
+    -webkit-border-radius: ($tl * $size) ($tr * $size) ($br * $size) ($bl * $size);
+    border-radius: ($tl * $size) ($tr * $size) ($br * $size) ($bl * $size);
+  }
+}
+
+
+
+#letter0 {
+  @include size(20, 20);
+  float: left;
+  position: relative;
+}
+
+#shape1{
+  @include size(2, 11);
+  @include position(3, 2);
+  @include radius(0, 0, 0, 0);
+  z-index: 10;
+  -webkit-transform: scale(1, 1) skew(0.0rad, 0.0rad) translate(0px, 0px) rotate(0deg);
+  background-color: $col11;
+}
+
+#shape2{
+  @include size(8, 2);
+  @include position(3, 2);
+  @include radius(0, 0, 0, 0);
+  z-index: 11;
+  -webkit-transform: scale(1, 1) skew(0.0rad, 0.0rad) translate(0px, 0px) rotate(0deg);
+  background-color: $col11;
+}
+
+#shape3{
+  @include size(2, 11);
+  @include position(9, 2);
+  @include radius(0, 0, 0, 0);
+  z-index: 12;
+  -webkit-transform: scale(1, 1) skew(0.0rad, 0.0rad) translate(0px, 0px) rotate(0deg);
+  background-color: $col11;
+}
+
+#shape4{
+  @include size(8, 2);
+  @include position(9, 11);
+  @include radius(0, 0, 0, 0);
+  z-index: 13;
+  -webkit-transform: scale(1, 1) skew(0.0rad, 0.0rad) translate(0px, 0px) rotate(0deg);
+  background-color: $col11;
+}
+
+#shape5{
+  @include size(2, 11);
+  @include position(15, 2);
+  @include radius(0, 0, 0, 0);
+  z-index: 14;
+  -webkit-transform: scale(1, 1) skew(0.0rad, 0.0rad) translate(0px, 0px) rotate(0deg);
+  background-color: $col11;
+}
+#letter1 {
+  @include size(20, 20);
+  float: left;
+  position: relative;
+}
+
+#shape6{
+  @include size(14, 2);
+  @include position(3, 3);
+  @include radius(0, 0, 0, 0);
+  z-index: 10;
+  -webkit-transform: scale(1, 1) skew(0.0rad, 0.0rad) translate(0px, 0px) rotate(0deg);
+  background-color: $col11;
+}
+
+#shape7{
+  @include size(2, 10);
+  @include position(3, 3);
+  @include radius(0, 0, 0, 0);
+  z-index: 11;
+  -webkit-transform: scale(1, 1) skew(0.0rad, 0.0rad) translate(0px, 0px) rotate(0deg);
+  background-color: $col11;
+}
+
+#shape8{
+  @include size(2, 8);
+  @include position(9, 3);
+  @include radius(0, 0, 0, 0);
+  z-index: 12;
+  -webkit-transform: scale(1, 1) skew(0.0rad, 0.0rad) translate(0px, 0px) rotate(0deg);
+  background-color: $col11;
+}
+
+#shape9{
+  @include size(2, 10);
+  @include position(15, 3);
+  @include radius(0, 0, 0, 0);
+  z-index: 13;
+  -webkit-transform: scale(1, 1) skew(0.0rad, 0.0rad) translate(0px, 0px) rotate(0deg);
+  background-color: $col11;
+}
+#letter2 {
+  @include size(20, 20);
+  float: left;
+  position: relative;
+}
+
+#shape10{
+  @include size(11, 8);
+  @include position(2, 3);
+  @include radius(0, 0, 0, 0);
+  z-index: 10;
+  -webkit-transform: scale(1, 1) skew(0.0rad, 0.0rad) translate(0px, 0px) rotate(0deg);
+  background-color: transparent;
+  border-style: solid;
+  @include border-colors($col11, $col11, $col11, $col11);
+  @include border-sizes(2, 2, 2, 2);
+}
+
+#shape11{
+  @include size(7, 2);
+  @include position(15, 10);
+  @include radius(0, 0, 0, 0);
+  z-index: 11;
+  -webkit-transform: scale(1, 1) skew(0.0rad, 0.0rad) translate(0px, 0px) rotate(45deg);
+  background-color: $col11;
+}
+#letter3 {
+  @include size(20, 20);
+  float: left;
+  position: relative;
+}
+
+#shape12{
+  @include size(2, 10);
+  @include position(3, 3);
+  @include radius(0, 0, 0, 0);
+  z-index: 10;
+  -webkit-transform: scale(1, 1) skew(0.0rad, 0.0rad) translate(0px, 0px) rotate(0deg);
+  background-color: $col11;
+}
+
+#shape13{
+  @include size(8, 2);
+  @include position(3, 11);
+  @include radius(0, 0, 0, 0);
+  z-index: 11;
+  -webkit-transform: scale(1, 1) skew(0.0rad, 0.0rad) translate(0px, 0px) rotate(0deg);
+  background-color: $col11;
+}
+
+#shape14{
+  @include size(2, 10);
+  @include position(9, 3);
+  @include radius(0, 0, 0, 0);
+  z-index: 12;
+  -webkit-transform: scale(1, 1) skew(0.0rad, 0.0rad) translate(0px, 0px) rotate(0deg);
+  background-color: $col11;
+}
+
+#shape15{
+  @include size(7, 2);
+  @include position(9, 3);
+  @include radius(0, 0, 0, 0);
+  z-index: 13;
+  -webkit-transform: scale(1, 1) skew(0.0rad, 0.0rad) translate(0px, 0px) rotate(0deg);
+  background-color: $col11;
+}
+
+#shape16{
+  @include size(2, 10);
+  @include position(15, 3);
+  @include radius(0, 0, 0, 0);
+  z-index: 14;
+  -webkit-transform: scale(1, 1) skew(0.0rad, 0.0rad) translate(0px, 0px) rotate(0deg);
+  background-color: $col11;
+}
+#letter4 {
+  @include size(20, 20);
+  float: left;
+  position: relative;
+}
+
+#shape17{
+  @include size(2, 11);
+  @include position(3, 2);
+  @include radius(0, 0, 0, 0);
+  z-index: 10;
+  -webkit-transform: scale(1, 1) skew(0.0rad, 0.0rad) translate(0px, 0px) rotate(0deg);
+  background-color: $col11;
+}
+
+#shape18{
+  @include size(2, 9);
+  @include position(3, 8);
+  @include radius(0, 0, 0, 1);
+  z-index: 11;
+  -webkit-transform: scale(1, 1) skew(0.0rad, 0.0rad) translate(0px, 0px) rotate(45deg);
+  background-color: $col11;
+}
+
+#shape19{
+  @include size(8, 2);
+  @include position(9, 5);
+  @include radius(2, 0, 0, 0);
+  z-index: 12;
+  -webkit-transform: scale(1, 1) skew(0.0rad, 0.0rad) translate(0px, 0px) rotate(0deg);
+  background-color: $col11;
+}

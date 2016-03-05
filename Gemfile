@@ -22,9 +22,9 @@ gem 'uglifier', '>= 1.3.0'
 
 #SERVER
 gem 'passenger'
+gem 'jquery-rails'
 
 group :development do
-  gem 'jquery-rails'
   gem 'spicerack', github: 'hashrocket/spicerack'
   gem 'web-console', '~> 2.0'
 end
