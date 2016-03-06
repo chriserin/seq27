@@ -21,6 +21,7 @@ CommandMode.commandMapping = function() {
     "section": [Song.setSection, Song.setActiveSection],
     "part": [Song.setPart, Song.setActivePart],
     "outputs": [NOOP, Report.outputs],
+    "scale": [Scale.create, NOOP],
     "map": [NOOP, Report.nodeMap],
     "write": [Save.write, NOOP],
     "update": [Save.update, NOOP],
