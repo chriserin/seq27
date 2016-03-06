@@ -19,7 +19,7 @@ var createScale = function(pattern, part) {
   var noteLength = 96;
 
   var newNotes = pattern.map(function(interval) {
-    var note = SongState.newNote(cursor.start, cursor.pitch + interval, noteLength)
+    var note = SongState.newNote(nextPosition, cursor.pitch + interval, noteLength)
     nextPosition += 96;
     return note;
   })
