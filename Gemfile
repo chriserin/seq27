@@ -19,6 +19,8 @@ gem 'lodash-rails'
 gem 'haml'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
+gem 'redcarpet'
+gem 'r_mark', github: 'kami-zh/r_mark'
 
 #SERVER
 gem 'passenger'

@@ -23,6 +23,13 @@ GIT
   specs:
     spicerack (0.0.1)
 
+GIT
+  remote: git://github.com/kami-zh/r_mark.git
+  revision: 41be594c0599e7c9666b664ee074d12db0f01600
+  specs:
+    r_mark (0.0.1)
+      rails (~> 4.2.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -205,6 +212,7 @@ GEM
       execjs
       rails (>= 3.2)
       tilt
+    redcarpet (3.3.4)
     rspec-core (3.4.2)
       rspec-support (~> 3.4.0)
     rspec-expectations (3.4.0)
@@ -277,8 +285,10 @@ DEPENDENCIES
   poltergeist
   pry-byebug
   pry-rails
+  r_mark!
   rails (= 4.2.5)
   react-rails
+  redcarpet
   rspec-rails
   sass-rails (~> 5.0)
   spicerack!

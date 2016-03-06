@@ -34,3 +34,6 @@
         - saved_songs.each do |song|
           %li.song
             = link_to "Song #{song.id}", song_path(song), id: "song#{song.id}"
+
+.description
+  = render 'description'
