@@ -1,12 +1,11 @@
 window.Arpeggio = {}
 
-Arpeggio.create = function(songState, commandWithArguments) {
-  var scaleType = commandWithArguments.split(" ")[1] || 'major';
-  var part = SongState.activePart();
+Arpeggio.create = function(songState) {
+  let part = SongState.activePart();
 
-  var arpeggioPattern = createArpeggioPattern(scale, arpeggioNotes, groupPattern);
+  const arpeggioPattern = createArpeggioPattern(arguments[1], arguments[2], arguments[3]);
 
-  part = createArpeggio(Scale.scales[scaleType], part);
+  part = createArpeggio(arpeggioPattern, part);
 
   return songState;
 }
@@ -29,14 +28,18 @@ function createArpeggioPattern(scaleType='major', arpeggioNotesStr='123', groupP
     }
   }
 
+  console.log('intervals ' + intervals);
+
   return intervals;
 }
 
-function createArpeggio(arpeggioPatten, part) {
+function createArpeggio(arpeggioPattern, part) {
   var cursor = ViewState.cursor
   var nextPosition = cursor.start
 
   var noteLength = 96;
+
+  console.log('arp pattern', arpeggioPattern);
 
   var newNotes = arpeggioPattern.map(function(interval) {
     var note = SongState.newNote(nextPosition, cursor.pitch + interval, noteLength)
@@ -44,9 +47,9 @@ function createArpeggio(arpeggioPatten, part) {
     return note;
   })
 
-  SongState.tagNotes(newNotes)
+  SongState.tagNotes(newNotes);
 
-  Array.prototype.push.apply(part.notes, newNotes)
+  Array.prototype.push.apply(part.notes, newNotes);
 
-  return part
+  return part;
 }
