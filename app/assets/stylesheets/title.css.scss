@@ -241,3 +241,13 @@ $col11: rgba(200, 0, 0, 0.8);
   transform: scale(1, 1) skew(0.0rad, 0.0rad) translate(5px, 0px) rotate(0deg);
   background-color: $col11;
 }
+
+.bright {
+  background-color: orange !important;
+  box-shadow: 0px 0px 12px 6px rgba(240,225,130,1);
+}
+
+#shape17.bright, #shape18.bright, #shape19.bright {
+  background-color: yellow !important;
+  box-shadow: 0px 0px 12px 6px rgba(242,245,161,1);
+}

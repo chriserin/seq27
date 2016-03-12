@@ -1,5 +1,28 @@
 = render 'title'
 
+:javascript
+
+  function lightNextElement(lightIndex) {
+    var oldBrightTag = document.getElementsByClassName('bright')[0];
+    if (oldBrightTag) {
+      oldBrightTag.classList.remove('bright')
+      console.log('off', lightIndex)
+    }
+
+    var newBrightTag = document.getElementById(`shape${lightIndex}`);
+    newBrightTag.classList.add('bright')
+    console.log('on', lightIndex)
+
+    if (lightIndex < 19) {
+      setTimeout(function() {lightNextElement(lightIndex + 1)}, 500)
+    } else {
+      setTimeout(function() {lightNextElement(1)}, 1000)
+    }
+  }
+
+  setTimeout(function() {lightNextElement(1)}, 500)
+
+
 .inspiration
   %h2
     Inspired by
