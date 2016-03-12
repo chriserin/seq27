@@ -3,9 +3,7 @@ window.Scale = {scales: {}};
 Scale.scales.major = [0, 2, 4, 5, 7, 9, 11, 12];
 Scale.scales.minor = [0, 2, 3, 5, 7, 8, 10, 12];
 
-Scale.create = function(songState, commandWithArguments) {
-  var scaleType = commandWithArguments.split(" ")[1] || 'major';
-  console.log("Check out this scale " + scaleType)
+Scale.create = function(songState, scaleType='major') {
   var part = SongState.activePart();
   part = createScale(Scale.scales[scaleType], part);
 

@@ -20,8 +20,8 @@ CommandMode.commandMapping = function() {
     "get": [NOOP, Song.getProperty],
     "section": [Song.setSection, Song.setActiveSection],
     "part": [Song.setPart, Song.setActivePart],
-    "outputs": [NOOP, Report.outputs],
     "scale": [Scale.create, NOOP],
+    "outputs": [NOOP, Report.outputs],
     "map": [NOOP, Report.nodeMap],
     "write": [Save.write, NOOP],
     "update": [Save.update, NOOP],
@@ -46,25 +46,27 @@ CommandMode.removeFromCommandBuffer = function(viewState) {
 }
 
 CommandMode.executionMethods = function() {
-  var commandBuffer = ViewState.commandBuffer.join("")
-  var command = commandBuffer.split(" ")[0]
+  const commandBuffer = ViewState.commandBuffer.join("");
 
-  var commandMapping = CommandMode.commandMapping()
-  var commandFns = commandMapping[command]
+  const words = commandBuffer.split(" ");
+  const command = words[0];
+
+  const commandMapping = CommandMode.commandMapping();
+  let commandFns = commandMapping[command];
 
   if(commandFns === undefined) {
-    commandFns = [NOOP, SeqError.notACommand]
+    commandFns = [NOOP, function(viewState) {return SeqError.notACommand(viewState, command);}];
   }
 
   var songStateFn = function (songState) {
-    return commandFns[0](songState, commandBuffer)
+    return commandFns[0](songState, ...(words.slice(1)));
   }
 
   var viewStateFn = function (viewState) {
-    viewState.delayedAction = function(state) { state.commandResult = ''; return state}
-    var state = commandFns[1](viewState, commandBuffer)
-    state = Modes.transitionToNextMode(state)
-    return clearCommandBuffer(state)
+    viewState.delayedAction = function(state) { state.commandResult = ''; return state};
+    var state = commandFns[1](viewState, ...(words.slice(1)));
+    state = Modes.transitionToNextMode(state);
+    return clearCommandBuffer(state);
   }
 
   return [songStateFn, viewStateFn];

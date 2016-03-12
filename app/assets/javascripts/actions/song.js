@@ -24,8 +24,7 @@ Song.newSong = function(songState) {
   return JSON.parse(JSON.stringify(INITIAL_SONG_STATE));
 }
 
-Song.setProperty = function(songState, commandWithArguments) {
-  keyValueArg = commandWithArguments.split(" ")[1];
+Song.setProperty = function(songState, keyValueArg) {
   var keyValueArray = keyValueArg.split("=");
   var key = keyValueArray[0];
   var value = keyValueArray[1];
@@ -33,7 +32,7 @@ Song.setProperty = function(songState, commandWithArguments) {
   if (key === "loop") {
     songState.sections[ViewState.activeSection]['loop'] = value;
   } else if (key === "channel" || key === "output" || key === "beats") {
-    SongState.activePart()[key] = value
+    SongState.activePart()[key] = value;
   } else {
     songState[key] = value;
   }
@@ -41,9 +40,7 @@ Song.setProperty = function(songState, commandWithArguments) {
   return songState;
 }
 
-Song.getProperty = function(viewState, commandWithArguments) {
-  var propertyName = commandWithArguments.split(" ")[1];
-
+Song.getProperty = function(viewState, propertyName) {
   if (propertyName === "loop") {
     var propertyValue =  SONG_STATE.sections[ViewState.activeSection][propertyName];
   } else if (propertyName === "channel" || propertyName === "output" || propertyName === "beats") {
@@ -56,9 +53,7 @@ Song.getProperty = function(viewState, commandWithArguments) {
   return viewState;
 }
 
-Song.setSection = function(songState, commandWithArgumets) {
-  var sectionArgument = commandWithArgumets.split(" ")[1];
-
+Song.setSection = function(songState, sectionArgument) {
   if (sectionArgument.indexOf('!') > 0) {
     var section = {parts: [], loop: 1}
 
@@ -76,9 +71,7 @@ Song.setSection = function(songState, commandWithArgumets) {
   return songState;
 }
 
-Song.setPart = function(songState, commandWithArgumets) {
-  var partArgument = commandWithArgumets.split(" ")[1];
-
+Song.setPart = function(songState, partArgument) {
   if (partArgument.indexOf('!') > 0) {
     var sections = songState.sections
     for(var i = 0; i < sections.length; i++) {
@@ -89,11 +82,9 @@ Song.setPart = function(songState, commandWithArgumets) {
   return songState;
 }
 
-Song.setActiveSection = function(viewState, commandWithArgumets) {
-  var sectionArgument = commandWithArgumets.split(" ")[1];
-
-  var newActiveSection = parseInt(sectionArgument)
-  viewState["activeSection"] = newActiveSection
+Song.setActiveSection = function(viewState, sectionArgument) {
+  var newActiveSection = parseInt(sectionArgument);
+  viewState["activeSection"] = newActiveSection;
 
   if (viewState.sections[newActiveSection] === undefined) {
     viewState.sections[newActiveSection] = ViewState.newSectionState(SONG_STATE.sections[0].parts.length)
@@ -103,9 +94,7 @@ Song.setActiveSection = function(viewState, commandWithArgumets) {
   return viewState;
 }
 
-Song.setActivePart = function(viewState, commandWithArgumets) {
-  var partArgument = commandWithArgumets.split(" ")[1];
-
+Song.setActivePart = function(viewState, partArgument) {
   var newActivePart = parseInt(partArgument)
 
   if (SongState.activeSection().parts[newActivePart]) {
