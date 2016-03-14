@@ -12,8 +12,10 @@ SeqCom.Error = React.createClass({
 SeqCom.Command = React.createClass({
   render() {
     if(ViewState.mode === 'command') {
-       var command =  ':' + ViewState.commandBuffer.join('')
-       return <span>{command}</span>
+       var command =  ':' + ViewState.commandBuffer.join('');
+       return (
+         <input id='commandLineInput' type='text' name='commandline' value={command}></input>
+       );
     }
     return <span/>
   }

@@ -28,8 +28,6 @@ function createArpeggioPattern(scaleType='major', arpeggioNotesStr='123', groupP
     }
   }
 
-  console.log('intervals ' + intervals);
-
   return intervals;
 }
 
@@ -38,8 +36,6 @@ function createArpeggio(arpeggioPattern, part) {
   var nextPosition = cursor.start
 
   var noteLength = 96;
-
-  console.log('arp pattern', arpeggioPattern);
 
   var newNotes = arpeggioPattern.map(function(interval) {
     var note = SongState.newNote(nextPosition, cursor.pitch + interval, noteLength)
