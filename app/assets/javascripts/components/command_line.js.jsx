@@ -14,7 +14,7 @@ SeqCom.Command = React.createClass({
     if(ViewState.mode === 'command') {
        var command =  ':' + ViewState.commandBuffer.join('');
        return (
-         <input id='commandLineInput' type='text' name='commandline' value={command}></input>
+         <input id='commandLineInput' type='text' name='commandline' value={command} readOnly={true} style={{width: '600px'}}></input>
        );
     }
     return <span/>
