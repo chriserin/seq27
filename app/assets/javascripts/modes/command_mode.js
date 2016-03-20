@@ -23,6 +23,7 @@ CommandMode.commandMapping = function() {
     "scale": [Scale.create, NOOP],
     "arpeggio": [Arpeggio.create, Groups.setSelectedTag],
     "spacing": [Rhythm.applySpacing, NOOP],
+    "squeeze": [Elastic.squeeze, NOOP],
     "outputs": [NOOP, Report.outputs],
     "map": [NOOP, Report.nodeMap],
     "write": [Save.write, NOOP],
