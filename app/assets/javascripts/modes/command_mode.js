@@ -21,6 +21,7 @@ CommandMode.commandMapping = function() {
     "section": [Song.setSection, Song.setActiveSection],
     "part": [Song.setPart, Song.setActivePart],
     "scale": [Scale.create, NOOP],
+    "arpeggio": [Arpeggio.create, Groups.setSelectedTag],
     "spacing": [Rhythm.applySpacing, NOOP],
     "outputs": [NOOP, Report.outputs],
     "map": [NOOP, Report.nodeMap],
