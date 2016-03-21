@@ -2,7 +2,7 @@ window.Rhythm = {}
 
 Rhythm.applySpacing = function(songState, spacing) {
 
-  const notes = SongState.currentGroupNotes(songState)
+  const notes = Selection.getSelectedNotes(songState).slice(0)
   const sortedNotes = notes.sort(function(a, b) { return a.start - b.start})
 
   const startAnchor = sortedNotes[0].start

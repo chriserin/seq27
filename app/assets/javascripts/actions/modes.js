@@ -34,8 +34,8 @@ Modes.explorerMode = function (viewState) {
 };
 
 Modes.transitionToNextMode = function(viewState) {
-  var currentMode = viewState['mode']
-  var nextMode = currentMode;
+  const currentMode = viewState['mode']
+  let nextMode = currentMode;
 
   if (currentMode === 'command') {
     nextMode = 'normal'
