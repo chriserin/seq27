@@ -24,6 +24,8 @@ CommandMode.commandMapping = function() {
     "arpeggio": [Arpeggio.create, Groups.setSelectedTag],
     "spacing": [Rhythm.applySpacing, NOOP],
     "squeeze": [Elastic.squeeze, NOOP],
+    "compact": [Elastic.compact, NOOP],
+    "stretch": [Elastic.stretch, NOOP],
     "outputs": [NOOP, Report.outputs],
     "map": [NOOP, Report.nodeMap],
     "write": [Save.write, NOOP],
