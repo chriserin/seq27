@@ -157,6 +157,7 @@ SeqCom.Part = React.createClass({
         data-start={note.start}
         data-pitch={note.pitch}
         data-length={note.length}
+        data-velocity={note.velocity}
       />;
     })
 

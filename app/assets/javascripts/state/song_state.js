@@ -95,7 +95,8 @@ SongState.newNote = function(start, pitch, length) {
   return {
     pitch: pitch,
     start: start,
-    length: length
+    length: length,
+    velocity: 80
   }
 }
 

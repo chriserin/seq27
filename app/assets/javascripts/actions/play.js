@@ -163,7 +163,7 @@ Play.createNotesMap = function(notes, msPerTick, loopOffset, fillOffset, channel
     var offTime = start + noteLengthInMillis - 1
 
     var offFn = Play.createOffFn(channel, note.pitch, velocity = 80, output, onTime)
-    resultMap.push([onTime, Play.createOnFn(channel, note.pitch, velocity = 80, output, offFn), startTicks])
+    resultMap.push([onTime, Play.createOnFn(channel, note.pitch, note.velocity, output, offFn), startTicks])
     resultMap.push([offTime, offFn, startTicks])
   }
 

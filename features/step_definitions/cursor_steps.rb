@@ -39,6 +39,12 @@ Then(/^I see (\d*) notes$/) do |notes|
   expect(page).to have_selector("note", count: notes)
 end
 
+Then(/^I see a note at beat (\d*) and pitch (\d*) and velocity (\d*)$/) do |beat, pitch, velocity|
+  notes = all('note').map {|n| {beat: n['data-start'].to_i, pitch: n['data-pitch'].to_i, velocity: n['data-velocity'].to_i}}
+
+  expect(notes).to include({beat: beat.to_i * 96, pitch: pitch.to_i, velocity: velocity.to_i})
+end
+
 Then(/^I see a note at beat (\d*) and pitch (\d*)$/) do |beat, pitch|
   notes = all('note').map {|n| {beat: n['data-start'].to_i, pitch: n['data-pitch'].to_i}}
 
@@ -49,6 +55,12 @@ Then(/^I see a note at tick (\d*) and pitch (\d*)$/) do |tick, pitch|
   notes = all('note').map {|n| {tick: n['data-start'].to_i, pitch: n['data-pitch'].to_i}}
 
   expect(notes).to include({tick: tick.to_i, pitch: pitch.to_i})
+end
+
+Then(/^I see a note with velocity (\d*)$/) do |velocity|
+  notes = all('note').map {|n| { velocity: n['data-velocity'].to_i } }
+
+  expect(notes).to include({velocity: velocity.to_i})
 end
 
 Then(/^I see a visually selected note at beat (\d*) and pitch (\d*)$/) do |beat, pitch|
