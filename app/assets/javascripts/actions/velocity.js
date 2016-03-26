@@ -14,7 +14,6 @@ Velocity.applyVelocity = function(songState, velocityArg) {
       velocityIndex = 0;
     }
 
-
     if (nextNote) {
       nextNote.velocity = velocities[velocityIndex];
       return applyVelocityToNextNote(sortedNotes, velocities, velocityIndex + 1);
