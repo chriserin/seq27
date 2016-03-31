@@ -51,3 +51,13 @@ Feature: Artist applies rhythm to group
     Then  I see a note at beat 0 and pitch 60
     And   I see a note at beat 2 and pitch 60
     And   I see a note at beat 4 and pitch 60
+
+  @javascript
+  Scenario: Artist manipulates duration
+    Given an artist on the new song page
+    When  I type the "3cn" sequence
+    And   I type the ":duration w,h,2" command
+    Then  I see a note with length "384"
+    Then  I see a note with length "192"
+    Then  I see a note with length "48"
+

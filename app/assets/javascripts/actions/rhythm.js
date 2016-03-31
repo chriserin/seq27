@@ -7,34 +7,6 @@ Rhythm.applySpacing = function(songState, spacing) {
 
   const startAnchor = sortedNotes[0].start
 
-  function parse(description, total=0) {
-    const nextChar = description.shift();
-    if(nextChar === undefined) {
-      return total;
-    } else if (nextChar === '.') {
-      return parse(description, total + total / 2);
-    } else {
-      return parse(description, total + ticksValue(nextChar));
-    }
-  }
-
-  function ticksValue(char) {
-    switch(char) {
-      case '1':
-        return 96;
-      case '2':
-        return 96 / 2;
-      case '3':
-        return 96 / 3;
-      case '4':
-        return 96 / 4;
-      case 'w':
-        return 96 * 4;
-      case 'h':
-        return 96 * 2;
-    }
-  }
-
   function nextSpace(originalSpacing, spacingIndex=0) {
     const remainingSpacing = originalSpacing.slice(spacingIndex)
     const nextX = remainingSpacing.indexOf('x')
@@ -81,4 +53,62 @@ Rhythm.applySpacing = function(songState, spacing) {
   applySpacingToNextNote(sortedNotes, spacing, startAnchor);
 
   return songState;
+}
+
+Rhythm.applyDurations = function(songState, durations) {
+  const notes = Selection.getSelectedNotes(songState).slice(0)
+  const sortedNotes = notes.sort(function(a, b) { return a.start - b.start})
+  const splitDurations = durations.split(',');
+
+  function applyDurationToNextNote(sortedNotes, durations, durationIndex=0) {
+
+    let nextNote = sortedNotes.shift();
+
+    if (!(splitDurations[durationIndex])) {
+      durationIndex = 0;
+    }
+
+    if (nextNote) {
+      nextNote.length = parse(durations[durationIndex].split(''));
+
+      return applyDurationToNextNote(sortedNotes, durations, durationIndex + 1);
+    } else {
+      return null;
+    }
+  }
+
+  applyDurationToNextNote(sortedNotes, splitDurations);
+
+  return songState;
+}
+
+function parse(description, total=0) {
+  const nextChar = description.shift();
+
+  if(nextChar === undefined) {
+    return total;
+  } else if (nextChar === '.') {
+    return parse(description, total + total / 2);
+  } else {
+    return parse(description, total + ticksValue(nextChar));
+  }
+}
+
+function ticksValue(char) {
+  switch(char) {
+    case '1':
+      return 96;
+    case '2':
+      return 96 / 2;
+    case '3':
+      return 96 / 3;
+    case '4':
+      return 96 / 4;
+    case 'w':
+      return 96 * 4;
+    case 'h':
+      return 96 * 2;
+    default:
+      return parseInt(char);
+  }
 }
