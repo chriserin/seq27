@@ -26,6 +26,19 @@ Elastic.stretch = function(songState) {
   return songState;
 }
 
+Elastic.fill = function(songState) {
+  const notes = Selection.getSelectedNotes(songState);
+  const sortedNotes = notes.sort(function(a, b) { return a.start - b.start});
+  const anchorStart = sortedNotes[0].start;
+
+  for(let i = 0; i < sortedNotes.length; i++) {
+    if (sortedNotes[i+1])
+      sortedNotes[i].length = sortedNotes[i+1].start - sortedNotes[i].start;
+  }
+
+  return songState;
+}
+
 Elastic.compact = function(songState) {
   const notes = Selection.getSelectedNotes(songState);
   const sortedNotes = notes.sort(function(a, b) { return a.start - b.start});

@@ -26,6 +26,7 @@ CommandMode.commandMapping = function() {
     "squeeze": [Elastic.squeeze, NOOP],
     "compact": [Elastic.compact, NOOP],
     "stretch": [Elastic.stretch, NOOP],
+    "fill": [Elastic.fill, NOOP],
     "velocity": [Velocity.applyVelocity, NOOP],
     "duration": [Rhythm.applyDurations, NOOP],
     "outputs": [NOOP, Report.outputs],
