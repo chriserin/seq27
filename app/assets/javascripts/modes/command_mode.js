@@ -29,6 +29,7 @@ CommandMode.commandMapping = function() {
     "fill": [Elastic.fill, NOOP],
     "velocity": [Velocity.applyVelocity, NOOP],
     "duration": [Rhythm.applyDurations, NOOP],
+    "arrange": [Arrangement.arrange, NOOP],
     "outputs": [NOOP, Report.outputs],
     "map": [NOOP, Report.nodeMap],
     "write": [Save.write, NOOP],
