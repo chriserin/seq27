@@ -41,6 +41,10 @@ When(/^I type the "(.*)" (command)$/) do |command, _|
   page.execute_script("EVENT_TRIGGERS.downKey('\\r')")
 end
 
+When(/^I press the "(.*)" key$/) do |keyName|
+  page.execute_script("EVENT_TRIGGERS.executeKeyDown('#{keyName}')")
+end
+
 When "I log the song" do
   page.execute_script("console.log(JSON.stringify(SONG_STATE))")
 end

@@ -5,6 +5,10 @@ CommandMode.push = function(key) {
     return CommandMode.executionMethods()
   } else if (key === 'ESC') {
     return [NOOP, function(viewState) { return clearCommandBuffer(Modes.normalMode(viewState)) }]
+  } else if (key === 'ArrowUp') {
+    return [NOOP, CommandMode.showPreviousCommand]
+  } else if (key === 'ArrowDown') {
+    return [NOOP, CommandMode.showNextCommand]
   }
 
   return [
@@ -35,7 +39,7 @@ CommandMode.commandMapping = function() {
     "write": [Save.write, NOOP],
     "update": [Save.update, NOOP],
     "throw": [Testing.throwError, NOOP],
-    "panic": [NOOP, Panic.panic]
+    "panic": [NOOP, Panic.panic],
   };
 }
 
@@ -75,13 +79,55 @@ CommandMode.executionMethods = function() {
     viewState.delayedAction = function(state) { state.commandResult = ''; return state};
     var state = commandFns[1](viewState, ...(words.slice(1)));
     state = Modes.transitionToNextMode(state);
+    state = recordCommandBuffer(state);
     return clearCommandBuffer(state);
   }
 
   return [songStateFn, viewStateFn];
 }
 
+var recordCommandBuffer = function (viewState) {
+  const commandHistory = JSON.parse(localStorage.getItem('commandHistory')) || [];
+  commandHistory.push(viewState['commandBuffer']);
+  localStorage.setItem('commandHistory', JSON.stringify(commandHistory));
+
+  viewState["commandHistoryIndex"] = -1;
+
+  return viewState;
+}
+
 var clearCommandBuffer = function(viewState) {
   viewState["commandBuffer"] = []
   return viewState
+}
+
+CommandMode.showPreviousCommand = function(viewState) {
+  const commandHistory = JSON.parse(localStorage.getItem('commandHistory'));
+  let commandHistoryIndex = viewState["commandHistoryIndex"];
+
+  if (commandHistoryIndex === -1) {
+    commandHistoryIndex = commandHistory.length - 1;
+  } else {
+    commandHistoryIndex -= 1;
+  }
+
+  viewState["commandHistoryIndex"] = commandHistoryIndex;
+  viewState["commandBuffer"] = commandHistory[commandHistoryIndex];
+
+  return viewState;
+}
+
+CommandMode.showNextCommand = function(viewState) {
+  const commandHistory = JSON.parse(localStorage.getItem('commandHistory'));
+  let commandHistoryIndex = viewState["commandHistoryIndex"];
+
+  if (commandHistoryIndex >= commandHistory.length - 1) {
+  } else if (commandHistoryIndex > 0) {
+    commandHistoryIndex = commandHistoryIndex + 1;
+  }
+
+  viewState["commandHistoryIndex"] = commandHistoryIndex;
+  viewState["commandBuffer"] = commandHistory[commandHistoryIndex];
+
+  return viewState;
 }

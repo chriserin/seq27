@@ -3,12 +3,18 @@ window.NOOP = function(state){return state;}
 document.addEventListener("DOMContentLoaded", function () {
   document.addEventListener('keydown',
     function(keyboardEvent) {
+
       if(keyboardEvent.keyCode === 8) {
         keyboardEvent.preventDefault()
+
         if (ViewState.mode === 'command') {
           VIEW_STATE = CommandMode.removeFromCommandBuffer(VIEW_STATE)
         }
         window.SONG_VIEW.forceUpdate();
+      } else {
+        if(['ArrowUp', 'ArrowDown'].indexOf(keyboardEvent.key) > -1) {
+          processKey(keyboardEvent.key);
+        }
       }
     }
   );
@@ -19,26 +25,31 @@ document.addEventListener("DOMContentLoaded", function () {
       document.addEventListener('keypress',
         function(keyboardEvent) {
           keyboardEvent.preventDefault()
+
           var key = String.fromCharCode(keyboardEvent.charCode);
 
           if (keyboardEvent.keyCode == '27') {
             key = 'ESC'
           }
 
-          var fnArray = getFunctionsFor(key);
-
-          var songFn = fnArray[0];
-          var viewFn = fnArray[1];
-
-          SONG_STATE = savePartState(songFn, SONG_STATE);
-          VIEW_STATE = viewFn(delayedAction(VIEW_STATE));
-
-          window.SONG_VIEW.forceUpdate();
+          processKey(key);
         }
       );
     }
   }
 )
+
+function processKey(key) {
+  var fnArray = getFunctionsFor(key);
+
+  var songFn = fnArray[0];
+  var viewFn = fnArray[1];
+
+  SONG_STATE = savePartState(songFn, SONG_STATE);
+  VIEW_STATE = viewFn(delayedAction(VIEW_STATE));
+
+  window.SONG_VIEW.forceUpdate();
+}
 
 function savePartState(songFn, songState) {
   if (songFn === NOOP) {

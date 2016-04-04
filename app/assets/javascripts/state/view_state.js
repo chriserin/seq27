@@ -21,6 +21,7 @@ VIEW_STATE = {
   sections: [{parts: [{selectedTag: null, stack: [], stackPointer: 0, visuallySelectedNotes: null}]}],
   commandResult: '',
   commandBuffer: [],
+  commandHistoryIndex: -1,
   explorerDisplayParts: true,
   explorerMode: 'normal',
   selectedArrangementIndexes: [],

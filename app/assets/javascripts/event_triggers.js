@@ -13,3 +13,12 @@ EVENT_TRIGGERS.downKey = function(charToPress) {
     eventObject.charCode = charToPress.charCodeAt(0);
     document.dispatchEvent(eventObject);
 }
+
+EVENT_TRIGGERS.executeKeyDown = function(keyName) {
+    var eventObject = document.createEvent("HTMLEvents");
+    eventObject.initEvent('keydown', true, true);
+
+    eventObject.key = 'ArrowUp'
+
+    document.dispatchEvent(eventObject);
+}
