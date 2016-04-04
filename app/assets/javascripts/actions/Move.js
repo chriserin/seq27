@@ -9,34 +9,43 @@ Move.toMiddleNote = function(viewState, note, octave) {
 
 Move.upOctave = function(viewState) {
   var tmpPitch = viewState['cursor']['pitch'] + 12;
-  viewState = ViewState.setCursorPitch(viewState, tmpPitch);
+  viewState = CursorMovement.moveCursor(viewState, {pitch: tmpPitch})
   return viewState;
 }
 
 Move.downOctave = function(viewState) {
   var tmpPitch = viewState['cursor']['pitch'] - 12;
-  viewState = ViewState.setCursorPitch(viewState, tmpPitch);
+  viewState = CursorMovement.moveCursor(viewState, {pitch: tmpPitch})
   return viewState;
 }
 
 Move.upToNote = function(viewState, note) {
-  noteDiff = note % 12;
-  currentNoteDiff = viewState['cursor']['pitch'] % 12;
-  if (noteDiff > currentNoteDiff)
-    viewState['cursor']['pitch'] += noteDiff - currentNoteDiff;
-  else
-    viewState['cursor']['pitch'] += (noteDiff - currentNoteDiff) + 12;
+  const noteDiff = note % 12;
+  const currentNoteDiff = viewState['cursor']['pitch'] % 12;
+  let tmpPitch = null;
 
+  if (noteDiff > currentNoteDiff)
+    tmpPitch = viewState['cursor']['pitch'] + noteDiff - currentNoteDiff;
+  else
+    tmpPitch = viewState['cursor']['pitch'] + (noteDiff - currentNoteDiff) + 12;
+
+  viewState = CursorMovement.moveCursor(viewState, {pitch: tmpPitch})
   return viewState;
 }
 
 Move.downToNote = function(viewState, note) {
-  noteDiff = note % 12;
-  currentNoteDiff = viewState['cursor']['pitch'] % 12;
+  const noteDiff = note % 12;
+  const currentNoteDiff = viewState['cursor']['pitch'] % 12;
+
+  let tmpPitch = null;
+
   if (noteDiff > currentNoteDiff)
-    viewState['cursor']['pitch'] += (noteDiff - currentNoteDiff) - 12;
+    tmpPitch = viewState['cursor']['pitch'] + (noteDiff - currentNoteDiff) - 12;
   else
-    viewState['cursor']['pitch'] += (noteDiff - currentNoteDiff);
+    tmpPitch = viewState['cursor']['pitch'] + (noteDiff - currentNoteDiff);
+
+  viewState = CursorMovement.moveCursor(viewState, {pitch: tmpPitch})
+
   return viewState;
 }
 
