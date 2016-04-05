@@ -171,12 +171,15 @@ SeqCom.StatusLine = React.createClass({
   render() {
     return <statusLine>
       <name>seq27</name>
+      <name>sect { ViewState.activeSection }</name>
+      <name>part { ViewState.activePart }</name>
+      <div>output {Midi.outputNames()[SongState.activePart().output]}({SongState.activePart().output})</div>
+      <div>channel {SongState.activePart().channel}</div>
       <filler/>
       <SeqCom.CursorPosition/>
     </statusLine>
   }
 })
-
 
 SeqCom.CursorPosition = React.createClass({
   render() {
@@ -187,7 +190,7 @@ SeqCom.CursorPosition = React.createClass({
       <span className='label'>pitch:</span>
       <span className='value'>{ cursor.pitch }</span>
       <span className='label'>beats:</span>
-      <span className='value'>{Math.round(cursor.start / 96)}/{part.beats}</span>
+      <span className='value'>{Math.round(cursor.start / 96) + 1}/{part.beats}</span>
       <span className='label'>ticks:</span>
       <span className='value'>{cursor.start % 96}</span>
     </cursorPosition>
