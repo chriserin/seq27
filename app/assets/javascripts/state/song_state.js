@@ -1,7 +1,8 @@
 window.SongState = {};
 
 INITIAL_SONG_STATE = {
-  tempo: 60,
+  name: null,
+  tempo: 120,
   arrangement: [0],
   sections: [
     {

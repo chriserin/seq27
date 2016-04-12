@@ -20,6 +20,7 @@ CommandMode.push = function(key) {
 CommandMode.commandMapping = function() {
   return {
     "new": [Song.newSong, NOOP],
+    "name": [Song.nameSong, NOOP],
     "set": [Song.setProperty, CursorMovement.ensureCursorInBounds],
     "get": [NOOP, Song.getProperty],
     "section": [Song.setSection, Song.setActiveSection],

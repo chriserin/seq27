@@ -110,3 +110,17 @@ Song.setActivePart = function(viewState, partArgument) {
 
   return viewState;
 }
+
+Song.nameSong = function(songState) {
+
+  let result = '';
+
+  for(let i = 1; i < arguments.length; i++) {
+    result += arguments[i];
+    if (i !== arguments.length - 1) result += ' ';
+  }
+
+  songState.name = result;
+
+  return songState;
+}

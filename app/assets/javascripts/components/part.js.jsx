@@ -169,8 +169,10 @@ SeqCom.Part = React.createClass({
 
 SeqCom.StatusLine = React.createClass({
   render() {
+    let songName = SONG_STATE.name || 'seq27';
+
     return <statusLine>
-      <name>seq27</name>
+      <name>{songName}</name>
       <name>sect { ViewState.activeSection }</name>
       <name>part { ViewState.activePart }</name>
       <div>output {Midi.outputNames()[SongState.activePart().output]}({SongState.activePart().output})</div>

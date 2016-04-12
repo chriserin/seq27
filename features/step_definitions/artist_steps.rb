@@ -69,6 +69,10 @@ Then(/^I see the command result "(.*?)"$/) do |result|
   end
 end
 
+Then(/^I see the interface updated with the name "(.*?)"$/) do |name|
+  expect(page).to have_selector('name', text: name)
+end
+
 Then(/^I see that section "(\d*)" is active$/) do |active_section_id|
   section = find("grids")
   expect(section['data-section-id']).to eq active_section_id
