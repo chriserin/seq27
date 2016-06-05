@@ -34,7 +34,7 @@ Play.maxBeatsForSection = function(section) {
 Play.createOnFn = function(channel, pitch, velocity, output, offFn) {
   return function(onTime) {
     Play.PLAY_STATE.activeNotes.push(offFn)
-    Midi.sendOn(channel, pitch, velocity = 80, onTime, output)
+    Midi.sendOn(channel, pitch, velocity, onTime, output)
   }
 }
 
