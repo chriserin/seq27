@@ -34,7 +34,7 @@ Undo.initActiveStack = function(songState) {
 
   var currentState = SongState.activePart()
   ViewState.activePartView().stackPointer = 0
-  ViewState.activeStack().push(currentState)
+  ViewState.activeStack().push(Immutable.fromJS(currentState))
 
   return songState
 }
