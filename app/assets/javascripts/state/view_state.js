@@ -41,10 +41,23 @@ ViewState.init = function(songState) {
   }
 
   for(var i = 0; i < songState.sections.length; i++) {
+    ViewState.initPartViewForSection(i)
     ViewState.initPartStacksForSection(i)
   }
 
   return VIEW_STATE;
+}
+
+ViewState.initPartViewForSection = function(sectionNumber) {
+  for(var j = 0; j < SONG_STATE.sections[sectionNumber].parts.length; j++) {
+    var partView = VIEW_STATE.sections[sectionNumber].parts[j];
+
+    if (typeof partView === 'undefined') {
+      VIEW_STATE.sections[sectionNumber].parts[j] = ViewState.newPartState();
+    }
+  }
+
+  return VIEW_STATE
 }
 
 ViewState.initPartStacksForSection = function(sectionNumber) {
