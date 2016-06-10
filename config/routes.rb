@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   root 'home#show'
 
+  get '/songs/current' => 'songs#current'
   resources :songs, only: [:index, :show, :new, :create, :update]
 
   if Rails.env.test? or Rails.env.development?

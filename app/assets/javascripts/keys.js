@@ -69,6 +69,7 @@ function savePartState(songFn, songState) {
   var currentState = ViewState.activeStack()[pointer]
 
   if (!Immutable.fromJS(newState).equals(currentState)) {
+    localStorage.setItem('currentSong', JSON.stringify(newSongState))
     var stack = ViewState.activeStack()
     stack.splice(pointer + 1, stack.length - 1, newState)
     ViewState.activePartView().stackPointer = ++pointer
