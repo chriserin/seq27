@@ -41,6 +41,7 @@ ViewState.init = function(songState) {
   }
 
   for(var i = 0; i < songState.sections.length; i++) {
+    ViewState.initSection(i)
     ViewState.initPartViewForSection(i)
     ViewState.initPartStacksForSection(i)
   }
