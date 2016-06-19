@@ -22,7 +22,7 @@ SeqCom.Section = React.createClass({
     return ((ViewState.activePartView().cursor.start / 96.0) * 75) + 60
   },
   componentDidMount() {
-    ReactDOM.findDOMNode(this.refs.grids).scrollTop = (16 * (127 - (60 + 15)))
+    ReactDOM.findDOMNode(this.refs.grids).scrollTop = (16 * (127 - (ViewState.activePartView().cursor.pitch + 15)))
   },
   componentDidUpdate() {
     var elem = ReactDOM.findDOMNode(this.refs.grids)

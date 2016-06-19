@@ -68,6 +68,10 @@ ViewState.initPartViewForSection = function(sectionNumber) {
       var part = SONG_STATE.sections[sectionNumber].parts[j];
       var newPartState = ViewState.newPartState();
       newPartState.selectedTag = SongState.latestTag(SONG_STATE, part);
+      focusedNote = part.notes.find((note) => {return note.timestamp === newPartState.selectedTag; })
+      if (focusedNote) {
+        newPartState.cursor = {start: focusedNote.start, pitch: focusedNote.pitch};
+      }
       VIEW_STATE.sections[sectionNumber].parts[j] = newPartState;
     }
   }
