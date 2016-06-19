@@ -12,30 +12,34 @@ CursorMovement.moveCursor = moveCursor;
 
 CursorMovement.moveDown = function(state, number) {
   var pitches = number || 1
-  moveCursor(state, {pitch: state['cursor']['pitch'] - pitches})
+  var cursor = ViewState.activeCursor();
+  moveCursor(state, {pitch: cursor['pitch'] - pitches})
   return state;
 }
 
 CursorMovement.moveUp = function(state, number) {
   var pitches = number || 1
-  moveCursor(state, {pitch: state['cursor']['pitch'] + pitches})
+  var cursor = ViewState.activeCursor();
+  moveCursor(state, {pitch: cursor['pitch'] + pitches})
   return state;
 }
 
 CursorMovement.moveRight = function(state, number) {
   var beats = number || 1
-  moveCursor(state, {start: state['cursor']['start'] + (96 * beats)})
+  var cursor = ViewState.activeCursor();
+  moveCursor(state, {start: cursor['start'] + (96 * beats)})
   return state;
 }
 
 CursorMovement.moveLeft = function(state, number) {
   var beats = number || 1
-  moveCursor(state, {start: state['cursor']['start'] - (96 * beats)})
+  var cursor = ViewState.activeCursor();
+  moveCursor(state, {start: cursor['start'] - (96 * beats)})
   return state;
 }
 
 CursorMovement.ensureCursorInBounds = function(viewState) {
-  var cursor = viewState.cursor
+  var cursor = ViewState.activeCursor();
   var numberOfBeatsInPart = SongState.activePart().beats * 96
 
   if (cursor.start >= numberOfBeatsInPart) {
@@ -48,16 +52,17 @@ CursorMovement.ensureCursorInBounds = function(viewState) {
 CursorMovement.moveToNextNote = function(viewState) {
   var notes = SongState.currentPartNotes()
 
+  var cursor = ViewState.activeCursor();
   var filterFn = function(note) {
-    return note.start > viewState['cursor']['start'] ||
-      ( note.pitch < viewState['cursor']['pitch'] && note.start === viewState['cursor']['start'] )
+    return note.start > cursor['start'] ||
+      ( note.pitch < cursor['pitch'] && note.start === cursor['start'] )
   }
 
   var nextNote = notes.filter(filterFn)[0]
 
   if(nextNote) {
-    viewState['cursor']['start'] = nextNote.start
-    viewState['cursor']['pitch'] = nextNote.pitch
+    cursor['start'] = nextNote.start
+    cursor['pitch'] = nextNote.pitch
   }
   return viewState;
 }
@@ -65,9 +70,11 @@ CursorMovement.moveToNextNote = function(viewState) {
 CursorMovement.moveToPrevNote = function(viewState) {
   var notes = SongState.currentPartNotes()
 
+  const cursor = ViewState.activeCursor();
+
   var filterFn = function(note) {
-    return note.start < viewState['cursor']['start'] ||
-      ( note.pitch > viewState['cursor']['pitch'] && note.start === viewState['cursor']['start'] )
+    return note.start < cursor['start'] ||
+      ( note.pitch > cursor['pitch'] && note.start === cursor['start'] )
   }
 
   var notesAfterCursor = notes.filter(filterFn)

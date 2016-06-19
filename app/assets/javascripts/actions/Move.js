@@ -2,32 +2,33 @@ window.Move = {}
 
 Move.toMiddleNote = function(viewState, note, octave) {
   octave = octave || 5;
-  convertedNote = note % 12 + octave * 12;
-  viewState['cursor']['pitch'] = convertedNote;
+  const convertedPitch = note % 12 + octave * 12;
+  ViewState.activeCursor()['pitch'] = convertedPitch;
   return viewState;
 }
 
 Move.upOctave = function(viewState) {
-  var tmpPitch = viewState['cursor']['pitch'] + 12;
+  var tmpPitch = ViewState.activeCursor()['pitch'] + 12;
   viewState = CursorMovement.moveCursor(viewState, {pitch: tmpPitch})
   return viewState;
 }
 
 Move.downOctave = function(viewState) {
-  var tmpPitch = viewState['cursor']['pitch'] - 12;
+  var tmpPitch = ViewState.activeCursor()['pitch'] - 12;
   viewState = CursorMovement.moveCursor(viewState, {pitch: tmpPitch})
   return viewState;
 }
 
 Move.upToNote = function(viewState, note) {
   const noteDiff = note % 12;
-  const currentNoteDiff = viewState['cursor']['pitch'] % 12;
+  const cursor = ViewState.activeCursor()
+  const currentNoteDiff = cursor['pitch'] % 12;
   let tmpPitch = null;
 
   if (noteDiff > currentNoteDiff)
-    tmpPitch = viewState['cursor']['pitch'] + noteDiff - currentNoteDiff;
+    tmpPitch = cursor['pitch'] + noteDiff - currentNoteDiff;
   else
-    tmpPitch = viewState['cursor']['pitch'] + (noteDiff - currentNoteDiff) + 12;
+    tmpPitch = cursor['pitch'] + (noteDiff - currentNoteDiff) + 12;
 
   viewState = CursorMovement.moveCursor(viewState, {pitch: tmpPitch})
   return viewState;
@@ -35,14 +36,15 @@ Move.upToNote = function(viewState, note) {
 
 Move.downToNote = function(viewState, note) {
   const noteDiff = note % 12;
-  const currentNoteDiff = viewState['cursor']['pitch'] % 12;
+  const cursor = ViewState.activeCursor()
+  const currentNoteDiff = cursor['pitch'] % 12;
 
   let tmpPitch = null;
 
   if (noteDiff > currentNoteDiff)
-    tmpPitch = viewState['cursor']['pitch'] + (noteDiff - currentNoteDiff) - 12;
+    tmpPitch = cursor['pitch'] + (noteDiff - currentNoteDiff) - 12;
   else
-    tmpPitch = viewState['cursor']['pitch'] + (noteDiff - currentNoteDiff);
+    tmpPitch = cursor['pitch'] + (noteDiff - currentNoteDiff);
 
   viewState = CursorMovement.moveCursor(viewState, {pitch: tmpPitch})
 

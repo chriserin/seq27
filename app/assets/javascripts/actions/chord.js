@@ -15,7 +15,7 @@ Chord.minor = function(songState) {
 }
 
 var createChord = function(chordPattern, part) {
-  var cursor = ViewState.cursor
+  var cursor = ViewState.activeCursor();
 
   var newNotes = chordPattern.map(function(interval) {
     return SongState.newNote(cursor.start, cursor.pitch + interval, 96)

@@ -16,10 +16,10 @@ SeqCom.Song = React.createClass({
 
 SeqCom.Section = React.createClass({
   cursorTop() {
-    return (16 * (127 - ViewState.cursor.pitch))
+    return (16 * (127 - ViewState.activePartView().cursor.pitch))
   },
   cursorLeft() {
-    return ((ViewState.cursor.start / 96.0) * 75) + 60
+    return ((ViewState.activePartView().cursor.start / 96.0) * 75) + 60
   },
   componentDidMount() {
     ReactDOM.findDOMNode(this.refs.grids).scrollTop = (16 * (127 - (60 + 15)))
@@ -116,12 +116,13 @@ SeqCom.CursorGrid = React.createClass({
   },
   render() {
     var selection = ViewState.selection()
+    var cursor = ViewState.activePartView().cursor
     return <cursorGrid>
       <cursor
-        style={this.cursorPosition(ViewState.cursor)}
-        data-start={ViewState.cursor['start']}
-        data-pitch={ViewState.cursor['pitch']}
-        data-length={ViewState.cursor['length']}
+        style={this.cursorPosition(cursor)}
+        data-start={cursor['start']}
+        data-pitch={cursor['pitch']}
+        data-length={cursor['length']}
       />
       <SeqCom.VisualSelection left={selection.left} right={selection.right} top={selection.top} bottom={selection.bottom}/>
     </cursorGrid>
@@ -185,7 +186,7 @@ SeqCom.StatusLine = React.createClass({
 
 SeqCom.CursorPosition = React.createClass({
   render() {
-    var cursor = ViewState.cursor
+    var cursor = ViewState.activePartView().cursor
     var part = SongState.activePart()
 
     return <cursorPosition>

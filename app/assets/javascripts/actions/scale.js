@@ -21,7 +21,7 @@ Scale.create = function(songState, scaleType='major') {
 }
 
 var createScale = function(pattern, part) {
-  var cursor = ViewState.cursor
+  var cursor = ViewState.activeCursor();
   var nextPosition = cursor.start
 
   var noteLength = 96;

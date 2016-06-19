@@ -3,7 +3,7 @@ window.Song = {};
 Song.addNote = function(songState, number) {
   var notesToAdd = number || 1
 
-  var cursor = ViewState.cursor
+  var cursor = ViewState.activeCursor();
 
   var noteStart = cursor.start
   var newNotes = Array.from(Array(notesToAdd).keys()).map(function() {

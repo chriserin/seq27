@@ -23,7 +23,7 @@ Copy.yank = function(viewState) {
 }
 
 Copy.paste = function(songState) {
-  var cursor = ViewState.cursor
+  var cursor = ViewState.activeCursor()
 
   var notesForPasting = _.cloneDeep(ViewState.yankedNotes)
 

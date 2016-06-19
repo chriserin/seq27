@@ -1,11 +1,6 @@
-VIEW_STATE = {
+INITIAL_VIEW_STATE = {
   mode: 'normal',
   yankedNotes: [],
-  cursor: {
-    pitch: 60,
-    start: 0,
-    length: 96
-  },
   anchorCursor: {
     pitch: -1,
     start: -1,
@@ -18,7 +13,17 @@ VIEW_STATE = {
   error: null,
   activeSection: 0,
   activePart: 0,
-  sections: [{parts: [{selectedTag: null, stack: [], stackPointer: 0, visuallySelectedNotes: null}]}],
+  sections: [{parts: [{
+    cursor: {
+      pitch: 60,
+      start: 0,
+      length: 96
+    },
+    selectedTag: null,
+    stack: [],
+    stackPointer: 0,
+    visuallySelectedNotes: null}]}
+  ],
   commandResult: '',
   commandBuffer: [],
   commandHistoryIndex: -1,
@@ -28,6 +33,8 @@ VIEW_STATE = {
   reportItems: null,
   reportTitle: ''
 };
+
+VIEW_STATE = JSON.parse(JSON.stringify(INITIAL_VIEW_STATE));
 
 window.ViewState = {}
 
@@ -103,23 +110,27 @@ ViewState.setCursor = function(state, attrs) {
 }
 
 ViewState.setCursorPitch = function(state, pitch) {
+  partView = ViewState.activePartView();
+
   if(pitch > 127) {
-    state.cursor['pitch'] = 127
+    partView.cursor['pitch'] = 127
   } else if (pitch < 0) {
-    state.cursor['pitch'] = 0
+    partView.cursor['pitch'] = 0
   } else {
-    state.cursor['pitch'] = pitch
+    partView.cursor['pitch'] = pitch
   }
   return state
 }
 
 ViewState.setCursorStart = function(state, start) {
+  partView = ViewState.activePartView();
+
   if(start >= SongState.activePart().beats * 96) {
-    state.cursor['start'] = (SongState.activePart().beats * 96) - 96
+    partView.cursor['start'] = (SongState.activePart().beats * 96) - 96
   } else if (start < 0) {
-    state.cursor['start'] = 0
+    partView.cursor['start'] = 0
   } else {
-    state.cursor['start'] = start
+    partView.cursor['start'] = start
   }
   return state
 }
@@ -142,7 +153,7 @@ ViewState.selectedNotes = function(songState){
 
 ViewState.selection = function() {
   var anchorCursor = VIEW_STATE['anchorCursor']
-  var cursorCursor = VIEW_STATE['cursor']
+  var cursorCursor = ViewState.activePartView().cursor
 
   var leftEdge = Math.min(anchorCursor.start, cursorCursor.start)
   var rightEdge = Math.max(anchorCursor.start + anchorCursor.length, cursorCursor.start + cursorCursor.length)
@@ -162,11 +173,15 @@ ViewState.selectedTag = function() {
 }
 
 ViewState.newPartState = function() {
-  var newPartViewState = {selectedTag: null, stack: [], stackPointer: 0}
+  var newPartViewState = JSON.parse(JSON.stringify(INITIAL_VIEW_STATE.sections[0].parts[0]));
   return newPartViewState
 }
 
 ViewState.newSectionState = function(partsNumber) {
   var newPartsState = Array.from(Array(partsNumber)).map(function(){ return ViewState.newPartState(); })
   return {parts: newPartsState}
+}
+
+ViewState.activeCursor = function(){
+  return ViewState.activePartView().cursor;
 }
