@@ -49,6 +49,10 @@ ViewState.init = function(songState) {
   return VIEW_STATE;
 }
 
+ViewState.initSection = function(sectionNumber) {
+  VIEW_STATE.sections[sectionNumber] = {parts: []};
+}
+
 ViewState.initPartViewForSection = function(sectionNumber) {
   for(var j = 0; j < SONG_STATE.sections[sectionNumber].parts.length; j++) {
     var partView = VIEW_STATE.sections[sectionNumber].parts[j];

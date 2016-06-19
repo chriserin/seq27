@@ -60,6 +60,19 @@ Feature: Artist plays a song
     Then  I hear the song with both sections
 
   @javascript
+  Scenario: Artist plays a song with a duplicated section
+    Given an artist on the new song page
+    When  I type the ":set beats=4" command
+    And   I type the ":set output=seq27-midi-output" command
+    And   I type the "mecn" sequence
+    And   I type the ":duplicatesection" command
+    And   there is a midi output available
+    And   I type the ":set output=seq27-midi-output" command
+    And   I set the tempo very high in order to shrink the test
+    And   I press the space bar
+    Then  I hear the song with both sections
+
+  @javascript
   Scenario: Artist creates and plays a song with two sections (the second section loops)
     Given an artist on the new song page
     When  there is a midi output available

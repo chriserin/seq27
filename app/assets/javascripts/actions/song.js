@@ -71,6 +71,20 @@ Song.setSection = function(songState, sectionArgument) {
   return songState;
 }
 
+Song.duplicateSection = function(songState, sectionArgument) {
+  var section = {parts: [], loop: 1}
+
+  songState.sections[ViewState.activeSection].parts.forEach(function(part) {
+    var newPart = JSON.parse(JSON.stringify(part));
+    section['parts'].push(newPart);
+  });
+
+  var sectionsLength = songState["sections"].push(section);
+  songState["arrangement"].push(sectionsLength - 1)
+
+  return songState;
+}
+
 Song.setPart = function(songState, partArgument) {
   if (partArgument.indexOf('!') > 0) {
     var sections = songState.sections
@@ -91,6 +105,16 @@ Song.setActiveSection = function(viewState, sectionArgument) {
     viewState = ViewState.initPartStacksForSection(newActiveSection)
   }
 
+  return viewState;
+}
+
+Song.setDuplicatedSection = function(viewState) {
+  var newActiveSection =  ViewState.activeSection + 1;
+
+  viewState.sections[newActiveSection] = JSON.parse(JSON.stringify(viewState.sections[ViewState.activeSection]));
+  viewState = ViewState.initPartStacksForSection(newActiveSection);
+
+  viewState["activeSection"] = newActiveSection;
   return viewState;
 }
 

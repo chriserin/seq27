@@ -24,6 +24,7 @@ CommandMode.commandMapping = function() {
     "set": [Song.setProperty, CursorMovement.ensureCursorInBounds],
     "get": [NOOP, Song.getProperty],
     "section": [Song.setSection, Song.setActiveSection],
+    "duplicatesection": [Song.duplicateSection, Song.setDuplicatedSection],
     "part": [Song.setPart, Song.setActivePart],
     "scale": [Scale.create, NOOP],
     "arpeggio": [Arpeggio.create, Groups.setSelectedTag],

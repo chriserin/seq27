@@ -73,6 +73,7 @@ function savePartState(songFn, songState) {
 
     if (window.location.pathname.match(/new/))
       window.history.pushState({}, 'Song', 'current')
+
     var stack = ViewState.activeStack()
     stack.splice(pointer + 1, stack.length - 1, newState)
     ViewState.activePartView().stackPointer = ++pointer
