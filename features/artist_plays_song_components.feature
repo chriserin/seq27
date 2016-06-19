@@ -42,5 +42,5 @@ Feature: Artist plays song components
     And   I type the "mecn" sequence
     And   I type the ":section 1!" command
     And   I type the "mccn" sequence
-    And   I type the "zs" sequence
+    And   I type the "zS" sequence
     Then  I hear only the current section

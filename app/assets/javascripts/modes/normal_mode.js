@@ -262,7 +262,8 @@ function playNodes() {
   var nodes = {
     "z": [Play.play, NOOP],
     "p": [Play.playPart, NOOP],
-    "s": [Play.playSelection, NOOP]
+    "s": [Play.playSelection, NOOP],
+    "S": [Play.playSection, NOOP]
   }
   return nodes
 }
