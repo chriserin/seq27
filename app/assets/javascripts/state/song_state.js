@@ -56,12 +56,16 @@ SongState.currentGroupNotes = function(songState) {
   return results;
 }
 
-SongState.latestTag = function(songState) {
-  var activePart = SongState.activePart()
+SongState.latestTag = function(songState, part) {
+  var activePart = part || SongState.activePart()
   var sortedNotes = activePart.notes.map(function(n) {return n}).sort(function(a, b) { return b.timestamp - a.timestamp;})
 
-  var tag = sortedNotes[0].timestamp
-  return tag
+  if (sortedNotes[0]) {
+    var tag = sortedNotes[0].timestamp;
+    return tag;
+  } else {
+    return null;
+  }
 }
 
 SongState.activePartTags = function() {

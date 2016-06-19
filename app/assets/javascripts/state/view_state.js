@@ -58,7 +58,10 @@ ViewState.initPartViewForSection = function(sectionNumber) {
     var partView = VIEW_STATE.sections[sectionNumber].parts[j];
 
     if (typeof partView === 'undefined') {
-      VIEW_STATE.sections[sectionNumber].parts[j] = ViewState.newPartState();
+      var part = SONG_STATE.sections[sectionNumber].parts[j];
+      var newPartState = ViewState.newPartState();
+      newPartState.selectedTag = SongState.latestTag(SONG_STATE, part);
+      VIEW_STATE.sections[sectionNumber].parts[j] = newPartState;
     }
   }
 
