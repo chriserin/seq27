@@ -14,16 +14,16 @@ Delete.deleteLatest = function(songState) {
 }
 
 Delete.deleteSelected = function(songState) {
-  var notes = ViewState.selectedNotes(songState)
+  var notes = ViewState.selectedNotes(State.view(), State.song());
 
-  var part = SongState.activePart()
+  var part = SongState.activePart();
 
   for (var note of notes) {
-    var index = SongState.indexOfNote(note, part)
+    var index = SongState.indexOfNote(note, part);
     delete part.notes[index];
   }
 
-  part.notes = part.notes.filter(function(n) { return n;})
+  part.notes = part.notes.filter(function(n) { return n;});
 
   return songState;
 }

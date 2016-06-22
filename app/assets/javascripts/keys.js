@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.addEventListener('keydown',
     function(keyboardEvent) {
 
-      if(keyboardEvent.keyCode === 8) {
+      if(keyboardEvent.keyCode === 8) { //backspace
         keyboardEvent.preventDefault()
 
         if (ViewState.mode === 'command') {
@@ -57,29 +57,29 @@ function savePartState(songFn, songState) {
   }
 
   if (songFn.prototype.isUndoFunction) {
-    return songFn(songState)
+    return songFn(songState);
   }
 
-  var ap = VIEW_STATE.activePart
-  var as = VIEW_STATE.activeSection
+  var ap = VIEW_STATE.activePart;
+  var as = VIEW_STATE.activeSection;
 
-  var newSongState = songFn(songState)
-  var newState = Immutable.fromJS(SongState.activePart())
-  var pointer = ViewState.activePointer()
-  var currentState = ViewState.activeStack()[pointer]
+  var newSongState = songFn(songState);
+  var newState = Immutable.fromJS(SongState.activePart());
+  var pointer = ViewState.activePointer(State.view());
+  var currentState = ViewState.activeStack(State.view())[pointer];
 
   if (!Immutable.fromJS(newState).equals(currentState)) {
-    localStorage.setItem('currentSong', JSON.stringify(newSongState))
+    localStorage.setItem('currentSong', JSON.stringify(newSongState));
 
     if (window.location.pathname.match(/new/))
-      window.history.pushState({}, 'Song', 'current')
+      window.history.pushState({}, 'Song', 'current');
 
-    var stack = ViewState.activeStack()
-    stack.splice(pointer + 1, stack.length - 1, newState)
-    ViewState.activePartView().stackPointer = ++pointer
+    var stack = ViewState.activeStack(State.view());
+    stack.splice(pointer + 1, stack.length - 1, newState);
+    ViewState.activePartView(State.view()).stackPointer = ++pointer;
   }
 
-  return newSongState
+  return newSongState;
 }
 
 function delayedAction(viewState) {
@@ -87,7 +87,7 @@ function delayedAction(viewState) {
     viewState.delayedAction(viewState)
     viewState.delayedAction = null
   }
-  return viewState
+  return viewState;
 }
 
 function getFunctionsFor(key) {

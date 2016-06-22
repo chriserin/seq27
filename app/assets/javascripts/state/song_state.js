@@ -20,7 +20,7 @@ INITIAL_SONG_STATE = {
 }
 
 SongState.activeSection = function() {
-  return SONG_STATE["sections"][ViewState.activeSection]
+  return SONG_STATE["sections"][ViewState.activeSection];
 }
 
 SongState.activePart = function() {
@@ -35,7 +35,7 @@ SongState.notesForActivePart = function() {
 }
 
 SongState.replaceActivePart = function(newPart) {
-  return SongState.activeSection()["parts"][ViewState.activePart] = newPart
+  return SongState.activeSection()["parts"][ViewState.activePart] = newPart;
 }
 
 SongState.arrangedSections = function() {
@@ -50,7 +50,7 @@ SongState.activeArrangementIndex = function() {
 
 SongState.currentGroupNotes = function(songState) {
 
-  var tag = ViewState.selectedTag()
+  var tag = ViewState.selectedTag(State.view());
   var results = SongState.activePart().notes.filter(function(note){ return note.timestamp === tag})
 
   return results;

@@ -1,42 +1,44 @@
 window.Undo = {}
 
+//Modifies both view and song state
 Undo.undo = function(songState, number) {
-  var undoTimes = number || 1
+  var undoTimes = number || 1;
 
-  var pointer = ViewState.activePointer()
+  var pointer = ViewState.activePointer(State.view());
 
   if(undoTimes <= pointer) {
-    pointer -= undoTimes
+    pointer -= undoTimes;
 
-    var version = ViewState.activeStack()[pointer]
+    var version = ViewState.activeStack(State.view())[pointer];
 
-    SongState.replaceActivePart(version.toJS())
+    ViewState.activePartView(State.view()).stackPointer = pointer;
 
-    ViewState.activePartView().stackPointer = pointer
+    SongState.replaceActivePart(version.toJS());
   }
 
-  return songState
+  return songState;
 }
 
+//Modifies both view and song state
 Undo.redo = function(songState) {
-  var pointer = ViewState.activePointer() + 1
+  var pointer = ViewState.activePointer(State.view()) + 1;
 
-  if (pointer < ViewState.activeStack().length) {
-    var version = ViewState.activeStack()[pointer]
-    SongState.replaceActivePart(version.toJS())
-    ViewState.activePartView().stackPointer = pointer
+  if (pointer < ViewState.activeStack(State.view()).length) {
+    var version = ViewState.activeStack(State.view())[pointer];
+    ViewState.activePartView(State.view()).stackPointer = pointer;
+    SongState.replaceActivePart(version.toJS());
   }
 
-  return songState
+  return songState;
 }
 
 Undo.initActiveStack = function(songState) {
 
-  var currentState = SongState.activePart()
-  ViewState.activePartView().stackPointer = 0
-  ViewState.activeStack().push(Immutable.fromJS(currentState))
+  var currentState = SongState.activePart();
+  ViewState.activePartView(State.view()).stackPointer = 0;
+  ViewState.activeStack(State.view()).push(Immutable.fromJS(currentState));
 
-  return songState
+  return songState;
 }
 
 var metaAttributes = {isUndoFunction: true}

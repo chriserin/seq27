@@ -34,35 +34,37 @@ INITIAL_VIEW_STATE = {
   reportTitle: ''
 };
 
-VIEW_STATE = JSON.parse(JSON.stringify(INITIAL_VIEW_STATE));
-
 window.ViewState = {}
 
-function defineProp(stateKey) {
-  Object.defineProperty(ViewState, stateKey, { get: function() {return VIEW_STATE[stateKey]}})
+function defineProp(viewState, stateKey) {
+  Object.defineProperty(ViewState, stateKey, { get: function() {return viewState[stateKey]}})
+  return viewState;
 }
 
 ViewState.init = function(songState) {
-  for (var stateKey in VIEW_STATE) {
-    defineProp(stateKey)
+  let viewState = JSON.parse(JSON.stringify(INITIAL_VIEW_STATE));
+
+  for (var stateKey in viewState) {
+    viewState = defineProp(viewState, stateKey);
   }
 
   for(var i = 0; i < songState.sections.length; i++) {
-    ViewState.initSection(i)
-    ViewState.initPartViewForSection(i)
-    ViewState.initPartStacksForSection(i)
+    viewState = ViewState.initSection(viewState, i)
+    viewState = ViewState.initPartViewForSection(viewState, i)
+    viewState = ViewState.initPartStacksForSection(viewState, i)
   }
 
-  return VIEW_STATE;
+  return viewState;
 }
 
-ViewState.initSection = function(sectionNumber) {
-  VIEW_STATE.sections[sectionNumber] = {parts: []};
+ViewState.initSection = function(viewState, sectionNumber) {
+  viewState.sections[sectionNumber] = {parts: []};
+  return viewState;
 }
 
-ViewState.initPartViewForSection = function(sectionNumber) {
+ViewState.initPartViewForSection = function(viewState, sectionNumber) {
   for(var j = 0; j < SONG_STATE.sections[sectionNumber].parts.length; j++) {
-    var partView = VIEW_STATE.sections[sectionNumber].parts[j];
+    var partView = viewState.sections[sectionNumber].parts[j];
 
     if (typeof partView === 'undefined') {
       var part = SONG_STATE.sections[sectionNumber].parts[j];
@@ -72,120 +74,128 @@ ViewState.initPartViewForSection = function(sectionNumber) {
       if (focusedNote) {
         newPartState.cursor = {start: focusedNote.start, pitch: focusedNote.pitch};
       }
-      VIEW_STATE.sections[sectionNumber].parts[j] = newPartState;
+      viewState.sections[sectionNumber].parts[j] = newPartState;
     }
   }
 
-  return VIEW_STATE
+  return viewState;
 }
 
-ViewState.initPartStacksForSection = function(sectionNumber) {
-  for(var j = 0; j < SONG_STATE.sections[sectionNumber].parts.length; j++) {
-    var part = SONG_STATE.sections[sectionNumber].parts[j]
-    VIEW_STATE.sections[sectionNumber].parts[j].stack.push(Immutable.fromJS(part))
+ViewState.initPartStacksForSection = function(viewState, sectionNumber) {
+  for(var j = 0; j < State.song().sections[sectionNumber].parts.length; j++) {
+    var part = State.song().sections[sectionNumber].parts[j];
+    viewState.sections[sectionNumber].parts[j].stack.push(Immutable.fromJS(part));
   }
 
-  return VIEW_STATE
+  return viewState;
 }
 
-ViewState.activePartView = function() {
-  var as = ViewState.activeSection
-  var ap = ViewState.activePart
+ViewState.activePartView = function(viewState) {
+  var as = ViewState.activeSection;
+  var ap = ViewState.activePart;
 
-  return ViewState.sections[as].parts[ap]
+  return viewState.sections[as].parts[ap];
 }
 
-ViewState.activePointer = function() {
-  return ViewState.activePartView().stackPointer
+ViewState.activePointer = function(viewState) {
+  return ViewState.activePartView(viewState).stackPointer;
 }
 
-ViewState.activeStack = function() {
-  return ViewState.activePartView().stack
+ViewState.activeStack = function(viewState) {
+  return ViewState.activePartView(viewState).stack;
 }
 
-ViewState.setCursor = function(state, attrs) {
+ViewState.setCursor = function(viewState, attrs) {
   if(attrs.hasOwnProperty('pitch') && attrs.pitch !== null) {
-    state = ViewState.setCursorPitch(state, attrs['pitch'])
+    viewState = ViewState.setCursorPitch(viewState, attrs['pitch'])
   }
+
   if(attrs.hasOwnProperty('start') && attrs.start !== null){
-    state = ViewState.setCursorStart(state, attrs['start'])
+    viewState = ViewState.setCursorStart(viewState, attrs['start'])
   }
-  return state
+
+  return viewState;
 }
 
-ViewState.setCursorPitch = function(state, pitch) {
-  partView = ViewState.activePartView();
+ViewState.setCursorPitch = function(viewState, pitch) {
+  partView = ViewState.activePartView(viewState);
 
   if(pitch > 127) {
-    partView.cursor['pitch'] = 127
+    partView.cursor['pitch'] = 127;
   } else if (pitch < 0) {
-    partView.cursor['pitch'] = 0
+    partView.cursor['pitch'] = 0;
   } else {
-    partView.cursor['pitch'] = pitch
+    partView.cursor['pitch'] = pitch;
   }
-  return state
+  return viewState;
 }
 
-ViewState.setCursorStart = function(state, start) {
-  partView = ViewState.activePartView();
+ViewState.setCursorStart = function(viewState, start) {
+  partView = ViewState.activePartView(viewState);
 
   if(start >= SongState.activePart().beats * 96) {
-    partView.cursor['start'] = (SongState.activePart().beats * 96) - 96
+    partView.cursor['start'] = (SongState.activePart().beats * 96) - 96;
   } else if (start < 0) {
-    partView.cursor['start'] = 0
+    partView.cursor['start'] = 0;
   } else {
-    partView.cursor['start'] = start
+    partView.cursor['start'] = start;
   }
-  return state
+
+  return viewState;
 }
 
-ViewState.selectedNotes = function(songState){
-  var part = SongState.activePart()
+ViewState.selectedNotes = function(viewState, songState){
+  var part = SongState.activePart();
 
-  var selection = ViewState.selection()
+  var selection = ViewState.selection(viewState);
 
   var notesSelectedOnBeatsAxis = part.notes.filter(function(note) {
-    return ((note.start + note.length - 1) >= selection.left && note.start < selection.right)
-  })
+    return ((note.start + note.length - 1) >= selection.left && note.start < selection.right);
+  });
 
   var selectedNotes = notesSelectedOnBeatsAxis.filter(function(note) {
     return (note.pitch <= selection.top && note.pitch >= selection.bottom);
-  })
+  });
 
-  return selectedNotes
+  return selectedNotes;
 }
 
-ViewState.selection = function() {
-  var anchorCursor = VIEW_STATE['anchorCursor']
-  var cursorCursor = ViewState.activePartView().cursor
+ViewState.selection = function(viewState) {
+  var anchorCursor = viewState['anchorCursor'];
+  var cursorCursor = ViewState.activeCursor(viewState);
 
-  var leftEdge = Math.min(anchorCursor.start, cursorCursor.start)
-  var rightEdge = Math.max(anchorCursor.start + anchorCursor.length, cursorCursor.start + cursorCursor.length)
-  var topPitch = Math.max(anchorCursor.pitch, cursorCursor.pitch)
-  var bottomPitch = Math.min(anchorCursor.pitch, cursorCursor.pitch)
+  var leftEdge = Math.min(anchorCursor.start, cursorCursor.start);
+  var rightEdge = Math.max(anchorCursor.start + anchorCursor.length, cursorCursor.start + cursorCursor.length);
+  var topPitch = Math.max(anchorCursor.pitch, cursorCursor.pitch);
+  var bottomPitch = Math.min(anchorCursor.pitch, cursorCursor.pitch);
 
   return {
     left: leftEdge,
     right: rightEdge,
     top: topPitch,
     bottom: bottomPitch
-  }
+  };
 }
 
-ViewState.selectedTag = function() {
-  return ViewState.sections[ViewState.activeSection].parts[ViewState.activePart].selectedTag
+ViewState.selectedTag = function(viewState) {
+  return viewState.sections[ViewState.activeSection].parts[ViewState.activePart].selectedTag;
 }
 
 ViewState.newPartState = function() {
   var newPartViewState = JSON.parse(JSON.stringify(INITIAL_VIEW_STATE.sections[0].parts[0]));
-  return newPartViewState
+  return newPartViewState;
 }
 
 ViewState.newSectionState = function(partsNumber) {
-  var newPartsState = Array.from(Array(partsNumber)).map(function(){ return ViewState.newPartState(); })
-  return {parts: newPartsState}
+  var newPartsState = Array.from(Array(partsNumber)).map(function(){ return ViewState.newPartState(); });
+  return {parts: newPartsState};
 }
 
-ViewState.activeCursor = function(){
-  return ViewState.activePartView().cursor;
+ViewState.activeCursor = function(viewState){
+  return ViewState.activePartView(viewState).cursor;
+}
+
+ViewState.set = function(viewState, prop, value) {
+  viewState[prop] = value;
+  return viewState;
 }

@@ -2,6 +2,6 @@
 :javascript
   Midi.connect();
   window.SONG_STATE = Song.newSong()
-  ViewState.init(SONG_STATE)
+  window.VIEW_STATE = ViewState.init(SONG_STATE)
   var view = React.createElement(SeqCom.Song, null)
   window.SONG_VIEW = ReactDOM.render(view, window.song)

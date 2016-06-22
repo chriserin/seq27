@@ -3,25 +3,25 @@ window.Move = {}
 Move.toMiddleNote = function(viewState, note, octave) {
   octave = octave || 5;
   const convertedPitch = note % 12 + octave * 12;
-  ViewState.activeCursor()['pitch'] = convertedPitch;
+  ViewState.activeCursor(viewState)['pitch'] = convertedPitch;
   return viewState;
 }
 
 Move.upOctave = function(viewState) {
-  var tmpPitch = ViewState.activeCursor()['pitch'] + 12;
+  var tmpPitch = ViewState.activeCursor(viewState)['pitch'] + 12;
   viewState = CursorMovement.moveCursor(viewState, {pitch: tmpPitch})
   return viewState;
 }
 
 Move.downOctave = function(viewState) {
-  var tmpPitch = ViewState.activeCursor()['pitch'] - 12;
+  var tmpPitch = ViewState.activeCursor(viewState)['pitch'] - 12;
   viewState = CursorMovement.moveCursor(viewState, {pitch: tmpPitch})
   return viewState;
 }
 
 Move.upToNote = function(viewState, note) {
   const noteDiff = note % 12;
-  const cursor = ViewState.activeCursor()
+  const cursor = ViewState.activeCursor(viewState)
   const currentNoteDiff = cursor['pitch'] % 12;
   let tmpPitch = null;
 
@@ -36,7 +36,7 @@ Move.upToNote = function(viewState, note) {
 
 Move.downToNote = function(viewState, note) {
   const noteDiff = note % 12;
-  const cursor = ViewState.activeCursor()
+  const cursor = ViewState.activeCursor(viewState)
   const currentNoteDiff = cursor['pitch'] % 12;
 
   let tmpPitch = null;

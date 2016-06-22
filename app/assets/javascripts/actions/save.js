@@ -6,7 +6,7 @@ Save.write = function(songState) {
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && xhr.status == 200) {
       window.history.pushState({}, 'Song', `${this.responseText}`)
-      VIEW_STATE.commandResult = 'written'
+      ViewState.set(VIEW_STATE, 'commandResult', 'written');
       SONG_STATE.id = this.responseText
     }
   }
@@ -25,7 +25,7 @@ Save.update = function(songState) {
     if (xhr.readyState == 4 && xhr.status == 200) {
       window.history.pushState({}, 'Song', `${this.responseText}`)
       SONG_STATE.id = this.responseText
-      VIEW_STATE.commandResult = 'updated'
+      ViewState.set(VIEW_STATE, 'commandResult', 'updated');
     }
   }
 
