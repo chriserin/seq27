@@ -12,7 +12,7 @@ Modes.normalMode = function (viewState) {
 
 Modes.endVisualMode = function (viewState) {
   viewState["mode"] = 'normal';
-  ViewState.activePartView().visuallySelectedNotes = null
+  ViewState.activePartView(viewState).visuallySelectedNotes = null;
   return viewState;
 };
 
@@ -22,9 +22,9 @@ Modes.endSelectingMode = function (viewState) {
 };
 
 Modes.visualMode = function (viewState) {
-  viewState['anchorCursor'] = JSON.parse(JSON.stringify(ViewState.activeCursor()))
+  viewState['anchorCursor'] = JSON.parse(JSON.stringify(ViewState.activeCursor(viewState)));
   viewState["mode"] = 'visual';
-  ViewState.activePartView().visuallySelectedNotes = ViewState.selectedNotes(SONG_STATE)
+  ViewState.activePartView(viewState).visuallySelectedNotes = ViewState.selectedNotes(State.view(), State.song());
   return viewState;
 };
 
@@ -34,16 +34,16 @@ Modes.explorerMode = function (viewState) {
 };
 
 Modes.transitionToNextMode = function(viewState) {
-  const currentMode = viewState['mode']
+  const currentMode = viewState['mode'];
   let nextMode = currentMode;
 
   if (currentMode === 'command') {
-    nextMode = 'normal'
+    nextMode = 'normal';
   } else if (currentMode === 'explorer') {
-    nextMode = 'explorer'
+    nextMode = 'explorer';
   }
 
   viewState['mode'] = nextMode;
 
-  return viewState
+  return viewState;
 }

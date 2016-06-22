@@ -1,21 +1,21 @@
 window.Song = {};
 
 Song.addNote = function(songState, number) {
-  var notesToAdd = number || 1
+  var notesToAdd = number || 1;
 
-  var cursor = ViewState.activeCursor();
+  var cursor = ViewState.activeCursor(State.view());
 
-  var noteStart = cursor.start
+  var noteStart = cursor.start;
   var newNotes = Array.from(Array(notesToAdd).keys()).map(function() {
-    var note = SongState.newNote(noteStart, cursor.pitch, 96)
-    noteStart += 96
-    return note
+    var note = SongState.newNote(noteStart, cursor.pitch, 96);
+    noteStart += 96;
+    return note;
   })
 
-  SongState.tagNotes(newNotes)
+  SongState.tagNotes(newNotes);
 
-  var existingNotes = SongState.activePart().notes
-  Array.prototype.splice.apply(existingNotes, [existingNotes.length, existingNotes.length].concat(newNotes))
+  var existingNotes = SongState.activePart().notes;
+  Array.prototype.splice.apply(existingNotes, [existingNotes.length, existingNotes.length].concat(newNotes));
 
   return songState;
 }
@@ -102,7 +102,7 @@ Song.setActiveSection = function(viewState, sectionArgument) {
 
   if (viewState.sections[newActiveSection] === undefined) {
     viewState.sections[newActiveSection] = ViewState.newSectionState(SONG_STATE.sections[0].parts.length)
-    viewState = ViewState.initPartStacksForSection(newActiveSection)
+    viewState = ViewState.initPartStacksForSection(viewState, newActiveSection)
   }
 
   return viewState;
@@ -112,7 +112,7 @@ Song.setDuplicatedSection = function(viewState) {
   var newActiveSection =  ViewState.activeSection + 1;
 
   viewState.sections[newActiveSection] = JSON.parse(JSON.stringify(viewState.sections[ViewState.activeSection]));
-  viewState = ViewState.initPartStacksForSection(newActiveSection);
+  viewState = ViewState.initPartStacksForSection(viewState, newActiveSection);
 
   viewState["activeSection"] = newActiveSection;
   return viewState;

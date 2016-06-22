@@ -15,13 +15,13 @@ Scale.scales.whole = [0, 2, 4, 6, 8, 10, 12];
 
 Scale.create = function(songState, scaleType='major') {
   var part = SongState.activePart();
-  part = createScale(Scale.scales[scaleType], part);
+  part = createScale(State.view(), Scale.scales[scaleType], part);
 
   return songState;
 }
 
-var createScale = function(pattern, part) {
-  var cursor = ViewState.activeCursor();
+var createScale = function(viewState, pattern, part) {
+  var cursor = ViewState.activeCursor(viewState);
   var nextPosition = cursor.start
 
   var noteLength = 96;

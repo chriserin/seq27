@@ -7,7 +7,7 @@ Groups.setSelectedTag = function(viewState) {
 
 Groups.selectNextGroup = function(viewState) {
 
-  var currentTag = ViewState.selectedTag()
+  var currentTag = ViewState.selectedTag(viewState)
   var tags = SongState.activePartTags()
   var currentTagIndex = tags.indexOf(currentTag)
 
@@ -21,19 +21,20 @@ Groups.selectNextGroup = function(viewState) {
 }
 
 Groups.selectPreviousGroup = function(viewState) {
-  var currentTag = ViewState.selectedTag()
-  var tags = SongState.activePartTags()
-  var currentTagIndex = tags.indexOf(currentTag)
+  var currentTag = ViewState.selectedTag(viewState);
+  var tags = SongState.activePartTags();
+  var currentTagIndex = tags.indexOf(currentTag);
 
-  var nextTagIndex = currentTagIndex
+  var nextTagIndex = currentTagIndex;
+
   if (currentTagIndex === -1) {
-    var tagsBeforeCurrentTag = tags.filter(function(tag) { return tag < currentTag; })
-    nextTag = tagsBeforeCurrentTag[tagsBeforeCurrentTag.length - 1]
-    nextTagIndex = nextTag ? tags.indexOf(nextTag) : 0
+    var tagsBeforeCurrentTag = tags.filter(function(tag) { return tag < currentTag; });
+    nextTag = tagsBeforeCurrentTag[tagsBeforeCurrentTag.length - 1];
+    nextTagIndex = nextTag ? tags.indexOf(nextTag) : 0;
   } else if (currentTagIndex - 1 > -1) {
-    nextTagIndex = currentTagIndex - 1
+    nextTagIndex = currentTagIndex - 1;
   }
 
-  viewState.sections[viewState.activeSection].parts[viewState.activePart].selectedTag = tags[nextTagIndex]
+  viewState.sections[viewState.activeSection].parts[viewState.activePart].selectedTag = tags[nextTagIndex];
   return viewState
 }

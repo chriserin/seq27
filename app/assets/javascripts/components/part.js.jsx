@@ -16,13 +16,13 @@ SeqCom.Song = React.createClass({
 
 SeqCom.Section = React.createClass({
   cursorTop() {
-    return (16 * (127 - ViewState.activePartView().cursor.pitch))
+    return (16 * (127 - ViewState.activePartView(State.view()).cursor.pitch))
   },
   cursorLeft() {
-    return ((ViewState.activePartView().cursor.start / 96.0) * 75) + 60
+    return ((ViewState.activePartView(State.view()).cursor.start / 96.0) * 75) + 60
   },
   componentDidMount() {
-    ReactDOM.findDOMNode(this.refs.grids).scrollTop = (16 * (127 - (ViewState.activePartView().cursor.pitch + 15)))
+    ReactDOM.findDOMNode(this.refs.grids).scrollTop = (16 * (127 - (ViewState.activePartView(State.view()).cursor.pitch + 15)))
   },
   componentDidUpdate() {
     var elem = ReactDOM.findDOMNode(this.refs.grids)
@@ -115,8 +115,8 @@ SeqCom.CursorGrid = React.createClass({
     }
   },
   render() {
-    var selection = ViewState.selection()
-    var cursor = ViewState.activePartView().cursor
+    var selection = ViewState.selection(State.view())
+    var cursor = ViewState.activePartView(State.view()).cursor
     return <cursorGrid>
       <cursor
         style={this.cursorPosition(cursor)}
@@ -138,8 +138,8 @@ SeqCom.Part = React.createClass({
     }
   },
   classes(note) {
-    var visualNotes = ViewState.activePartView().visuallySelectedNotes
-    if(!visualNotes && note.timestamp === ViewState.selectedTag()) {
+    var visualNotes = ViewState.activePartView(State.view()).visuallySelectedNotes
+    if(!visualNotes && note.timestamp === ViewState.selectedTag(State.view())) {
       return 'groupSelected'
     }
 
@@ -186,7 +186,7 @@ SeqCom.StatusLine = React.createClass({
 
 SeqCom.CursorPosition = React.createClass({
   render() {
-    var cursor = ViewState.activePartView().cursor
+    var cursor = ViewState.activePartView(State.view()).cursor
     var part = SongState.activePart()
 
     return <cursorPosition>
