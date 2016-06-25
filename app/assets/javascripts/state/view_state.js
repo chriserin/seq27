@@ -63,17 +63,19 @@ ViewState.initSection = function(viewState, sectionNumber) {
 }
 
 ViewState.initPartViewForSection = function(viewState, sectionNumber) {
-  for(var j = 0; j < SONG_STATE.sections[sectionNumber].parts.length; j++) {
+  for(var j = 0; j < State.song().sections[sectionNumber].parts.length; j++) {
     var partView = viewState.sections[sectionNumber].parts[j];
 
     if (typeof partView === 'undefined') {
-      var part = SONG_STATE.sections[sectionNumber].parts[j];
+      var part = State.song().sections[sectionNumber].parts[j];
       var newPartState = ViewState.newPartState();
-      newPartState.selectedTag = SongState.latestTag(SONG_STATE, part);
-      focusedNote = part.notes.find((note) => {return note.timestamp === newPartState.selectedTag; })
+      newPartState.selectedTag = SongState.latestTag(State.song(), part);
+      focusedNote = part.notes.find((note) => {return note.timestamp === newPartState.selectedTag; });
+
       if (focusedNote) {
         newPartState.cursor = {start: focusedNote.start, pitch: focusedNote.pitch};
       }
+
       viewState.sections[sectionNumber].parts[j] = newPartState;
     }
   }
@@ -133,8 +135,8 @@ ViewState.setCursorPitch = function(viewState, pitch) {
 ViewState.setCursorStart = function(viewState, start) {
   partView = ViewState.activePartView(viewState);
 
-  if(start >= SongState.activePart().beats * 96) {
-    partView.cursor['start'] = (SongState.activePart().beats * 96) - 96;
+  if(start >= SongState.activePart(State.song()).beats * 96) {
+    partView.cursor['start'] = (SongState.activePart(State.song()).beats * 96) - 96;
   } else if (start < 0) {
     partView.cursor['start'] = 0;
   } else {
@@ -145,7 +147,7 @@ ViewState.setCursorStart = function(viewState, start) {
 }
 
 ViewState.selectedNotes = function(viewState, songState){
-  var part = SongState.activePart();
+  var part = SongState.activePart(songState);
 
   var selection = ViewState.selection(viewState);
 

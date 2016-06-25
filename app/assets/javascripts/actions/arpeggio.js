@@ -1,7 +1,7 @@
 window.Arpeggio = {}
 
 Arpeggio.create = function(songState) {
-  let part = SongState.activePart();
+  let part = SongState.activePart(songState);
 
   const arpeggioPattern = createArpeggioPattern(arguments[1], arguments[2], arguments[3]);
 

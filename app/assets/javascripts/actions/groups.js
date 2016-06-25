@@ -1,17 +1,17 @@
 window.Groups = {}
 
 Groups.setSelectedTag = function(viewState) {
-  viewState.sections[viewState.activeSection].parts[viewState.activePart].selectedTag = SongState.latestTag(SONG_STATE)
-  return viewState
+  viewState.sections[viewState.activeSection].parts[viewState.activePart].selectedTag = SongState.latestTag(State.song());
+  return viewState;
 }
 
 Groups.selectNextGroup = function(viewState) {
 
-  var currentTag = ViewState.selectedTag(viewState)
-  var tags = SongState.activePartTags()
-  var currentTagIndex = tags.indexOf(currentTag)
+  var currentTag = ViewState.selectedTag(viewState);
+  var tags = SongState.activePartTags(State.song());
+  var currentTagIndex = tags.indexOf(currentTag);
 
-  var nextTagIndex = currentTagIndex
+  var nextTagIndex = currentTagIndex;
   if (currentTagIndex + 1 < tags.length) {
     nextTagIndex = currentTagIndex + 1
   }
@@ -22,7 +22,7 @@ Groups.selectNextGroup = function(viewState) {
 
 Groups.selectPreviousGroup = function(viewState) {
   var currentTag = ViewState.selectedTag(viewState);
-  var tags = SongState.activePartTags();
+  var tags = SongState.activePartTags(State.song());
   var currentTagIndex = tags.indexOf(currentTag);
 
   var nextTagIndex = currentTagIndex;

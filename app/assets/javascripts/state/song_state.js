@@ -19,46 +19,49 @@ INITIAL_SONG_STATE = {
   ]
 }
 
-SongState.activeSection = function() {
-  return SONG_STATE["sections"][ViewState.activeSection];
+SongState.activeSection = function(songState) {
+  return songState["sections"][ViewState.activeSection];
 }
 
-SongState.activePart = function() {
-  return SongState.activeSection()["parts"][ViewState.activePart]
+SongState.activePart = function(songState) {
+  const activeSection = SongState.activeSection(songState);
+  const part = activeSection["parts"][ViewState.activePart];
+  return part;
 }
 
-SongState.notesForActivePart = function() {
-  var part = SongState.activePart()
+SongState.notesForActivePart = function(songState) {
+  var part = SongState.activePart(songState);
+
   return part.notes.filter(function(note) {
-    return note.start < part.beats * 96
+    return note.start < part.beats * 96;
   })
 }
 
-SongState.replaceActivePart = function(newPart) {
-  return SongState.activeSection()["parts"][ViewState.activePart] = newPart;
+SongState.replaceActivePart = function(songState, newPart) {
+  return SongState.activeSection(songState)["parts"][ViewState.activePart] = newPart;
 }
 
-SongState.arrangedSections = function() {
-  return SONG_STATE['arrangement'].map(function(sectionIndex) { return [sectionIndex, SONG_STATE['sections'][sectionIndex]] })
+SongState.arrangedSections = function(songState) {
+  return songState['arrangement'].map(function(sectionIndex) { return [sectionIndex, songState['sections'][sectionIndex]] });
 }
 
-SongState.activeArrangementIndex = function() {
+SongState.activeArrangementIndex = function(songState) {
   var sectionId = ViewState.activeSection
 
-  return SONG_STATE.arrangement.findIndex(function(arrangementSectionId) {return arrangementSectionId === sectionId})
+  return songState.arrangement.findIndex(function(arrangementSectionId) {return arrangementSectionId === sectionId})
 }
 
 SongState.currentGroupNotes = function(songState) {
 
   var tag = ViewState.selectedTag(State.view());
-  var results = SongState.activePart().notes.filter(function(note){ return note.timestamp === tag})
+  var results = SongState.activePart(songState).notes.filter(function(note){ return note.timestamp === tag})
 
   return results;
 }
 
 SongState.latestTag = function(songState, part) {
-  var activePart = part || SongState.activePart()
-  var sortedNotes = activePart.notes.map(function(n) {return n}).sort(function(a, b) { return b.timestamp - a.timestamp;})
+  var activePart = part || SongState.activePart(songState);
+  var sortedNotes = activePart.notes.map(function(n) {return n}).sort(function(a, b) { return b.timestamp - a.timestamp;});
 
   if (sortedNotes[0]) {
     var tag = sortedNotes[0].timestamp;
@@ -68,19 +71,19 @@ SongState.latestTag = function(songState, part) {
   }
 }
 
-SongState.activePartTags = function() {
-  var notes = SongState.activePart().notes
+SongState.activePartTags = function(songState) {
+  var notes = SongState.activePart(songState).notes;
 
   var uniqueSortedTags = notes.map(function(n) {return n.timestamp}).filter(function (e, i, arr) {
-      return arr.lastIndexOf(e) === i
-  }).sort(function(a, b) { return b.timestamp - a.timestamp;})
+      return arr.lastIndexOf(e) === i;
+  }).sort(function(a, b) { return b.timestamp - a.timestamp;});
 
-  return uniqueSortedTags
+  return uniqueSortedTags;
 }
 
 SongState.currentPartNotes = function(songState) {
-  var activePart = SongState.activePart()
-  var sortedNotes = activePart.notes.sort(function(a, b) { if (a.start === b.start) {return b.pitch - a.pitch } else { return a.start - b.start};})
+  var activePart = SongState.activePart(songState);
+  var sortedNotes = activePart.notes.sort(function(a, b) { if (a.start === b.start) {return b.pitch - a.pitch } else { return a.start - b.start};});
 
   return sortedNotes;
 }
@@ -115,15 +118,15 @@ SongState.newPart = function() {
 }
 
 SongState.tagNotes = function(notes) {
-  var timestamp = Date.now()
+  var timestamp = Date.now();
 
   for(var note of notes) {
-    note.timestamp = timestamp
+    note.timestamp = timestamp;
   }
 
-  return notes
+  return notes;
 }
 
-SongState.sectionsLength = function() {
-  return SONG_STATE['sections'].length
+SongState.sectionsLength = function(songState) {
+  return songState['sections'].length;
 }

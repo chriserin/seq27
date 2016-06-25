@@ -66,47 +66,47 @@ Play.createOffFn = function(channel, pitch, velocity, output, noteStartTime) {
 }
 
 Play.makeEventsMapForActivePart = function(songState) {
-  var bpm = songState.tempo
-  var secondsPerTick = 60 / (96.0 * bpm)
-  var msPerTick = secondsPerTick * 1000
-  var part = SongState.activePart()
-  var maxTicks = part.beats * 96.0
+  var bpm = songState.tempo;
+  var secondsPerTick = 60 / (96.0 * bpm);
+  var msPerTick = secondsPerTick * 1000;
+  var part = SongState.activePart(songState);
+  var maxTicks = part.beats * 96.0;
 
-  var eventsMap = Play.createPartMap(part, msPerTick, 0, maxTicks)
+  var eventsMap = Play.createPartMap(part, msPerTick, 0, maxTicks);
   return eventsMap.sort(function(a, b) { return a[0] - b[0]});
 }
 
 Play.makeEventsMapForSelection = function(songState) {
-  var bpm = songState.tempo
-  var secondsPerTick = 60 / (96.0 * bpm)
-  var msPerTick = secondsPerTick * 1000
-  var part = SongState.activePart()
-  var maxTicks = part.beats * 96.0
+  var bpm = songState.tempo;
+  var secondsPerTick = 60 / (96.0 * bpm);
+  var msPerTick = secondsPerTick * 1000;
+  var part = SongState.activePart(songState);
+  var maxTicks = part.beats * 96.0;
 
-  var eventsMap = Play.createSelectionMap(SongState.activePart(), msPerTick, 0, maxTicks)
+  var eventsMap = Play.createSelectionMap(SongState.activePart(songState), msPerTick, 0, maxTicks);
   return eventsMap.sort(function(a, b) { return a[0] - b[0]});
 }
 
 Play.makeEventsMapForSection = function(songState) {
-  var bpm = songState.tempo
-  var secondsPerTick = 60 / (96.0 * bpm)
-  var msPerTick = secondsPerTick * 1000
-  var section = SongState.activeSection()
+  var bpm = songState.tempo;
+  var secondsPerTick = 60 / (96.0 * bpm);
+  var msPerTick = secondsPerTick * 1000;
+  var section = SongState.activeSection(songState);
 
-  var [eventsMap, _] = Play.createSectionMap(section, msPerTick, 0)
+  var [eventsMap, _] = Play.createSectionMap(section, msPerTick, 0);
   return eventsMap.sort(function(a, b) { return a[0] - b[0]});
 }
 
 Play.makeEventsMap = function(songState) {
-  var bpm = songState.tempo
-  var secondsPerTick = 60 / (96.0 * bpm)
-  var msPerTick = secondsPerTick * 1000
-  var eventsMap = new Array()
+  var bpm = songState.tempo;
+  var secondsPerTick = 60 / (96.0 * bpm);
+  var msPerTick = secondsPerTick * 1000;
+  var eventsMap = new Array();
 
   var loopOffset = 0;
-  var sections = songState.sections
-  var arrangement = songState.arrangement
-  var section = null, part = null
+  var sections = songState.sections;
+  var arrangement = songState.arrangement;
+  var section = null, part = null;
 
   for(var arrangementIndex = 0; section = sections[arrangement[arrangementIndex]]; arrangementIndex++) {
     var [sectionMap, loopOffset] = Play.createSectionMap(section, msPerTick, loopOffset);

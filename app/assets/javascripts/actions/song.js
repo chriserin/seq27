@@ -14,7 +14,7 @@ Song.addNote = function(songState, number) {
 
   SongState.tagNotes(newNotes);
 
-  var existingNotes = SongState.activePart().notes;
+  var existingNotes = SongState.activePart(songState).notes;
   Array.prototype.splice.apply(existingNotes, [existingNotes.length, existingNotes.length].concat(newNotes));
 
   return songState;
@@ -32,7 +32,7 @@ Song.setProperty = function(songState, keyValueArg) {
   if (key === "loop") {
     songState.sections[ViewState.activeSection]['loop'] = value;
   } else if (key === "channel" || key === "output" || key === "beats") {
-    SongState.activePart()[key] = value;
+    SongState.activePart(songState)[key] = value;
   } else {
     songState[key] = value;
   }
@@ -44,7 +44,7 @@ Song.getProperty = function(viewState, propertyName) {
   if (propertyName === "loop") {
     var propertyValue =  SONG_STATE.sections[ViewState.activeSection][propertyName];
   } else if (propertyName === "channel" || propertyName === "output" || propertyName === "beats") {
-    var propertyValue =  SongState.activePart()[propertyName]
+    var propertyValue =  SongState.activePart(State.song())[propertyName]
   } else {
     var propertyValue = SONG_STATE[propertyName];
   }
@@ -119,17 +119,17 @@ Song.setDuplicatedSection = function(viewState) {
 }
 
 Song.setActivePart = function(viewState, partArgument) {
-  var newActivePart = parseInt(partArgument)
+  var newActivePart = parseInt(partArgument);
 
-  if (SongState.activeSection().parts[newActivePart]) {
-    viewState["activePart"] = newActivePart
+  if (SongState.activeSection(State.song()).parts[newActivePart]) {
+    viewState["activePart"] = newActivePart;
   } else {
-    return SeqError.partDoesNotExist(viewState)
+    return SeqError.partDoesNotExist(viewState);
   }
 
   if (viewState.sections[viewState.activeSection].parts[newActivePart] === undefined) {
-    viewState.sections[viewState.activeSection].parts[newActivePart] = ViewState.newPartState()
-    viewState = Undo.initActiveStack(viewState)
+    viewState.sections[viewState.activeSection].parts[newActivePart] = ViewState.newPartState();
+    viewState = Undo.initActiveStack(viewState);
   }
 
   return viewState;

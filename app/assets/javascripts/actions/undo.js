@@ -13,7 +13,7 @@ Undo.undo = function(songState, number) {
 
     ViewState.activePartView(State.view()).stackPointer = pointer;
 
-    SongState.replaceActivePart(version.toJS());
+    SongState.replaceActivePart(songState, version.toJS());
   }
 
   return songState;
@@ -26,19 +26,19 @@ Undo.redo = function(songState) {
   if (pointer < ViewState.activeStack(State.view()).length) {
     var version = ViewState.activeStack(State.view())[pointer];
     ViewState.activePartView(State.view()).stackPointer = pointer;
-    SongState.replaceActivePart(version.toJS());
+    SongState.replaceActivePart(songState, version.toJS());
   }
 
   return songState;
 }
 
-Undo.initActiveStack = function(songState) {
+Undo.initActiveStack = function(viewState) {
 
-  var currentState = SongState.activePart();
-  ViewState.activePartView(State.view()).stackPointer = 0;
-  ViewState.activeStack(State.view()).push(Immutable.fromJS(currentState));
+  var currentState = SongState.activePart(State.song());
+  ViewState.activePartView(viewState).stackPointer = 0;
+  ViewState.activeStack(viewState).push(Immutable.fromJS(currentState));
 
-  return songState;
+  return viewState;
 }
 
 var metaAttributes = {isUndoFunction: true}

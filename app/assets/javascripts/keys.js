@@ -64,7 +64,7 @@ function savePartState(songFn, songState) {
   var as = VIEW_STATE.activeSection;
 
   var newSongState = songFn(songState);
-  var newState = Immutable.fromJS(SongState.activePart());
+  var newState = Immutable.fromJS(SongState.activePart(songState));
   var pointer = ViewState.activePointer(State.view());
   var currentState = ViewState.activeStack(State.view())[pointer];
 

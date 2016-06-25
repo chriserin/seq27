@@ -13,9 +13,9 @@ function moveCursor(viewState, attrs) {
 CursorMovement.moveCursor = moveCursor;
 
 CursorMovement.moveDown = function(viewState, number) {
-  var pitches = number || 1
+  var pitches = number || 1;
   var cursor = ViewState.activeCursor(viewState);
-  moveCursor(viewState, {pitch: cursor['pitch'] - pitches})
+  moveCursor(viewState, {pitch: cursor['pitch'] - pitches});
   return viewState;
 }
 
@@ -42,7 +42,7 @@ CursorMovement.moveLeft = function(viewState, number) {
 
 CursorMovement.ensureCursorInBounds = function(viewState) {
   var cursor = ViewState.activeCursor(viewState);
-  var numberOfBeatsInPart = SongState.activePart().beats * 96
+  var numberOfBeatsInPart = SongState.activePart(State.song()).beats * 96
 
   if (cursor.start >= numberOfBeatsInPart) {
     moveCursor(viewState, {start: numberOfBeatsInPart})
@@ -52,7 +52,7 @@ CursorMovement.ensureCursorInBounds = function(viewState) {
 }
 
 CursorMovement.moveToNextNote = function(viewState) {
-  var notes = SongState.currentPartNotes()
+  var notes = SongState.currentPartNotes(State.song());
 
   var cursor = ViewState.activeCursor(viewState);
 
@@ -71,7 +71,7 @@ CursorMovement.moveToNextNote = function(viewState) {
 }
 
 CursorMovement.moveToPrevNote = function(viewState) {
-  var notes = SongState.currentPartNotes();
+  var notes = SongState.currentPartNotes(State.song());
 
   const cursor = ViewState.activeCursor(viewState);
 
@@ -120,7 +120,7 @@ CursorMovement.moveToSelection = function(viewState) {
 }
 
 CursorMovement.moveToEnd = function(viewState) {
-  var part = SongState.activePart();
+  var part = SongState.activePart(State.song());
   viewState = moveCursor(viewState, {start: part.beats * 96});
   return viewState;
 }

@@ -34,9 +34,9 @@ Copy.paste = function(songState) {
 
   SongState.tagNotes(notesForPasting);
 
-  var partNotes = SongState.activePart().notes;
+  var partNotes = SongState.activePart(songState).notes;
   partNotes = partNotes.concat(notesForPasting);
-  SongState.activePart().notes = partNotes;
+  SongState.activePart(songState).notes = partNotes;
 
   return songState;
 }

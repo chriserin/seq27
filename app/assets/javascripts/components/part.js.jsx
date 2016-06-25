@@ -66,8 +66,8 @@ SeqCom.Section = React.createClass({
     }
   },
   render: function() {
-    var notes = SongState.notesForActivePart()
-    var part = SongState.activePart()
+    var notes = SongState.notesForActivePart(State.song());
+    var part = SongState.activePart(State.song());
     var parts_html = <SeqCom.Part notes={notes} partId={ViewState.activePart}/>;
 
     return <grids ref='grids' data-section-id={ViewState.activeSection}>
@@ -176,8 +176,8 @@ SeqCom.StatusLine = React.createClass({
       <name>{songName}</name>
       <name>sect { ViewState.activeSection }</name>
       <name>part { ViewState.activePart }</name>
-      <div>output {Midi.outputNames()[SongState.activePart().output]}({SongState.activePart().output})</div>
-      <div>channel {SongState.activePart().channel}</div>
+      <div>output {Midi.outputNames()[SongState.activePart(State.song()).output]}({SongState.activePart(State.song()).output})</div>
+      <div>channel {SongState.activePart(State.song()).channel}</div>
       <filler/>
       <SeqCom.CursorPosition/>
     </statusLine>
@@ -186,8 +186,8 @@ SeqCom.StatusLine = React.createClass({
 
 SeqCom.CursorPosition = React.createClass({
   render() {
-    var cursor = ViewState.activePartView(State.view()).cursor
-    var part = SongState.activePart()
+    var cursor = ViewState.activePartView(State.view()).cursor;
+    var part = SongState.activePart(State.song());
 
     return <cursorPosition>
       <span className='label'>pitch:</span>
