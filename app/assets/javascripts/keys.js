@@ -45,28 +45,25 @@ function processKey(key) {
   var songFn = fnArray[0];
   var viewFn = fnArray[1];
 
-  SONG_STATE = savePartState(songFn, SONG_STATE);
-  VIEW_STATE = viewFn(delayedAction(VIEW_STATE));
+  SONG_STATE = savePartState(songFn, SONG_STATE, VIEW_STATE);
+  VIEW_STATE = viewFn(delayedAction(VIEW_STATE), SONG_STATE);
 
   window.SONG_VIEW.forceUpdate();
 }
 
-function savePartState(songFn, songState) {
+function savePartState(songFn, songState, viewState) {
   if (songFn === NOOP) {
     return songState;
   }
 
   if (songFn.prototype.isUndoFunction) {
-    return songFn(songState);
+    return songFn(songState, viewState);
   }
 
-  var ap = VIEW_STATE.activePart;
-  var as = VIEW_STATE.activeSection;
-
-  var newSongState = songFn(songState);
-  var newState = Immutable.fromJS(SongState.activePart(songState));
-  var pointer = ViewState.activePointer(State.view());
-  var currentState = ViewState.activeStack(State.view())[pointer];
+  var newSongState = songFn(songState, viewState);
+  var newState = Immutable.fromJS(SongState.activePart(songState, viewState));
+  var pointer = ViewState.activePointer(viewState);
+  var currentState = ViewState.activeStack(viewState)[pointer];
 
   if (!Immutable.fromJS(newState).equals(currentState)) {
     localStorage.setItem('currentSong', JSON.stringify(newSongState));
@@ -74,9 +71,9 @@ function savePartState(songFn, songState) {
     if (window.location.pathname.match(/new/))
       window.history.pushState({}, 'Song', 'current');
 
-    var stack = ViewState.activeStack(State.view());
+    var stack = ViewState.activeStack(viewState);
     stack.splice(pointer + 1, stack.length - 1, newState);
-    ViewState.activePartView(State.view()).stackPointer = ++pointer;
+    ViewState.activePartView(viewState).stackPointer = ++pointer;
   }
 
   return newSongState;

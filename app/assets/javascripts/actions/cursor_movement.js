@@ -12,47 +12,47 @@ function moveCursor(viewState, attrs) {
 
 CursorMovement.moveCursor = moveCursor;
 
-CursorMovement.moveDown = function(viewState, number) {
+CursorMovement.moveDown = function(viewState, _, number) {
   var pitches = number || 1;
   var cursor = ViewState.activeCursor(viewState);
   moveCursor(viewState, {pitch: cursor['pitch'] - pitches});
   return viewState;
 }
 
-CursorMovement.moveUp = function(viewState, number) {
+CursorMovement.moveUp = function(viewState, _, number) {
   var pitches = number || 1
   var cursor = ViewState.activeCursor(viewState);
   moveCursor(viewState, {pitch: cursor['pitch'] + pitches})
   return viewState;
 }
 
-CursorMovement.moveRight = function(viewState, number) {
+CursorMovement.moveRight = function(viewState, _, number) {
   var beats = number || 1
   var cursor = ViewState.activeCursor(viewState);
   moveCursor(viewState, {start: cursor['start'] + (96 * beats)})
   return viewState;
 }
 
-CursorMovement.moveLeft = function(viewState, number) {
+CursorMovement.moveLeft = function(viewState, _, number) {
   var beats = number || 1
   var cursor = ViewState.activeCursor(viewState);
   moveCursor(viewState, {start: cursor['start'] - (96 * beats)})
   return viewState;
 }
 
-CursorMovement.ensureCursorInBounds = function(viewState) {
+CursorMovement.ensureCursorInBounds = function(viewState, songState) {
   var cursor = ViewState.activeCursor(viewState);
-  var numberOfBeatsInPart = SongState.activePart(State.song()).beats * 96
+  var numberOfBeatsInPart = SongState.activePart(songState).beats * 96;
 
   if (cursor.start >= numberOfBeatsInPart) {
-    moveCursor(viewState, {start: numberOfBeatsInPart})
+    moveCursor(viewState, {start: numberOfBeatsInPart});
   }
 
   return viewState;
 }
 
-CursorMovement.moveToNextNote = function(viewState) {
-  var notes = SongState.currentPartNotes(State.song());
+CursorMovement.moveToNextNote = function(viewState, songState) {
+  var notes = SongState.currentPartNotes(songState);
 
   var cursor = ViewState.activeCursor(viewState);
 
@@ -67,11 +67,12 @@ CursorMovement.moveToNextNote = function(viewState) {
     cursor['start'] = nextNote.start;
     cursor['pitch'] = nextNote.pitch;
   }
+
   return viewState;
 }
 
-CursorMovement.moveToPrevNote = function(viewState) {
-  var notes = SongState.currentPartNotes(State.song());
+CursorMovement.moveToPrevNote = function(viewState, songState) {
+  var notes = SongState.currentPartNotes(songState);
 
   const cursor = ViewState.activeCursor(viewState);
 
@@ -91,23 +92,23 @@ CursorMovement.moveToPrevNote = function(viewState) {
   return viewState;
 }
 
-CursorMovement.moveToTop = function(viewState) {
+CursorMovement.moveToTop = function(viewState, _) {
   viewState = moveCursor(viewState, {pitch: 127});
   return viewState;
 }
 
-CursorMovement.moveToBottom = function(viewState) {
+CursorMovement.moveToBottom = function(viewState, _) {
   viewState = moveCursor(viewState, {pitch: 0});
   return viewState;
 }
 
-CursorMovement.moveToZero = function(viewState) {
+CursorMovement.moveToZero = function(viewState, _) {
   viewState = moveCursor(viewState, {start: 0});
   return viewState;
 }
 
-CursorMovement.moveToSelection = function(viewState) {
-  var notes = Selection.getSelectedNotes(State.song());
+CursorMovement.moveToSelection = function(viewState, songState) {
+  var notes = Selection.getSelectedNotes(songState);
 
   var sortedNotes = notes.concat().sort(function(a, b) { return a.pitch - b.pitch });
   var noteToEmulate = sortedNotes[0];
@@ -119,8 +120,8 @@ CursorMovement.moveToSelection = function(viewState) {
   return viewState;
 }
 
-CursorMovement.moveToEnd = function(viewState) {
-  var part = SongState.activePart(State.song());
+CursorMovement.moveToEnd = function(viewState, songState) {
+  var part = SongState.activePart(songState);
   viewState = moveCursor(viewState, {start: part.beats * 96});
   return viewState;
 }

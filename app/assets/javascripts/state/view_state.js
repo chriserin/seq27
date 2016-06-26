@@ -99,11 +99,11 @@ ViewState.activePartView = function(viewState) {
   return viewState.sections[as].parts[ap];
 }
 
-ViewState.activePointer = function(viewState) {
+ViewState.activePointer = function ap(viewState) {
   return ViewState.activePartView(viewState).stackPointer;
 }
 
-ViewState.activeStack = function(viewState) {
+ViewState.activeStack = function as(viewState) {
   return ViewState.activePartView(viewState).stack;
 }
 
@@ -193,7 +193,7 @@ ViewState.newSectionState = function(partsNumber) {
   return {parts: newPartsState};
 }
 
-ViewState.activeCursor = function(viewState){
+ViewState.activeCursor = function ac(viewState){
   return ViewState.activePartView(viewState).cursor;
 }
 

@@ -65,33 +65,33 @@ Play.createOffFn = function(channel, pitch, velocity, output, noteStartTime) {
   return offFn;
 }
 
-Play.makeEventsMapForActivePart = function(songState) {
+Play.makeEventsMapForActivePart = function(songState, viewState) {
   var bpm = songState.tempo;
   var secondsPerTick = 60 / (96.0 * bpm);
   var msPerTick = secondsPerTick * 1000;
-  var part = SongState.activePart(songState);
+  var part = SongState.activePart(songState, viewState);
   var maxTicks = part.beats * 96.0;
 
   var eventsMap = Play.createPartMap(part, msPerTick, 0, maxTicks);
   return eventsMap.sort(function(a, b) { return a[0] - b[0]});
 }
 
-Play.makeEventsMapForSelection = function(songState) {
+Play.makeEventsMapForSelection = function(songState, viewState) {
   var bpm = songState.tempo;
   var secondsPerTick = 60 / (96.0 * bpm);
   var msPerTick = secondsPerTick * 1000;
   var part = SongState.activePart(songState);
   var maxTicks = part.beats * 96.0;
 
-  var eventsMap = Play.createSelectionMap(SongState.activePart(songState), msPerTick, 0, maxTicks);
+  var eventsMap = Play.createSelectionMap(SongState.activePart(songState, viewState), msPerTick, 0, maxTicks);
   return eventsMap.sort(function(a, b) { return a[0] - b[0]});
 }
 
-Play.makeEventsMapForSection = function(songState) {
+Play.makeEventsMapForSection = function(songState, viewState) {
   var bpm = songState.tempo;
   var secondsPerTick = 60 / (96.0 * bpm);
   var msPerTick = secondsPerTick * 1000;
-  var section = SongState.activeSection(songState);
+  var section = SongState.activeSection(songState, viewState);
 
   var [eventsMap, _] = Play.createSectionMap(section, msPerTick, 0);
   return eventsMap.sort(function(a, b) { return a[0] - b[0]});
@@ -189,41 +189,41 @@ Play.createNotesMap = function(notes, msPerTick, loopOffset, fillOffset, channel
 }
 
 var intervalTask = null
-Play.play = function(songState) {
+Play.play = function(songState, viewState) {
   Play.PLAY_STATE = {isPlaying: true, activeNotes: []};
   var eventsMap = Play.makeEventsMap(songState);
 
-  Play.playEvents(eventsMap)
+  Play.playEvents(eventsMap);
 
   return songState;
 }
 
-Play.playPart = function(songState) {
+Play.playPart = function(songState, viewState) {
   Play.PLAY_STATE = {isPlaying: true, activeNotes: []};
 
-  var eventsMap = Play.makeEventsMapForActivePart(songState)
+  var eventsMap = Play.makeEventsMapForActivePart(songState, viewState);
 
-  Play.playEvents(eventsMap)
+  Play.playEvents(eventsMap);
 
   return songState;
 }
 
-Play.playSelection = function(songState) {
+Play.playSelection = function(songState, viewState) {
   Play.PLAY_STATE = {isPlaying: true, activeNotes: []};
 
-  var eventsMap = Play.makeEventsMapForSelection(songState)
+  var eventsMap = Play.makeEventsMapForSelection(songState, viewState);
 
-  Play.playEvents(eventsMap)
+  Play.playEvents(eventsMap);
 
   return songState;
 }
 
-Play.playSection = function(songState) {
+Play.playSection = function(songState, viewState) {
   Play.PLAY_STATE = {isPlaying: true, activeNotes: []};
 
-  var eventsMap = Play.makeEventsMapForSection(songState)
+  var eventsMap = Play.makeEventsMapForSection(songState, viewState);
 
-  Play.playEvents(eventsMap)
+  Play.playEvents(eventsMap);
 
   return songState;
 }
@@ -243,8 +243,8 @@ var removeNote = function(note) {
   var index = Play.PLAY_STATE.activeNotes.indexOf(note);
 
   if (index > -1) {
-    delete Play.PLAY_STATE.activeNotes[index]
-    Play.PLAY_STATE.activeNotes = Play.PLAY_STATE.activeNotes.filter(Boolean)
+    delete Play.PLAY_STATE.activeNotes[index];
+    Play.PLAY_STATE.activeNotes = Play.PLAY_STATE.activeNotes.filter(Boolean);
   }
 
   return Play.PLAY_STATE.activeNotes;
@@ -275,7 +275,7 @@ var scheduleNotes = function(startOffset, eventsMap, songStart) {
       scheduleFnStack.push(function() { scheduleNotes(startOffset + JUST_IN_TIME_INCREMENT, eventsMap, songStart); });
     }
   } else {
-    clearInterval(intervalTask)
+    clearInterval(intervalTask);
     Play.PLAY_STATE = {isPlaying: false, activeNotes: []};
   }
 }

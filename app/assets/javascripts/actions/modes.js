@@ -10,7 +10,7 @@ Modes.normalMode = function (viewState) {
   return viewState;
 };
 
-Modes.endVisualMode = function (viewState) {
+Modes.endVisualMode = function evm(viewState) {
   viewState["mode"] = 'normal';
   ViewState.activePartView(viewState).visuallySelectedNotes = null;
   return viewState;
@@ -21,10 +21,10 @@ Modes.endSelectingMode = function (viewState) {
   return viewState;
 };
 
-Modes.visualMode = function (viewState) {
+Modes.visualMode = function vm(viewState, songState) {
   viewState['anchorCursor'] = JSON.parse(JSON.stringify(ViewState.activeCursor(viewState)));
   viewState["mode"] = 'visual';
-  ViewState.activePartView(viewState).visuallySelectedNotes = ViewState.selectedNotes(State.view(), State.song());
+  ViewState.activePartView(viewState).visuallySelectedNotes = ViewState.selectedNotes(viewState, songState);
   return viewState;
 };
 

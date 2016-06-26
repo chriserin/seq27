@@ -1,7 +1,7 @@
 window.Panic = {}
 
-Panic.panic = function(viewState) {
-  var activePart = SongState.activePart(State.song());
+Panic.panic = function(viewState, songState) {
+  var activePart = SongState.activePart(songState, viewState);
   var channel = activePart.channel;
   var output = activePart.output;
 

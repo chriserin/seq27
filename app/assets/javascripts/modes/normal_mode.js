@@ -39,12 +39,12 @@ function addNumberArgument(node) {
     numberedNode = function(state) {return node(state, number); }
     return numberedNode;
   } else {
-    var songFn = function(state) {return node[0](state, number); };
-    var viewFn = function(state) {return node[1](state, number); };
-    songFn.prototype = node[0].prototype
-    viewFn.prototype = node[1].prototype
+    var songFn = function(songState, viewState) {return node[0](songState, viewState, number); };
+    var viewFn = function(viewState, songState) {return node[1](viewState, songState, number); };
+    songFn.prototype = node[0].prototype;
+    viewFn.prototype = node[1].prototype;
 
-    return [songFn, viewFn]
+    return [songFn, viewFn];
   }
 }
 
@@ -54,12 +54,12 @@ function captureNumber(possibleNumber) {
   if(isNaN(parsedNumber)) {
     return false;
   } else if (parseInt(NormalMode["number"] + possibleNumber) > 0) {
-    NormalMode["number"] += possibleNumber
-    NormalMode["totalSequence"] += possibleNumber
+    NormalMode["number"] += possibleNumber;
+    NormalMode["totalSequence"] += possibleNumber;
     return true;
   }
 
-  return false
+  return false;
 }
 
 function currentNode(character) {
@@ -98,7 +98,7 @@ function currentNode(character) {
     "e": 64,
     "d": 62,
     "c": 60
-  }
+  };
 
   topNode["m"] = moveNodes();
   topNode["t"] = toUpNodes();
@@ -126,7 +126,7 @@ function currentNode(character) {
 
 function moveNodes() {
   function createMoveNoteFn(midiPitch) {
-    return function(state, number) { return Move.toMiddleNote(state, midiPitch, number); };
+    return function(state, songState, number) { return Move.toMiddleNote(state, midiPitch, number); };
   }
 
   nodes = {};
@@ -191,8 +191,8 @@ function adjustMovementNodes() {
 
 function quarterMovementNodes() {
   var nodes = {
-    "H": [function (songState, number){ return Move.moveSelectionLeft(songState, number, 24) }, Modes.endSelectingMode],
-    "L": [function (songState, number){ return Move.moveSelectionRight(songState, number, 24) }, Modes.endSelectingMode]
+    "H": [function (songState, _, number){ return Move.moveSelectionLeft(songState, _, number, 24) }, Modes.endSelectingMode],
+    "L": [function (songState, _, number){ return Move.moveSelectionRight(songState, _, number, 24) }, Modes.endSelectingMode]
   }
 
   return nodes;
@@ -200,8 +200,8 @@ function quarterMovementNodes() {
 
 function thirdMovementNodes() {
   var nodes = {
-    "H": [function (songState, number){ return Move.moveSelectionLeft(songState, number, 32) }, Modes.endSelectingMode],
-    "L": [function (songState, number){ return Move.moveSelectionRight(songState, number, 32) }, Modes.endSelectingMode]
+    "H": [function (songState, _, number){ return Move.moveSelectionLeft(songState, _, number, 32) }, Modes.endSelectingMode],
+    "L": [function (songState, _, number){ return Move.moveSelectionRight(songState, _, number, 32) }, Modes.endSelectingMode]
   }
 
   return nodes;

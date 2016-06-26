@@ -1,15 +1,15 @@
 window.Rhythm = {}
 
-Rhythm.applySpacing = function(songState, spacing) {
+Rhythm.applySpacing = function(songState, viewState, spacing) {
 
-  const notes = Selection.getSelectedNotes(songState).slice(0)
-  const sortedNotes = notes.sort(function(a, b) { return a.start - b.start})
+  const notes = Selection.getSelectedNotes(songState).slice(0);
+  const sortedNotes = notes.sort(function(a, b) { return a.start - b.start});
 
-  const startAnchor = sortedNotes[0].start
+  const startAnchor = sortedNotes[0].start;
 
   function nextSpace(originalSpacing, spacingIndex=0) {
-    const remainingSpacing = originalSpacing.slice(spacingIndex)
-    const nextX = remainingSpacing.indexOf('x')
+    const remainingSpacing = originalSpacing.slice(spacingIndex);
+    const nextX = remainingSpacing.indexOf('x');
 
     let start = spacingIndex;
 
@@ -22,11 +22,11 @@ Rhythm.applySpacing = function(songState, spacing) {
     } else if (nextX === -1) {
       wrappedX = originalSpacing.indexOf('x');
       if (wrappedX === 0) {
-        start = 0
-        nextSpacingIndex = 0
+        start = 0;
+        nextSpacingIndex = 0;
       } else {
-        start = 0
-        nextSpacingIndex = wrappedX
+        start = 0;
+        nextSpacingIndex = wrappedX;
       }
       trailingDescription = remainingSpacing;
     }
@@ -55,9 +55,9 @@ Rhythm.applySpacing = function(songState, spacing) {
   return songState;
 }
 
-Rhythm.applyDurations = function(songState, durations) {
-  const notes = Selection.getSelectedNotes(songState).slice(0)
-  const sortedNotes = notes.sort(function(a, b) { return a.start - b.start})
+Rhythm.applyDurations = function(songState, viewState, durations) {
+  const notes = Selection.getSelectedNotes(songState).slice(0);
+  const sortedNotes = notes.sort(function(a, b) { return a.start - b.start});
   const splitDurations = durations.split(',');
 
   function applyDurationToNextNote(sortedNotes, durations, durationIndex=0) {

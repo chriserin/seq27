@@ -1,13 +1,13 @@
 window.Report = {}
 
-Report.outputs = function(viewState) {
+Report.outputs = function(viewState, _) {
   viewState.delayedAction = function(state) { state.reportItems = null; state.reportTitle = ''; return state;}
   viewState.reportItems = Midi.outputNames()
   viewState.reportTitle = ':outputs'
   return viewState
 }
 
-Report.nodeMap = function(viewState) {
+Report.nodeMap = function(viewState, _) {
   viewState.delayedAction = function(state) { state.reportItems = null; state.reportTitle = ''; return state;}
   viewState.reportItems = Object.keys(currentNode()).sort()
   viewState.reportTitle = ':map'

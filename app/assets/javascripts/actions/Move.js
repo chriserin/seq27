@@ -30,13 +30,13 @@ Move.upToNote = function(viewState, note) {
   else
     tmpPitch = cursor['pitch'] + (noteDiff - currentNoteDiff) + 12;
 
-  viewState = CursorMovement.moveCursor(viewState, {pitch: tmpPitch})
+  viewState = CursorMovement.moveCursor(viewState, {pitch: tmpPitch});
   return viewState;
 }
 
 Move.downToNote = function(viewState, note) {
   const noteDiff = note % 12;
-  const cursor = ViewState.activeCursor(viewState)
+  const cursor = ViewState.activeCursor(viewState);
   const currentNoteDiff = cursor['pitch'] % 12;
 
   let tmpPitch = null;
@@ -46,99 +46,99 @@ Move.downToNote = function(viewState, note) {
   else
     tmpPitch = cursor['pitch'] + (noteDiff - currentNoteDiff);
 
-  viewState = CursorMovement.moveCursor(viewState, {pitch: tmpPitch})
+  viewState = CursorMovement.moveCursor(viewState, {pitch: tmpPitch});
 
   return viewState;
 }
 
-Move.moveSelectionDown = function(songState, number) {
+Move.moveSelectionDown = function(songState, viewState, number) {
+  var pitches = number || 1;
+  var notes = Selection.getSelectedNotes(songState);
+
+  for (var note of notes) {
+    note.pitch -= pitches;
+  }
+
+  return songState;
+}
+
+Move.moveSelectionUp = function(songState, viewState, number) {
   var pitches = number || 1
-  var notes = Selection.getSelectedNotes(songState)
+  var notes = Selection.getSelectedNotes(songState);
 
   for (var note of notes) {
-    note.pitch -= pitches
+    note.pitch += pitches;
   }
 
-  return songState
+  return songState;
 }
 
-Move.moveSelectionUp = function(songState, number) {
-  var pitches = number || 1
-  var notes = Selection.getSelectedNotes(songState)
+Move.moveSelectionLeft = function(songState, viewState, number, tickUnitLength) {
+  var tickUnitLength = tickUnitLength || 96;
+  var ticks = (number * tickUnitLength) || tickUnitLength;
+  var notes = Selection.getSelectedNotes(songState);
 
   for (var note of notes) {
-    note.pitch += pitches
+    note.start -= ticks;
   }
 
-  return songState
+  return songState;
 }
 
-Move.moveSelectionLeft = function(songState, number, tickUnitLength) {
-  var tickUnitLength = tickUnitLength || 96
-  var ticks = (number * tickUnitLength) || tickUnitLength
-  var notes = Selection.getSelectedNotes(songState)
+Move.moveSelectionRight = function(songState, viewState, number, tickUnitLength) {
+  var tickUnitLength = tickUnitLength || 96;
+  var ticks = (number * tickUnitLength) || tickUnitLength;
+  var notes = Selection.getSelectedNotes(songState);
 
   for (var note of notes) {
-    note.start -= ticks
+    note.start += ticks;
   }
 
-  return songState
+  return songState;
 }
 
-Move.moveSelectionRight = function(songState, number, tickUnitLength) {
-  var tickUnitLength = tickUnitLength || 96
-  var ticks = (number * tickUnitLength) || tickUnitLength
-  var notes = Selection.getSelectedNotes(songState)
+Move.moveSelectionSlightlyLeft = function(songState, _, number) {
+  var ticks = (number) || 48;
+  var notes = Selection.getSelectedNotes(songState);
 
   for (var note of notes) {
-    note.start += ticks
+    note.start -= ticks;
   }
 
-  return songState
+  return songState;
 }
 
-Move.moveSelectionSlightlyLeft = function(songState, number) {
-  var ticks = (number) || 48
-  var notes = Selection.getSelectedNotes(songState)
+Move.moveSelectionSlightlyRight = function(songState, _, number) {
+  var ticks = (number) || 48;
+  var notes = Selection.getSelectedNotes(songState);
 
   for (var note of notes) {
-    note.start -= ticks
+    note.start += ticks;
   }
 
-  return songState
+  return songState;
 }
 
-Move.moveSelectionSlightlyRight = function(songState, number) {
-  var ticks = (number) || 48
-  var notes = Selection.getSelectedNotes(songState)
+Move.moveSelectionToRightBeat = function(songState, _) {
+  var notes = Selection.getSelectedNotes(songState);
 
   for (var note of notes) {
-    note.start += ticks
+    var currentStart = note.start;
+    var rightBeat = (96 - (currentStart % 96)) + currentStart;
+    note.start = rightBeat;
   }
 
-  return songState
+  return songState;
 }
 
-Move.moveSelectionToRightBeat = function(songState) {
-  var notes = Selection.getSelectedNotes(songState)
+Move.moveSelectionToLeftBeat = function(songState, _) {
+  var notes = Selection.getSelectedNotes(songState);
 
   for (var note of notes) {
-    var currentStart = note.start
-    var rightBeat = (96 - (currentStart % 96)) + currentStart
-    note.start = rightBeat
+    var currentStart = note.start;
+    var leftBeat = currentStart - (currentStart % 96);
+    note.start = leftBeat;
   }
 
-  return songState
-}
-
-Move.moveSelectionToLeftBeat = function(songState) {
-  var notes = Selection.getSelectedNotes(songState)
-
-  for (var note of notes) {
-    var currentStart = note.start
-    var leftBeat = currentStart - (currentStart % 96)
-    note.start = leftBeat
-  }
-
-  return songState
+  return songState;
 }

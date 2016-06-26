@@ -46,15 +46,15 @@ SongState.arrangedSections = function(songState) {
 }
 
 SongState.activeArrangementIndex = function(songState) {
-  var sectionId = ViewState.activeSection
+  var sectionId = ViewState.activeSection;
 
-  return songState.arrangement.findIndex(function(arrangementSectionId) {return arrangementSectionId === sectionId})
+  return songState.arrangement.findIndex(function(arrangementSectionId) {return arrangementSectionId === sectionId});
 }
 
 SongState.currentGroupNotes = function(songState) {
 
   var tag = ViewState.selectedTag(State.view());
-  var results = SongState.activePart(songState).notes.filter(function(note){ return note.timestamp === tag})
+  var results = SongState.activePart(songState).notes.filter(function(note){ return note.timestamp === tag});
 
   return results;
 }

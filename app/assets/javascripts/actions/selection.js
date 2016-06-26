@@ -1,7 +1,7 @@
 window.Selection = {}
 
-Selection.getSelectedNotes = function(songState) {
-  var notes = null
+Selection.getSelectedNotes = function gsn(songState) {
+  var notes = null;
 
   if(ViewState.activePartView(State.view()).visuallySelectedNotes) {
      notes = ViewState.activePartView(State.view()).visuallySelectedNotes;
@@ -9,5 +9,5 @@ Selection.getSelectedNotes = function(songState) {
      notes = SongState.currentGroupNotes(songState);
   }
 
-  return notes
+  return notes;
 }

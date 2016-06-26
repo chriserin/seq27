@@ -1,8 +1,8 @@
 window.Copy = {}
 
-Copy.yank = function(viewState) {
+Copy.yank = function(viewState, songState) {
 
-  var selectedNotes = Selection.getSelectedNotes(State.song());
+  var selectedNotes = Selection.getSelectedNotes(songState);
 
   var yankedNotes = _.cloneDeep(selectedNotes);
 
@@ -17,15 +17,15 @@ Copy.yank = function(viewState) {
     note.pitch = note.pitch - rootNote.pitch;
   })
 
-  viewState.yankedNotes = yankedNotes
+  viewState.yankedNotes = yankedNotes;
 
-  return viewState
+  return viewState;
 }
 
-Copy.paste = function(songState) {
-  var cursor = ViewState.activeCursor(State.view())
+Copy.paste = function(songState, viewState) {
+  const cursor = ViewState.activeCursor(viewState);
 
-  var notesForPasting = _.cloneDeep(ViewState.yankedNotes)
+  const notesForPasting = _.cloneDeep(ViewState.yankedNotes);
 
   notesForPasting.forEach(function(note) {
     note.start = cursor.start + note.start;
@@ -34,9 +34,9 @@ Copy.paste = function(songState) {
 
   SongState.tagNotes(notesForPasting);
 
-  var partNotes = SongState.activePart(songState).notes;
+  let partNotes = SongState.activePart(songState, viewState).notes;
   partNotes = partNotes.concat(notesForPasting);
-  SongState.activePart(songState).notes = partNotes;
+  SongState.activePart(songState, viewState).notes = partNotes;
 
   return songState;
 }

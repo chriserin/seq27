@@ -1,21 +1,21 @@
 window.Chord = {}
 
-Chord.major = function(songState) {
-  var activePart = SongState.activePart(songState);
-  var part = createChord([0,4,7], activePart);
+Chord.major = function(songState, viewState) {
+  var activePart = SongState.activePart(songState, viewState);
+  var part = createChord([0,4,7], activePart, viewState);
 
   return songState;
 }
 
-Chord.minor = function(songState) {
-  var activePart = SongState.activePart(songState);
-  var part = createChord([0,3,7], activePart);
+Chord.minor = function(songState, viewState) {
+  var activePart = SongState.activePart(songState, viewState);
+  var part = createChord([0,3,7], activePart, viewState);
 
   return songState;
 }
 
-var createChord = function(chordPattern, part) {
-  var cursor = ViewState.activeCursor(State.view());
+var createChord = function(chordPattern, part, viewState) {
+  var cursor = ViewState.activeCursor(viewState);
 
   var newNotes = chordPattern.map(function(interval) {
     return SongState.newNote(cursor.start, cursor.pitch + interval, 96);

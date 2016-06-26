@@ -1,10 +1,10 @@
-window.Velocity = {}
+window.Velocity = {};
 
-Velocity.applyVelocity = function(songState, velocityArg) {
+Velocity.applyVelocity = function(songState, viewState, velocityArg) {
 
-  const notes = Selection.getSelectedNotes(songState).slice(0)
-  const sortedNotes = notes.sort(function(a, b) { return a.start - b.start})
-  const velocities = velocityArg.split(',')
+  const notes = Selection.getSelectedNotes(songState).slice(0);
+  const sortedNotes = notes.sort(function(a, b) { return a.start - b.start});
+  const velocities = velocityArg.split(',');
 
   function applyVelocityToNextNote(sortedNotes, velocities, velocityIndex=0) {
 

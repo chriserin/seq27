@@ -73,13 +73,13 @@ CommandMode.executionMethods = function() {
     commandFns = [NOOP, function(viewState) {return SeqError.notACommand(viewState, command);}];
   }
 
-  var songStateFn = function (songState) {
-    return commandFns[0](songState, ...(words.slice(1)));
+  var songStateFn = function (songState, viewState) {
+    return commandFns[0](songState, viewState, ...(words.slice(1)));
   }
 
-  var viewStateFn = function (viewState) {
+  var viewStateFn = function (viewState, songState) {
     viewState.delayedAction = function(state) { state.commandResult = ''; return state};
-    var state = commandFns[1](viewState, ...(words.slice(1)));
+    var state = commandFns[1](viewState, songState, ...(words.slice(1)));
     state = Modes.transitionToNextMode(state);
     state = recordCommandBuffer(state);
     return clearCommandBuffer(state);

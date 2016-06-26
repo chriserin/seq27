@@ -1,11 +1,11 @@
 window.Arpeggio = {}
 
-Arpeggio.create = function(songState) {
-  let part = SongState.activePart(songState);
+Arpeggio.create = function(songState, viewState) {
+  let part = SongState.activePart(songState, viewState);
 
-  const arpeggioPattern = createArpeggioPattern(arguments[1], arguments[2], arguments[3]);
+  const arpeggioPattern = createArpeggioPattern(arguments[2], arguments[3], arguments[4]);
 
-  part = createArpeggio(arpeggioPattern, part);
+  part = createArpeggio(viewState, arpeggioPattern, part);
 
   return songState;
 }
@@ -17,7 +17,7 @@ function createArpeggioPattern(scaleType='major', arpeggioNotesStr='123', groupP
 
   let intervals = [];
 
-  var groupPatternArray = groupPattern.split('')
+  var groupPatternArray = groupPattern.split('');
 
   for(let groupDir of groupPatternArray) {
     if (groupDir === 'u') {
@@ -31,7 +31,7 @@ function createArpeggioPattern(scaleType='major', arpeggioNotesStr='123', groupP
   return intervals;
 }
 
-function createArpeggio(arpeggioPattern, part) {
+function createArpeggio(viewState, arpeggioPattern, part) {
   var cursor = ViewState.activeCursor(viewState);
   var nextPosition = cursor.start
 

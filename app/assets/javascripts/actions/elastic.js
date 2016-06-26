@@ -1,6 +1,6 @@
 window.Elastic = {};
 
-Elastic.squeeze = function(songState) {
+Elastic.squeeze = function(songState, _) {
   const notes = Selection.getSelectedNotes(songState);
   const sortedNotes = notes.sort(function(a, b) { return a.start - b.start});
   const anchorStart = sortedNotes[0].start;
@@ -13,7 +13,7 @@ Elastic.squeeze = function(songState) {
   return songState;
 }
 
-Elastic.stretch = function(songState) {
+Elastic.stretch = function(songState, _) {
   const notes = Selection.getSelectedNotes(songState);
   const sortedNotes = notes.sort(function(a, b) { return a.start - b.start});
   const anchorStart = sortedNotes[0].start;
@@ -26,7 +26,7 @@ Elastic.stretch = function(songState) {
   return songState;
 }
 
-Elastic.fill = function(songState) {
+Elastic.fill = function(songState, _) {
   const notes = Selection.getSelectedNotes(songState);
   const sortedNotes = notes.sort(function(a, b) { return a.start - b.start});
   const anchorStart = sortedNotes[0].start;
@@ -39,7 +39,7 @@ Elastic.fill = function(songState) {
   return songState;
 }
 
-Elastic.compact = function(songState) {
+Elastic.compact = function(songState, _) {
   const notes = Selection.getSelectedNotes(songState);
   const sortedNotes = notes.sort(function(a, b) { return a.start - b.start});
   const anchorStart = sortedNotes[0].start;
