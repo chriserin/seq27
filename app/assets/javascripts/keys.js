@@ -48,7 +48,7 @@ function processKey(key) {
   SONG_STATE = savePartState(songFn, SONG_STATE, VIEW_STATE);
   VIEW_STATE = viewFn(delayedAction(VIEW_STATE), SONG_STATE);
 
-  window.SONG_VIEW.forceUpdate();
+  window.SONG_VIEW.replaceState({song: SONG_STATE, view: VIEW_STATE});
 }
 
 function savePartState(songFn, songState, viewState) {

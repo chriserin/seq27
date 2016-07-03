@@ -29,7 +29,7 @@ SongState.activePart = function(songState) {
   return part;
 }
 
-SongState.notesForActivePart = function(songState) {
+SongState.notesForActivePart = function nfap(songState) {
   var part = SongState.activePart(songState);
 
   return part.notes.filter(function(note) {
@@ -71,7 +71,7 @@ SongState.latestTag = function(songState, part) {
   }
 }
 
-SongState.activePartTags = function(songState) {
+SongState.activePartTags = function apt(songState) {
   var notes = SongState.activePart(songState).notes;
 
   var uniqueSortedTags = notes.map(function(n) {return n.timestamp}).filter(function (e, i, arr) {
@@ -81,7 +81,7 @@ SongState.activePartTags = function(songState) {
   return uniqueSortedTags;
 }
 
-SongState.currentPartNotes = function(songState) {
+SongState.currentPartNotes = function cpn(songState) {
   var activePart = SongState.activePart(songState);
   var sortedNotes = activePart.notes.sort(function(a, b) { if (a.start === b.start) {return b.pitch - a.pitch } else { return a.start - b.start};});
 

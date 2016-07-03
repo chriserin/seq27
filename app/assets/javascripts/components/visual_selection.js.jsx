@@ -1,5 +1,6 @@
 window.SeqCom = window.SeqCom || {}
 
+
 SeqCom.VisualSelection = React.createClass({
   styles() {
     return {
@@ -10,7 +11,7 @@ SeqCom.VisualSelection = React.createClass({
     }
   },
   render: function() {
-    if (ViewState.mode === 'visual') {
+    if (this.props.mode === 'visual') {
       return <visualSelection
                 data-left={this.props.left}
                 data-right={this.props.right}

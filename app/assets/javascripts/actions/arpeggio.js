@@ -33,7 +33,7 @@ function createArpeggioPattern(scaleType='major', arpeggioNotesStr='123', groupP
 
 function createArpeggio(viewState, arpeggioPattern, part) {
   var cursor = ViewState.activeCursor(viewState);
-  var nextPosition = cursor.start
+  var nextPosition = cursor.start;
 
   var noteLength = 96;
 

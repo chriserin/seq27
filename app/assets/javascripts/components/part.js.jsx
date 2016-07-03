@@ -1,28 +1,42 @@
 window.SeqCom = window.SeqCom || {}
 
 SeqCom.Song = React.createClass({
+  getInitialState: function () {
+    return this.props;
+  },
   render: function() {
-    var innerComponent = <SeqCom.Section/>
-    if (ViewState.mode === "explorer") {
-      innerComponent = <SeqCom.Explorer/>
-    }
     return <song>
-      {innerComponent}
-      <SeqCom.StatusLine/>
+      <SeqCom.Section view={this.state.view} song={this.state.song}/>
+      <SeqCom.StatusLine
+        name={ SONG_STATE.name }
+        section={ ViewState.activeSection }
+        part={ ViewState.activePart }
+        midiOutputName={ Midi.outputNames()[SongState.activePart(State.song()).output] }
+        midiOutput={ SongState.activePart(State.song()).output }
+        channel={ SongState.activePart(State.song()).channel }
+        cursor={ ViewState.activePartView(State.view()).cursor }
+        activePart={ SongState.activePart(State.song()) }
+        />
       <SeqCom.CommandLine/>
     </song>;
   }
 });
 
 SeqCom.Section = React.createClass({
+  view() {
+    return this.props.view;
+  },
+  song() {
+    return this.props.song;
+  },
   cursorTop() {
-    return (16 * (127 - ViewState.activePartView(State.view()).cursor.pitch))
+    return (16 * (127 - ViewState.activePartView(this.view()).cursor.pitch))
   },
   cursorLeft() {
-    return ((ViewState.activePartView(State.view()).cursor.start / 96.0) * 75) + 60
+    return ((ViewState.activePartView(this.view()).cursor.start / 96.0) * 75) + 60
   },
   componentDidMount() {
-    ReactDOM.findDOMNode(this.refs.grids).scrollTop = (16 * (127 - (ViewState.activePartView(State.view()).cursor.pitch + 15)))
+    ReactDOM.findDOMNode(this.refs.grids).scrollTop = (16 * (127 - (ViewState.activeCursor(this.view()).pitch + 15)))
   },
   componentDidUpdate() {
     var elem = ReactDOM.findDOMNode(this.refs.grids)
@@ -66,13 +80,21 @@ SeqCom.Section = React.createClass({
     }
   },
   render: function() {
-    var notes = SongState.notesForActivePart(State.song());
-    var part = SongState.activePart(State.song());
-    var parts_html = <SeqCom.Part notes={notes} partId={ViewState.activePart}/>;
+    var notes = SongState.notesForActivePart(this.song());
+    var part = SongState.activePart(this.song());
+
+    var parts_html = (
+      <SeqCom.Part
+        notes={notes}
+        partId={ViewState.activePart}
+        visuallySelectedNotes={ViewState.activePartView(this.view()).visuallySelectedNotes}
+        selectedTag={ViewState.selectedTag(this.view())}
+      />
+    );
 
     return <grids ref='grids' data-section-id={ViewState.activeSection}>
       <SeqCom.PitchGrid beats={part.beats}/>
-      <SeqCom.CursorGrid/>
+      <SeqCom.CursorGrid selection={ViewState.selection(this.view())} cursor={ViewState.activeCursor(this.view())}/>
       {parts_html}
     </grids>;
   }
@@ -87,7 +109,7 @@ SeqCom.PitchGrid = React.createClass({
       }
       return <beat key={i}>{beatNumber}</beat>
     })
-    return beatsArray
+    return beatsArray;
   },
   renderPitches() {
     return Array.from(Array(128).keys()).reverse().map((i)=>{
@@ -98,12 +120,14 @@ SeqCom.PitchGrid = React.createClass({
     })
   },
   classes(number) {
-    return `${Piano.sharpForNumber(number)} ${Piano.cPitch(number)} ${Piano.octave(number)}`
+    return `${Piano.sharpForNumber(number)} ${Piano.cPitch(number)} ${Piano.octave(number)}`;
   },
   render() {
-    return <pitchGrid>
-      {this.renderPitches()}
-    </pitchGrid>
+    return (
+      <pitchGrid>
+        {this.renderPitches()}
+      </pitchGrid>
+    );
   }
 })
 
@@ -115,8 +139,9 @@ SeqCom.CursorGrid = React.createClass({
     }
   },
   render() {
-    var selection = ViewState.selection(State.view())
-    var cursor = ViewState.activePartView(State.view()).cursor
+    var selection = this.props.selection;
+    var cursor = this.props.cursor;
+
     return <cursorGrid>
       <cursor
         style={this.cursorPosition(cursor)}
@@ -124,7 +149,13 @@ SeqCom.CursorGrid = React.createClass({
         data-pitch={cursor['pitch']}
         data-length={cursor['length']}
       />
-      <SeqCom.VisualSelection left={selection.left} right={selection.right} top={selection.top} bottom={selection.bottom}/>
+      <SeqCom.VisualSelection
+        mode={ViewState.mode}
+        left={selection.left}
+        right={selection.right}
+        top={selection.top}
+        bottom={selection.bottom}
+      />
     </cursorGrid>
   }
 })
@@ -138,8 +169,9 @@ SeqCom.Part = React.createClass({
     }
   },
   classes(note) {
-    var visualNotes = ViewState.activePartView(State.view()).visuallySelectedNotes
-    if(!visualNotes && note.timestamp === ViewState.selectedTag(State.view())) {
+    var visualNotes = this.props.visuallySelectedNotes;
+
+    if(!visualNotes && note.timestamp === this.props.selectedTag) {
       return 'groupSelected'
     }
 
@@ -148,18 +180,20 @@ SeqCom.Part = React.createClass({
     }
   },
   render: function() {
-    var notes = this.props.notes
+    var notes = this.props.notes;
 
     var notes_html = notes.map((note, i)=> {
-      return <note
-        key={i}
-        style={this.notePosition(note)}
-        className={this.classes(note)}
-        data-start={note.start}
-        data-pitch={note.pitch}
-        data-length={note.length}
-        data-velocity={note.velocity}
-      />;
+      return (
+        <note
+          key={i}
+          style={this.notePosition(note)}
+          className={this.classes(note)}
+          data-start={note.start}
+          data-pitch={note.pitch}
+          data-length={note.length}
+          data-velocity={note.velocity}
+        />
+      );
     })
 
     return <part data-part-id={this.props.partId}>
@@ -170,24 +204,24 @@ SeqCom.Part = React.createClass({
 
 SeqCom.StatusLine = React.createClass({
   render() {
-    let songName = SONG_STATE.name || 'seq27';
+    let songName = this.props.name || 'seq27';
 
     return <statusLine>
       <name>{songName}</name>
-      <name>sect { ViewState.activeSection }</name>
-      <name>part { ViewState.activePart }</name>
-      <div>output {Midi.outputNames()[SongState.activePart(State.song()).output]}({SongState.activePart(State.song()).output})</div>
-      <div>channel {SongState.activePart(State.song()).channel}</div>
+      <name>sect { this.props.section }</name>
+      <name>part { this.props.part }</name>
+      <div>output {this.props.midiOutputName}({this.props.midiOutput})</div>
+      <div>channel {this.props.channel}</div>
       <filler/>
-      <SeqCom.CursorPosition/>
+      <SeqCom.CursorPosition cursor={this.props.cursor} part={this.props.activePart}/>
     </statusLine>
   }
 })
 
 SeqCom.CursorPosition = React.createClass({
   render() {
-    var cursor = ViewState.activePartView(State.view()).cursor;
-    var part = SongState.activePart(State.song());
+    var cursor = this.props.cursor;
+    var part = this.props.part;
 
     return <cursorPosition>
       <span className='label'>pitch:</span>
