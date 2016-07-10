@@ -137,6 +137,7 @@ Then /^I hear the song with two notes$/ do
   off_message = packets.second
   note_length = off_message[:timestamp] - on_message[:timestamp]
 
+  puts "First note length"
   expect(note_length.round).to eq 9
 
   expect_midi_message(on_message, on = 9, 1, 64, 80)
@@ -146,6 +147,7 @@ Then /^I hear the song with two notes$/ do
   off_message = packets[3]
   note_length = off_message[:timestamp] - on_message[:timestamp]
 
+  puts "Second note length"
   expect(note_length.round).to eq 9
 
   expect_midi_message(on_message, on = 9, 1, 64, 80)

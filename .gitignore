@@ -7,3 +7,5 @@ db/schema.rb
 db/structure.sql
 .ansible_key
 config/application.yml
+public/assets/app.js
+web/node_modules

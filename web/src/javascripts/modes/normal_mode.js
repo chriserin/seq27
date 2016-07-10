@@ -20,7 +20,7 @@ NormalMode.push = function(character) {
     return [NOOP, NOOP];
   } else {
     //node is an end node
-    commandFns = addNumberArgument(node); //array of 2 functions or just 1 function
+    const commandFns = addNumberArgument(node); //array of 2 functions or just 1 function
     NormalMode["sequence"] = '';
     NormalMode["number"] = '';
     NormalMode["totalSequence"] = '';
@@ -33,14 +33,14 @@ function addNumberArgument(node) {
     return node;
   }
 
-  number = parseInt(NormalMode['number']);
+  const number = parseInt(NormalMode['number']);
 
   if (node.length === undefined) {
-    numberedNode = function(state) {return node(state, number); }
+    const numberedNode = function(state) {return node(state, number); }
     return numberedNode;
   } else {
-    var songFn = function(songState, viewState) {return node[0](songState, viewState, number); };
-    var viewFn = function(viewState, songState) {return node[1](viewState, songState, number); };
+    let songFn = function(songState, viewState) {return node[0](songState, viewState, number); };
+    let viewFn = function(viewState, songState) {return node[1](viewState, songState, number); };
     songFn.prototype = node[0].prototype;
     viewFn.prototype = node[1].prototype;
 
@@ -49,7 +49,7 @@ function addNumberArgument(node) {
 }
 
 function captureNumber(possibleNumber) {
-  parsedNumber = parseInt(possibleNumber);
+  const parsedNumber = parseInt(possibleNumber);
 
   if(isNaN(parsedNumber)) {
     return false;
@@ -63,7 +63,7 @@ function captureNumber(possibleNumber) {
 }
 
 function currentNode(character) {
-  topNode = {
+  const topNode = {
     "y": [NOOP, Copy.yank],
     "p": [Copy.paste, Groups.setSelectedTag],
     "o": [NOOP, Move.upOctave],
@@ -90,7 +90,7 @@ function currentNode(character) {
     "\r": [NOOP, Modes.endVisualMode]
   };
 
-  middleOctaveMidiPitches = {
+  const middleOctaveMidiPitches = {
     "b": 71,
     "a": 69,
     "g": 67,
@@ -100,9 +100,9 @@ function currentNode(character) {
     "c": 60
   };
 
-  topNode["m"] = moveNodes();
-  topNode["t"] = toUpNodes();
-  topNode["T"] = toDownNodes();
+  topNode["m"] = moveNodes(middleOctaveMidiPitches);
+  topNode["t"] = toUpNodes(middleOctaveMidiPitches);
+  topNode["T"] = toDownNodes(middleOctaveMidiPitches);
   topNode[">"] = lengthenNodes();
   topNode["<"] = shortenNodes();
   topNode["d"] = deleteNodes();
@@ -124,12 +124,12 @@ function currentNode(character) {
   }
 }
 
-function moveNodes() {
+function moveNodes(middleOctaveMidiPitches) {
   function createMoveNoteFn(midiPitch) {
     return function(state, songState, number) { return Move.toMiddleNote(state, midiPitch, number); };
   }
 
-  nodes = {};
+  const nodes = {};
   for(var note in middleOctaveMidiPitches) {
     var midiPitch = middleOctaveMidiPitches[note];
     nodes[note] = [NOOP, createMoveNoteFn(midiPitch)];
@@ -138,28 +138,28 @@ function moveNodes() {
   return nodes;
 }
 
-function toUpNodes() {
+function toUpNodes(middleOctaveMidiPitches) {
   function createToNoteFn(midiPitch) {
     return function(state, number) { return Move.upToNote(state, midiPitch); };
   }
 
-  nodes = {};
-  for(var note in middleOctaveMidiPitches) {
-    var midiPitch = middleOctaveMidiPitches[note];
+  const nodes = {};
+  for(let note in middleOctaveMidiPitches) {
+    let midiPitch = middleOctaveMidiPitches[note];
     nodes[note] = [NOOP, createToNoteFn(midiPitch)];
   }
 
   return nodes;
 }
 
-function toDownNodes() {
+function toDownNodes(middleOctaveMidiPitches) {
   function createToNoteFn(midiPitch) {
     return function(state, number) { return Move.downToNote(state, midiPitch); };
   }
 
-  nodes = {};
-  for(var note in middleOctaveMidiPitches) {
-    var midiPitch = middleOctaveMidiPitches[note];
+  const nodes = {};
+  for(let note in middleOctaveMidiPitches) {
+    let midiPitch = middleOctaveMidiPitches[note];
     nodes[note] = [NOOP, createToNoteFn(midiPitch)];
   }
 
@@ -167,21 +167,21 @@ function toDownNodes() {
 }
 
 function lengthenNodes() {
-  nodes = {
+  const nodes = {
     ">": [Note.doubleLength, NOOP]
   }
   return nodes;
 }
 
 function shortenNodes() {
-  nodes = {
+  const nodes = {
     "<": [Note.halveLength, NOOP]
   }
   return nodes;
 }
 
 function adjustMovementNodes() {
-  var nodes = {
+  const nodes = {
     "H": [Move.moveSelectionSlightlyLeft, Modes.endSelectingMode],
     "L": [Move.moveSelectionSlightlyRight, Modes.endSelectingMode]
   }
@@ -190,7 +190,7 @@ function adjustMovementNodes() {
 }
 
 function quarterMovementNodes() {
-  var nodes = {
+  const nodes = {
     "H": [function (songState, _, number){ return Move.moveSelectionLeft(songState, _, number, 24) }, Modes.endSelectingMode],
     "L": [function (songState, _, number){ return Move.moveSelectionRight(songState, _, number, 24) }, Modes.endSelectingMode]
   }
@@ -199,7 +199,7 @@ function quarterMovementNodes() {
 }
 
 function thirdMovementNodes() {
-  var nodes = {
+  const nodes = {
     "H": [function (songState, _, number){ return Move.moveSelectionLeft(songState, _, number, 32) }, Modes.endSelectingMode],
     "L": [function (songState, _, number){ return Move.moveSelectionRight(songState, _, number, 32) }, Modes.endSelectingMode]
   }
@@ -208,7 +208,7 @@ function thirdMovementNodes() {
 }
 
 function snapToBeatNodes() {
-  var nodes = {
+  const nodes = {
     "H": [Move.moveSelectionToLeftBeat, Modes.endSelectingMode],
     "L": [Move.moveSelectionToRightBeat, Modes.endSelectingMode]
   }
@@ -217,7 +217,7 @@ function snapToBeatNodes() {
 }
 
 function deleteNodes() {
-  var nodes = {
+  let nodes = {
     "d": [Delete.deleteLatest, Groups.selectPreviousGroup]
   }
 
@@ -229,7 +229,7 @@ function deleteNodes() {
 }
 
 function createNodes() {
-  var nodes = {
+  const nodes = {
     "n": [Song.addNote, Groups.setSelectedTag],
     "h": [Chord.major, Groups.setSelectedTag],
     "m": [Chord.minor, Groups.setSelectedTag]
@@ -238,32 +238,32 @@ function createNodes() {
 }
 
 function gotoNodes() {
-  var nodes = {
+  const nodes = {
     "g": [NOOP, CursorMovement.moveToTop]
   }
   return nodes;
 }
 
 function cycleLeftNodes() {
-  var nodes = {
+  const nodes = {
     "g": [NOOP, Groups.selectPreviousGroup]
   }
-  return nodes
+  return nodes;
 }
 
 function cycleRightNodes() {
-  var nodes = {
+  const nodes = {
     "g": [NOOP, Groups.selectNextGroup]
   }
-  return nodes
+  return nodes;
 }
 
 function playNodes() {
-  var nodes = {
+  const nodes = {
     "z": [Play.play, NOOP],
     "p": [Play.playPart, NOOP],
     "s": [Play.playSelection, NOOP],
     "S": [Play.playSection, NOOP]
   }
-  return nodes
+  return nodes;
 }

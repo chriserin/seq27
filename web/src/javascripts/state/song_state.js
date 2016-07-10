@@ -1,6 +1,6 @@
 window.SongState = {};
 
-INITIAL_SONG_STATE = {
+window.INITIAL_SONG_STATE = {
   name: null,
   tempo: 120,
   arrangement: [0],

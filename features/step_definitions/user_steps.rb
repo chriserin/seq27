@@ -58,5 +58,5 @@ When(/^I raise an error$/) do
 end
 
 Then(/^I see a message with file name and line number$/) do
-  expect(get_logs_from_browser.first).to include "testing:4 Uncaught throwing test error"
+  expect(get_logs_from_browser.first).to include "Uncaught throwing test error"
 end

@@ -20,7 +20,7 @@ Song.addNote = function(songState, viewState, number) {
   return songState;
 }
 
-Song.newSong = function(_, _) {
+Song.newSong = function(_s, _v) {
   return JSON.parse(JSON.stringify(INITIAL_SONG_STATE));
 }
 

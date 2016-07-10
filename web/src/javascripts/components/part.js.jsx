@@ -233,3 +233,5 @@ SeqCom.CursorPosition = React.createClass({
     </cursorPosition>
   }
 })
+
+export {};

@@ -75,7 +75,7 @@ describe "Midi", type: :feature do
     visit '/js_spec'
     midi_connect
 
-    page.evaluate_script("Midi.sendOff(1, 80, 80)")
+    page.evaluate_script("Midi.sendOff(1, 80, 80);")
 
     messages = get_packets(1)
 

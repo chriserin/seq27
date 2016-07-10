@@ -20,7 +20,8 @@ Rhythm.applySpacing = function(songState, viewState, spacing) {
     if (nextX === 0) {
       return {ticks: 0, spacingIndex: spacingIndex + 1};
     } else if (nextX === -1) {
-      wrappedX = originalSpacing.indexOf('x');
+      const wrappedX = originalSpacing.indexOf('x');
+
       if (wrappedX === 0) {
         start = 0;
         nextSpacingIndex = 0;
@@ -42,6 +43,8 @@ Rhythm.applySpacing = function(songState, viewState, spacing) {
 
     let nextNote = sortedNotes.shift();
     if (nextNote) {
+      let ticks = null;
+      let nextSpacingIndex = null;
       ({ ticks, spacingIndex: nextSpacingIndex } = nextSpace(spacing, spacingIndex));
       nextNote.start = ticksCursor + ticks;
       return applySpacingToNextNote(sortedNotes, spacing, nextNote.start, nextSpacingIndex);

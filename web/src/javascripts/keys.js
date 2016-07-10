@@ -39,6 +39,16 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 )
 
+document.addEventListener("DOMContentLoaded", function () {
+  if (window.song) {
+    Midi.connect();
+    window.SONG_STATE = Song.newSong();
+    window.VIEW_STATE = ViewState.init(SONG_STATE);
+    var view = React.createElement(SeqCom.Song, {song: SONG_STATE, view: VIEW_STATE});
+    window.SONG_VIEW = ReactDOM.render(view, window.song);
+  }
+});
+
 function processKey(key) {
   var fnArray = getFunctionsFor(key);
 
@@ -81,8 +91,8 @@ function savePartState(songFn, songState, viewState) {
 
 function delayedAction(viewState) {
   if (viewState.delayedAction) {
-    viewState.delayedAction(viewState)
-    viewState.delayedAction = null
+    viewState.delayedAction(viewState);
+    viewState.delayedAction = null;
   }
   return viewState;
 }

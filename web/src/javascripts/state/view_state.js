@@ -1,4 +1,4 @@
-INITIAL_VIEW_STATE = {
+window.INITIAL_VIEW_STATE = {
   mode: 'normal',
   yankedNotes: [],
   anchorCursor: {
@@ -45,7 +45,7 @@ ViewState.init = function(songState) {
   let viewState = JSON.parse(JSON.stringify(INITIAL_VIEW_STATE));
 
   for (var stateKey in viewState) {
-    viewState = defineProp(viewState, stateKey);
+    defineProp(viewState, stateKey);
   }
 
   for(var i = 0; i < songState.sections.length; i++) {
@@ -63,14 +63,14 @@ ViewState.initSection = function(viewState, sectionNumber) {
 }
 
 ViewState.initPartViewForSection = function(viewState, sectionNumber) {
-  for(var j = 0; j < State.song().sections[sectionNumber].parts.length; j++) {
-    var partView = viewState.sections[sectionNumber].parts[j];
+  for(let j = 0; j < State.song().sections[sectionNumber].parts.length; j++) {
+    const partView = viewState.sections[sectionNumber].parts[j];
 
     if (typeof partView === 'undefined') {
-      var part = State.song().sections[sectionNumber].parts[j];
-      var newPartState = ViewState.newPartState();
+      let part = State.song().sections[sectionNumber].parts[j];
+      let newPartState = ViewState.newPartState();
       newPartState.selectedTag = SongState.latestTag(State.song(), part);
-      focusedNote = part.notes.find((note) => {return note.timestamp === newPartState.selectedTag; });
+      const focusedNote = part.notes.find((note) => {return note.timestamp === newPartState.selectedTag; });
 
       if (focusedNote) {
         newPartState.cursor = {start: focusedNote.start, pitch: focusedNote.pitch};
@@ -120,7 +120,7 @@ ViewState.setCursor = function(viewState, attrs) {
 }
 
 ViewState.setCursorPitch = function(viewState, pitch) {
-  partView = ViewState.activePartView(viewState);
+  const partView = ViewState.activePartView(viewState);
 
   if(pitch > 127) {
     partView.cursor['pitch'] = 127;
@@ -133,7 +133,7 @@ ViewState.setCursorPitch = function(viewState, pitch) {
 }
 
 ViewState.setCursorStart = function(viewState, start) {
-  partView = ViewState.activePartView(viewState);
+  const partView = ViewState.activePartView(viewState);
 
   if(start >= SongState.activePart(State.song()).beats * 96) {
     partView.cursor['start'] = (SongState.activePart(State.song()).beats * 96) - 96;

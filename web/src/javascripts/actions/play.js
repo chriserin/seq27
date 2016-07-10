@@ -38,7 +38,7 @@ Play.createOnFn = function(channel, pitch, velocity, output, offFn) {
   }
 }
 
-Play.createOffFn = function(channel, pitch, velocity, output, noteStartTime) {
+Play.createOffFn = function offFn(channel, pitch, velocity, output, noteStartTime) {
   var offFn = null
 
   var removeOffFunctionFn = function() {
@@ -56,8 +56,8 @@ Play.createOffFn = function(channel, pitch, velocity, output, noteStartTime) {
       offTime = Play.PLAY_STATE.songStart + noteStartTime + 1;
     }
 
-    Midi.sendOff(channel, pitch, velocity, offTime, output)
-    removeOffFunctionFn()
+    Midi.sendOff(channel, pitch, velocity, offTime, output);
+    removeOffFunctionFn();
   }
 
   offFn.fnName = `offFn for pitch ${pitch}`;
@@ -106,7 +106,7 @@ Play.makeEventsMap = function(songState) {
   var loopOffset = 0;
   var sections = songState.sections;
   var arrangement = songState.arrangement;
-  var section = null, part = null;
+  var section = null;
 
   for(var arrangementIndex = 0; section = sections[arrangement[arrangementIndex]]; arrangementIndex++) {
     var [sectionMap, loopOffset] = Play.createSectionMap(section, msPerTick, loopOffset);
@@ -119,6 +119,7 @@ Play.makeEventsMap = function(songState) {
 Play.createSectionMap = function(section, msPerTick, loopOffset) {
   var maxBeats = Play.maxBeatsForSection(section);
   var sectionMap = new Array();
+  let part = null;
 
   for(var loop = 0; loop < section.loop; loop++) {
     var maxTicks = loopOffset + (maxBeats * 96.0)
@@ -134,31 +135,29 @@ Play.createSectionMap = function(section, msPerTick, loopOffset) {
 }
 
 Play.createPartMap = function(part, msPerTick, loopOffset, maxTicks) {
-  var fillOffset = 0
-  var resultMap = []
+  var fillOffset = 0;
+  var resultMap = [];
 
   var sortedNotes = part.notes.sort(function(a, b){ return a.start - b.start})
   if (sortedNotes.length === 0) {
-    return []
+    return [];
   }
 
-  sectionFilled = sortedNotes.length === 0
-
   var startGreaterThanMaxTicksFn = function(event) {
-    return event[2] > maxTicks
+    return event[2] > maxTicks;
   }
 
   var startLessThanMaxTicksFn = function(event) {
-    return event[2] < maxTicks
+    return event[2] < maxTicks;
   }
 
   while(!resultMap.some(startGreaterThanMaxTicksFn)) {
-    resultMap = resultMap.concat(Play.createNotesMap(sortedNotes, msPerTick, loopOffset, fillOffset, part.channel || 1, part.output))
-    fillOffset += parseInt(part.beats || maxBeats)
+    resultMap = resultMap.concat(Play.createNotesMap(sortedNotes, msPerTick, loopOffset, fillOffset, part.channel || 1, part.output));
+    fillOffset += parseInt(part.beats || maxBeats);
   }
 
-  var nodes = resultMap.filter(startLessThanMaxTicksFn)
-  return nodes
+  var nodes = resultMap.filter(startLessThanMaxTicksFn);
+  return nodes;
 }
 
 Play.createSelectionMap = function(part, msPerTick, loopOffset, maxTicks) {
@@ -168,24 +167,24 @@ Play.createSelectionMap = function(part, msPerTick, loopOffset, maxTicks) {
 }
 
 Play.createNotesMap = function(notes, msPerTick, loopOffset, fillOffset, channel, output) {
-  var resultMap = []
+  var resultMap = [];
 
   for(var note of notes) {
-    var noteLengthInMillis = note.length * msPerTick
+    var noteLengthInMillis = note.length * msPerTick;
 
-    var startTicks = note.start + loopOffset + (fillOffset * 96.0)
+    var startTicks = note.start + loopOffset + (fillOffset * 96.0);
 
-    var start = startTicks * msPerTick
+    var start = startTicks * msPerTick;
 
-    var onTime = start
-    var offTime = start + noteLengthInMillis - 1
+    var onTime = start;
+    var offTime = start + noteLengthInMillis - 1;
 
-    var offFn = Play.createOffFn(channel, note.pitch, velocity = 80, output, onTime)
-    resultMap.push([onTime, Play.createOnFn(channel, note.pitch, note.velocity, output, offFn), startTicks])
-    resultMap.push([offTime, offFn, startTicks])
+    var offFn = Play.createOffFn(channel, note.pitch, 80, output, onTime);
+    resultMap.push([onTime, Play.createOnFn(channel, note.pitch, note.velocity, output, offFn), startTicks]);
+    resultMap.push([offTime, offFn, startTicks]);
   }
 
-  return resultMap
+  return resultMap;
 }
 
 var intervalTask = null
@@ -251,7 +250,7 @@ var removeNote = function(note) {
 }
 
 var scheduleFnStack = [];
-var JUST_IN_TIME_INCREMENT = 10;
+var JUST_IN_TIME_INCREMENT = 20;
 var scheduleNotes = function(startOffset, eventsMap, songStart) {
   var eventLimit = startOffset + 5;
 

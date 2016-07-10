@@ -1,7 +1,1 @@
 %section#song
-:javascript
-  Midi.connect();
-  window.SONG_STATE = Song.newSong();
-  window.VIEW_STATE = ViewState.init(SONG_STATE);
-  var view = React.createElement(SeqCom.Song, {song: SONG_STATE, view: VIEW_STATE});
-  window.SONG_VIEW = ReactDOM.render(view, window.song);
