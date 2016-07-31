@@ -31,7 +31,6 @@ require('./src/javascripts/actions/velocity.js')
 
 require('./src/javascripts/actions/velocity.js')
 require('./src/javascripts/application.js')
-require('./src/javascripts/event_triggers.js')
 require('./src/javascripts/keys.js')
 require('./src/javascripts/midi.js')
 require('./src/javascripts/piano_helper.js')

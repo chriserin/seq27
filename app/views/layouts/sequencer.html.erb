@@ -3,8 +3,8 @@
 <head>
   <title>Seq27</title>
   <%= stylesheet_link_tag    'application', media: 'all' %>
-  <script type='text/javascript' src='/assets/app.js'/>
-  <%= javascript_include_tag 'event_triggers'  if Rails.env.test? %>
+  <script type='text/javascript' src='/assets/app.js'></script>
+  <%= javascript_include_tag '/assets/javascripts/event_triggers'  if Rails.env.test? %>
   <%= csrf_meta_tags %>
 </head>
 <body>
