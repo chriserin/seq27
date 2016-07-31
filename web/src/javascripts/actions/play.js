@@ -97,7 +97,7 @@ Play.makeEventsMapForSection = function(songState, viewState) {
   return eventsMap.sort(function(a, b) { return a[0] - b[0]});
 }
 
-Play.makeEventsMap = function(songState) {
+Play.makeEventsMap = function(songState, arrangement) {
   var bpm = songState.tempo;
   var secondsPerTick = 60 / (96.0 * bpm);
   var msPerTick = secondsPerTick * 1000;
@@ -105,7 +105,6 @@ Play.makeEventsMap = function(songState) {
 
   var loopOffset = 0;
   var sections = songState.sections;
-  var arrangement = songState.arrangement;
   var section = null;
 
   for(var arrangementIndex = 0; section = sections[arrangement[arrangementIndex]]; arrangementIndex++) {
@@ -190,7 +189,16 @@ Play.createNotesMap = function(notes, msPerTick, loopOffset, fillOffset, channel
 var intervalTask = null
 Play.play = function(songState, viewState) {
   Play.PLAY_STATE = {isPlaying: true, activeNotes: []};
-  var eventsMap = Play.makeEventsMap(songState);
+  var eventsMap = Play.makeEventsMap(songState, songState.arrangement);
+
+  Play.playEvents(eventsMap);
+
+  return songState;
+}
+
+Play.playArrangement = function(songState, viewState, arrangementArgument) {
+  Play.PLAY_STATE = {isPlaying: true, activeNotes: []};
+  var eventsMap = Play.makeEventsMap(songState, Arrangement.parseArrangementArgument(arrangementArgument));
 
   Play.playEvents(eventsMap);
 
