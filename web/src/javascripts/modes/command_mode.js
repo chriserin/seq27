@@ -39,6 +39,7 @@ CommandMode.commandMapping = function() {
     "duration": [Rhythm.applyDurations, NOOP],
     "arrange": [Arrangement.arrange, NOOP],
     "outputs": [NOOP, Report.outputs],
+    "setpartoutput": [Song.setPartOutput, NOOP],
     "map": [NOOP, Report.nodeMap],
     "write": [Save.write, NOOP],
     "update": [Save.update, NOOP],

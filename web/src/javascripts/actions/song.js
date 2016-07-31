@@ -173,3 +173,13 @@ Song.nameSong = function(songState, _) {
 
   return songState;
 }
+
+Song.setPartOutput = function(songState, viewState, outputArgument) {
+  var output = parseInt(outputArgument);
+
+  for(let i = 0; songState.sections.length > i; i++) {
+    songState.sections[i].parts[viewState.activePart].output = outputArgument;
+  }
+
+  return songState;
+}

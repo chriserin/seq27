@@ -117,6 +117,10 @@ SongState.newPart = function() {
   }
 }
 
+SongState.activeOutput = function(songState) {
+  return SongState.activePart(songState).output;
+}
+
 SongState.tagNotes = function(notes) {
   var timestamp = Date.now();
 
