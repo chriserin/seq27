@@ -85,6 +85,27 @@ Song.duplicateSection = function(songState, viewState, sectionArgument) {
   return songState;
 }
 
+Song.removeSection = function(songState, viewState) {
+  delete songState["sections"][viewState.activeSection];
+  songState["sections"] = songState["sections"].filter(Boolean);
+
+  songState["arrangement"] = songState["arrangement"].filter((sectionNumber) => { sectionNumber !== viewState.activeSection })
+
+  return songState;
+}
+
+var metaAttributes = {isUndoFunction: true};
+Song.removeSection.prototype = metaAttributes;
+
+Song.setRemovedSection = function(viewState, songState) {
+  delete viewState["sections"][viewState.activeSection];
+  viewState["sections"] = viewState["sections"].filter(Boolean);
+
+  viewState.activeSection = viewState.activeSection - 1;
+
+  return viewState;
+}
+
 Song.setPart = function(songState, viewState, partArgument) {
   if (partArgument.indexOf('!') > 0) {
     var sections = songState.sections

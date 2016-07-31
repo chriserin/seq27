@@ -25,6 +25,7 @@ CommandMode.commandMapping = function() {
     "get": [NOOP, Song.getProperty],
     "section": [Song.setSection, Song.setActiveSection],
     "duplicatesection": [Song.duplicateSection, Song.setDuplicatedSection],
+    "removesection": [Song.removeSection, Song.setRemovedSection],
     "part": [Song.setPart, Song.setActivePart],
     "scale": [Scale.create, NOOP],
     "arpeggio": [Arpeggio.create, Groups.setSelectedTag],
@@ -76,6 +77,7 @@ CommandMode.executionMethods = function() {
   var songStateFn = function (songState, viewState) {
     return commandFns[0](songState, viewState, ...(words.slice(1)));
   }
+  songStateFn.prototype = commandFns[0].prototype;
 
   var viewStateFn = function (viewState, songState) {
     viewState.delayedAction = function(state) { state.commandResult = ''; return state};
