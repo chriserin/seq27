@@ -98,11 +98,15 @@ Song.setPart = function(songState, viewState, partArgument) {
 
 Song.setActiveSection = function(viewState, songState, sectionArgument) {
   var newActiveSection = parseInt(sectionArgument);
-  viewState["activeSection"] = newActiveSection;
 
-  if (viewState.sections[newActiveSection] === undefined) {
+  if (viewState.sections[newActiveSection] === undefined && songState.sections[newActiveSection]) {
+    viewState["activeSection"] = newActiveSection;
     viewState.sections[newActiveSection] = ViewState.newSectionState(songState.sections[0].parts.length)
     viewState = ViewState.initPartStacksForSection(viewState, newActiveSection)
+  } else if (viewState.sections[newActiveSection] === undefined) {
+    return SeqError.sectionDoesNotExist(viewState);
+  } else {
+    viewState["activeSection"] = newActiveSection;
   }
 
   return viewState;
