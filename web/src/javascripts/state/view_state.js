@@ -73,7 +73,7 @@ ViewState.initPartViewForSection = function(viewState, sectionNumber) {
       const focusedNote = part.notes.find((note) => {return note.timestamp === newPartState.selectedTag; });
 
       if (focusedNote) {
-        newPartState.cursor = {start: focusedNote.start, pitch: focusedNote.pitch};
+        newPartState.cursor = {start: focusedNote.start, pitch: focusedNote.pitch, length: 96};
       }
 
       viewState.sections[sectionNumber].parts[j] = newPartState;
