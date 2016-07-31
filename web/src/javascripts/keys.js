@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   if (window.song) {
     Midi.connect();
-    window.SONG_STATE = Song.newSong();
+    window.SONG_STATE = window.DEFINED_SONG_STATE || Song.newSong();
     window.VIEW_STATE = ViewState.init(SONG_STATE);
     var view = React.createElement(SeqCom.Song, {song: SONG_STATE, view: VIEW_STATE});
     window.SONG_VIEW = ReactDOM.render(view, window.song);
