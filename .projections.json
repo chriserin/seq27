@@ -1,7 +1,7 @@
 {
-    "app/assets/javascripts/components/*.js.jsx": {"type": "component"},
-    "app/assets/javascripts/modes/*.js": {"type": "mode"},
-    "app/assets/javascripts/actions/*.js": {"type": "action"},
-    "app/assets/javascripts/state/*.js": {"type": "state"},
+    "web/src/javascripts/components/*.js.jsx": {"type": "component"},
+    "web/src/javascripts/modes/*.js": {"type": "mode"},
+    "web/src/javascripts/actions/*.js": {"type": "action"},
+    "web/src/javascripts/state/*.js": {"type": "state"},
     "app/views/ui/*": {"type": "ui"}
 }
