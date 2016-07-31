@@ -71,7 +71,7 @@ Song.setSection = function(songState, viewState, sectionArgument) {
   return songState;
 }
 
-Song.duplicateSection = function(songState, viewState, sectionArgument) {
+Song.duplicateSection = function(songState, viewState) {
   var section = {parts: [], loop: 1}
 
   songState.sections[ViewState.activeSection].parts.forEach(function(part) {
