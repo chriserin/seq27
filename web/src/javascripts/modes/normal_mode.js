@@ -246,14 +246,18 @@ function gotoNodes() {
 
 function cycleLeftNodes() {
   const nodes = {
-    "g": [NOOP, Groups.selectPreviousGroup]
+    "g": [NOOP, Groups.selectPreviousGroup],
+    "s": [NOOP, Section.previousSection],
+    "p": [NOOP, Part.previousPart]
   }
   return nodes;
 }
 
 function cycleRightNodes() {
   const nodes = {
-    "g": [NOOP, Groups.selectNextGroup]
+    "g": [NOOP, Groups.selectNextGroup],
+    "s": [NOOP, Section.nextSection],
+    "p": [NOOP, Part.nextPart]
   }
   return nodes;
 }
