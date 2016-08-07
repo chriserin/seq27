@@ -209,7 +209,7 @@ SeqCom.StatusLine = React.createClass({
     return <statusLine>
       <name>{songName}</name>
       <name className="section">sect { this.props.section }</name>
-      <name className="part">>part { this.props.part }</name>
+      <name className="part">part { this.props.part }</name>
       <div>output {this.props.midiOutputName}({this.props.midiOutput})</div>
       <div>channel {this.props.channel}</div>
       <filler/>

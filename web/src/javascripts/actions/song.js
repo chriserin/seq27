@@ -108,9 +108,9 @@ Song.setRemovedSection = function(viewState, songState) {
 
 Song.setPart = function(songState, viewState, partArgument) {
   if (partArgument.indexOf('!') > 0) {
-    var sections = songState.sections
-    for(var i = 0; i < sections.length; i++) {
-      sections[i].parts.push(SongState.newPart())
+    const sections = songState.sections;
+    for(let i = 0; i < sections.length; i++) {
+      sections[i].parts.push(SongState.newPart());
     }
   }
 
@@ -136,7 +136,17 @@ Song.setActiveSection = function(viewState, songState, sectionArgument) {
 Song.setDuplicatedSection = function(viewState, songState) {
   var newActiveSection =  ViewState.activeSection + 1;
 
+  //get the undo stack for each part so it maintains its Immutability
+  const undoStacks = viewState.sections[ViewState.activeSection].parts.map(function(part) {return part.stack;})
+
   viewState.sections[newActiveSection] = JSON.parse(JSON.stringify(viewState.sections[ViewState.activeSection]));
+
+  const parts = viewState.sections[newActiveSection].parts;
+
+  for(let i = 0; i < parts.length; i++) {
+    parts[i].stack = undoStacks[i];
+  }
+
   viewState = ViewState.initPartStacksForSection(viewState, newActiveSection);
 
   viewState["activeSection"] = newActiveSection;
@@ -153,8 +163,10 @@ Song.setActivePart = function(viewState, songState, partArgument) {
   }
 
   if (viewState.sections[viewState.activeSection].parts[newActivePart] === undefined) {
-    viewState.sections[viewState.activeSection].parts[newActivePart] = ViewState.newPartState();
-    viewState = Undo.initActiveStack(viewState, songState);
+    for (let i = 0; i < viewState.sections.length; i++) {
+      viewState.sections[i].parts[newActivePart] = ViewState.newPartState();
+      viewState = Undo.initStack(viewState, songState, i, newActivePart);
+    }
   }
 
   return viewState;

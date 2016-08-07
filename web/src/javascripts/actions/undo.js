@@ -41,6 +41,18 @@ Undo.initActiveStack = function ias(viewState, songState) {
   return viewState;
 }
 
+Undo.initStack = function ias(viewState, songState, sectionIndex, partIndex) {
+
+  const currentState = SongState.activePart(songState, viewState);
+  const partState = songState.sections[sectionIndex].parts[partIndex];
+  const partViewState = viewState.sections[sectionIndex].parts[partIndex];
+
+  partViewState.stackPointer = 0;
+  partViewState.stack.push(Immutable.fromJS(currentState));
+
+  return viewState;
+}
+
 var metaAttributes = {isUndoFunction: true};
 
 Undo.redo.prototype = metaAttributes;
