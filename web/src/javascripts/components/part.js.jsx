@@ -101,6 +101,9 @@ SeqCom.Section = React.createClass({
 });
 
 SeqCom.PitchGrid = React.createClass({
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.props.beats != nextProps.beats;
+  },
   renderBeats(beats, cNote) {
     var beatsArray = Array.from(Array(parseInt(beats)).keys()).map((_, i)=> {
       var beatNumber = ''
