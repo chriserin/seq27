@@ -24,6 +24,10 @@ CommandMode.commandMapping = function() {
     "name": [Song.nameSong, NOOP],
     "set": [Song.setProperty, CursorMovement.ensureCursorInBounds],
     "get": [NOOP, Song.getProperty],
+    "addinst": [Instrument.addInstrument, NOOP],
+    "setinst": [Instrument.setInstrument, NOOP],
+    "newtemplate": [Instrument.addTemplate, NOOP],
+    "applytemplate": [Instrument.applyTemplate, Instrument.initAddedPartViews],
     "section": [Song.setSection, Song.setActiveSection],
     "duplicatesection": [Song.duplicateSection, Song.setDuplicatedSection],
     "removesection": [Song.removeSection, Song.setRemovedSection],
@@ -66,7 +70,7 @@ CommandMode.removeFromCommandBuffer = function(viewState) {
 CommandMode.executionMethods = function() {
   const commandBuffer = ViewState.commandBuffer.join("");
 
-  const words = commandBuffer.split(" ");
+  const words = parseCommandArguments(commandBuffer);
   const command = words[0];
 
   const commandMapping = CommandMode.commandMapping();
@@ -90,6 +94,10 @@ CommandMode.executionMethods = function() {
   }
 
   return [songStateFn, viewStateFn];
+}
+
+var parseCommandArguments = function(buffer) {
+  return buffer.match(/".*"|[^ ]+/g).map((arg) => { return arg.replace(/"/g, '');});
 }
 
 var recordCommandBuffer = function (viewState) {

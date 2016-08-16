@@ -43,6 +43,14 @@ Midi.outputNames = function() {
   return names;
 }
 
+Midi.indexFor = function(outputName) {
+
+  const outputNames = Midi.outputNames();
+  const outputIndex = outputNames.findIndex((o) => { return o == outputName; });
+
+  return outputIndex;
+}
+
 Midi.sendOn = function(channel, pitch, velocity, timeFromNow, output=Midi.TEST_OUTPUT) {
   return Midi.send(Midi.ON, channel, pitch, velocity, timeFromNow, output);
 }

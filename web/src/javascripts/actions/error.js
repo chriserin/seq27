@@ -16,7 +16,12 @@ SeqError.sectionDoesNotExist = function(viewState) {
 }
 
 SeqError.error = function(viewState, message) {
-  viewState.delayedAction = function(state) { state.error = ''; return state;}
-  viewState.error = message
-  return Modes.normalMode(viewState)
+  viewState.delayedAction = function(state) { state.error = ''; return state;};
+  viewState.error = message;
+  viewState.commandBuffer = [];
+  return Modes.normalMode(viewState);
+}
+
+SeqError.noMidiNamed = function(output) {
+  return `E5: No midi output named ${output}`;
 }

@@ -55,8 +55,16 @@ function processKey(key) {
   var songFn = fnArray[0];
   var viewFn = fnArray[1];
 
-  SONG_STATE = savePartState(songFn, SONG_STATE, VIEW_STATE);
-  VIEW_STATE = viewFn(delayedAction(VIEW_STATE), SONG_STATE);
+  const result = savePartState(songFn, SONG_STATE, VIEW_STATE);
+
+  if(typeof(result) == 'object') {
+    SONG_STATE = result;
+    VIEW_STATE = viewFn(delayedAction(VIEW_STATE), SONG_STATE);
+  } else if (typeof(result) == 'string') {
+    VIEW_STATE = SeqError.error(VIEW_STATE, result);
+  } else {
+    VIEW_STATE = SeqError.error(VIEW_STATE, 'E4: Wrong type returned from songFn');
+  }
 
   window.SONG_VIEW.replaceState({song: SONG_STATE, view: VIEW_STATE});
 }
