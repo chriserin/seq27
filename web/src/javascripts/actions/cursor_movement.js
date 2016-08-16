@@ -64,8 +64,7 @@ CursorMovement.moveToNextNote = function(viewState, songState) {
   var nextNote = notes.filter(filterFn)[0];
 
   if(nextNote) {
-    cursor['start'] = nextNote.start;
-    cursor['pitch'] = nextNote.pitch;
+    viewState = moveCursor(viewState, nextNote);
   }
 
   return viewState;
