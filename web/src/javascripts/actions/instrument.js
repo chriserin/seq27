@@ -6,7 +6,6 @@ Instrument.addInstrument = function(songState, viewState, output, channel, instr
   instruments[instrumentName] = {output: output, channel: channel};
 
   const outputIndex =  Midi.indexFor(output);
-  console.log("output index is " + outputIndex);
 
   if (outputIndex > 0) {
     localStorage.setItem('instruments', JSON.stringify(instruments));
@@ -49,7 +48,6 @@ Instrument.addTemplate = function(songState, viewState, templateName) {
 }
 
 Instrument.applyTemplate = function(songState, viewState, templateName) {
-  console.log('applying template');
   const activeSection = SongState.activeSection(songState);
   const parts = activeSection.parts;
 
@@ -57,19 +55,14 @@ Instrument.applyTemplate = function(songState, viewState, templateName) {
   const instruments = JSON.parse(localStorage.getItem('instruments')) || {};
   const templateInstruments = templates[templateName];
 
-  console.log('possibleInstruments ' + JSON.stringify(instruments));
-
   for(let i = 0; templateInstruments.length > i; i++) {
-    console.log('applying instrument ' + templateInstruments[i]);
     let instrument = instruments[templateInstruments[i]];
     let outputIndex = Midi.indexFor(instrument.output);
 
     if(activeSection.parts[i]) {
-      console.log('applying instrument to part' + i);
       parts[i].output = outputIndex;
       parts[i].channel = parseInt(instrument.channel);
     } else {
-      console.log('applying instrument to new part' + i);
       songState = Song.setPart(songState, viewState, i + '!');
       let changedSection = SongState.activeSection(songState);
 
