@@ -21,12 +21,6 @@ Then(/^I see that sect (\d+) is active$/) do |sectionNumber|
   end
 end
 
-Then(/^I see that sect (\d+) is active$/) do |sectionNumber|
-  within 'statusline' do
-    expect(page).to have_selector(".section", text: "sect #{sectionNumber}")
-  end
-end
-
 Then(/^I see that the output "([^"]*)" is selected$/) do |outputName|
   within 'statusline' do
     expect(page).to have_selector("div", text: "output #{outputName}")
