@@ -26,5 +26,7 @@ Delete.deleteSelected = function ds(songState, viewState) {
 
   part.notes = part.notes.filter(function(n) { return n;});
 
+  Modes.endVisualMode(viewState);
+
   return songState;
 }
