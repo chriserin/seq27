@@ -45,7 +45,6 @@ require('./src/javascripts/state/state.js')
 require('./src/javascripts/state/view_state.js')
 
 require('./src/javascripts/modes/command_mode.js')
-require('./src/javascripts/modes/explorer_mode.js')
 require('./src/javascripts/modes/normal_mode.js')
 
 export {};

@@ -28,19 +28,12 @@ Modes.visualMode = function vm(viewState, songState) {
   return viewState;
 };
 
-Modes.explorerMode = function (viewState) {
-  viewState["mode"] = 'explorer';
-  return viewState;
-};
-
 Modes.transitionToNextMode = function(viewState) {
   const currentMode = viewState['mode'];
   let nextMode = currentMode;
 
   if (currentMode === 'command') {
     nextMode = 'normal';
-  } else if (currentMode === 'explorer') {
-    nextMode = 'explorer';
   }
 
   viewState['mode'] = nextMode;

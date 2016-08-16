@@ -6,10 +6,6 @@ window.INITIAL_VIEW_STATE = {
     start: -1,
     length: -1
   },
-  explorerCursor: {
-    arrangementIndex: 0,
-    partId: 0
-  },
   error: null,
   activeSection: 0,
   activePart: 0,
@@ -27,8 +23,6 @@ window.INITIAL_VIEW_STATE = {
   commandResult: '',
   commandBuffer: [],
   commandHistoryIndex: -1,
-  explorerDisplayParts: true,
-  explorerMode: 'normal',
   selectedArrangementIndexes: [],
   reportItems: null,
   reportTitle: ''
