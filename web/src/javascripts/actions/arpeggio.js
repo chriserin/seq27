@@ -1,6 +1,6 @@
 window.Arpeggio = {}
 
-Arpeggio.createArpeggioPattern = function(scaleType='major', arpeggioNotesStr='123', groupPattern='u') {
+Arpeggio.createArpeggioPattern = function cAP(scaleType='major', arpeggioNotesStr='123', groupPattern='u') {
   var scale = Scale.scales[scaleType];
 
   var arpeggioNotes = arpeggioNotesStr.split('').map(function(x) { return parseInt(x) - 1;});
@@ -49,3 +49,4 @@ Arpeggio.create = function(songState, viewState) {
 
   return songState;
 }
+Arpeggio.create.prototype = {arguments: [{type: 'String'}, {type: 'Number'}, {type: 'String'}]};

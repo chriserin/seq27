@@ -73,6 +73,8 @@ CommandMode.executionMethods = function() {
   const words = parseCommandArguments(commandBuffer);
   const command = words[0];
 
+  const commandArguments = words.slice(1);
+
   const commandMapping = CommandMode.commandMapping();
   let commandFns = commandMapping[command];
 
@@ -80,20 +82,54 @@ CommandMode.executionMethods = function() {
     commandFns = [NOOP, function(viewState) {return SeqError.notACommand(viewState, command);}];
   }
 
-  var songStateFn = function (songState, viewState) {
-    return commandFns[0](songState, viewState, ...(words.slice(1)));
+  let errorMessage;
+  let songStateFn;
+
+  if(errorMessage = verifyArguments(commandArguments, commandFns[0].prototype.arguments)) {
+    songStateFn = () => { return errorMessage;};
+  } else {
+    songStateFn = function (songState, viewState) {
+      return commandFns[0](songState, viewState, ...commandArguments);
+    }
   }
+
   songStateFn.prototype = commandFns[0].prototype;
 
   var viewStateFn = function (viewState, songState) {
     viewState.delayedAction = function(state) { state.commandResult = ''; return state};
-    var state = commandFns[1](viewState, songState, ...(words.slice(1)));
+    var state = commandFns[1](viewState, songState, ...commandArguments);
     state = Modes.transitionToNextMode(state);
     state = recordCommandBuffer(state);
     return clearCommandBuffer(state);
   }
 
   return [songStateFn, viewStateFn];
+}
+
+const verifyArguments = function(commandArguments, argumentTypes) {
+  if (argumentTypes === undefined) return null;
+
+  for(let i = 0; argumentTypes.length > i; i++) {
+    let argumentType = argumentTypes[i];
+    let argument = commandArguments[i] || "";
+
+    switch(argumentType.type) {
+      case 'String':
+        if (!argument.match(/\w+/)) return `E6: ${ordinal(i)} Argument must be a string`;
+        break;
+      case 'Number':
+        if (!argument.match(/\d+/)) return `E6: ${ordinal(i)} argument must be a number`;
+        break;
+    }
+  }
+}
+
+const ordinal = function(index) {
+  switch(index) {
+    case 0: return 'first';
+    case 1: return 'second';
+    case 2: return 'third';
+  };
 }
 
 var parseCommandArguments = function(buffer) {
