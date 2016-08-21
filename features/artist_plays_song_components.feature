@@ -24,6 +24,16 @@ Feature: Artist plays song components
     Then  I hear only the current part
 
   @javascript
+  Scenario: Artist plays a part from cursor
+    Given an artist on the new song page
+    When  there is a midi output available
+    And   I set the tempo very high in order to shrink the test
+    And   I type the ":set output=seq27-midi-output" command
+    And   I type the "mecnlmccn0mcl" sequence
+    And   I type the "zc" sequence
+    Then  I hear only the current part
+
+  @javascript
   Scenario: Artist plays a selection
     Given an artist on the new song page
     When  there is a midi output available

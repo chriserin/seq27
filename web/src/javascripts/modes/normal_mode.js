@@ -266,6 +266,7 @@ function playNodes() {
   const nodes = {
     "z": [Play.play, NOOP],
     "p": [Play.playPart, NOOP],
+    "c": [Play.playPartFromCursor, NOOP],
     "s": [Play.playSelection, NOOP],
     "S": [Play.playSection, NOOP]
   }

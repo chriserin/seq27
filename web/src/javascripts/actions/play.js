@@ -76,6 +76,25 @@ Play.makeEventsMapForActivePart = function(songState, viewState) {
   return eventsMap.sort(function(a, b) { return a[0] - b[0]});
 }
 
+Play.makeEventsMapForActivePartFromCursor = function(songState, viewState) {
+  var bpm = songState.tempo;
+  var secondsPerTick = 60 / (96.0 * bpm);
+  var msPerTick = secondsPerTick * 1000;
+  var part = SongState.activePart(songState, viewState);
+  var maxTicks = part.beats * 96.0;
+  var minTicks = ViewState.activeCursor(viewState).start;
+
+  let eventsMap = Play.createPartMap(part, msPerTick, 0, maxTicks);
+
+  const startGreaterThanMinTicksFn = function(event) {
+    return event[2] >= minTicks;
+  }
+
+  eventsMap = eventsMap.filter(startGreaterThanMinTicksFn);
+
+  return eventsMap.sort(function(a, b) { return a[0] - b[0]});
+}
+
 Play.makeEventsMapForSelection = function(songState, viewState) {
   var bpm = songState.tempo;
   var secondsPerTick = 60 / (96.0 * bpm);
@@ -209,6 +228,16 @@ Play.playPart = function(songState, viewState) {
   Play.PLAY_STATE = {isPlaying: true, activeNotes: []};
 
   var eventsMap = Play.makeEventsMapForActivePart(songState, viewState);
+
+  Play.playEvents(eventsMap);
+
+  return songState;
+}
+
+Play.playPartFromCursor = function(songState, viewState) {
+  Play.PLAY_STATE = {isPlaying: true, activeNotes: []};
+
+  var eventsMap = Play.makeEventsMapForActivePartFromCursor(songState, viewState);
 
   Play.playEvents(eventsMap);
 
